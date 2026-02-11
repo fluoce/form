@@ -3,35 +3,36 @@
 import { Plus } from "lucide-react";
 import { Button } from "../ui/button";
 import CDialog from "../custom/CDialog";
-import { Field, FieldLabel } from "../ui/field";
+import { Field, FieldDescription, FieldGroup, FieldLabel, FieldLegend, FieldSet } from "../ui/field";
 import { Input } from "../ui/input";
 import { useRef, useState, useCallback } from "react";
-import { serverFetch } from "@/actions/server-fetch";
-import { useMutation } from "@/hooks/use-mutaion";
 import ErrorMessage from "./ErrorMessage";
+import useWorkspace from "@/hooks/use-workspace";
 import { Spinner } from "../ui/spinner";
+import { redirect } from "next/navigation";
+import { workspaceRoutes } from "@/const/route-const";
 
+export const CreateWorkspace = ({
+    className,
+    variant,
+    text = "Create Workspace",
+    page = false,
+}: {
+    className?: string;
+    variant?: "default" | "outline" | "secondary";
+    text?: "Create Workspace" | "Workspace";
+    page?: boolean;
+}) => {
 
-export const CreateWorkspace = ({ className }: { className?: string }) => {
     const formRef = useRef<HTMLFormElement>(null);
+
     const [open, setOpen] = useState(false);
+
     const [name, setName] = useState("");
 
-    const { mutateAsync, isPending, isError, error } = useMutation(async (workspaceName: string) => {
-        return await serverFetch({
-            url: "/workspace",
-            method: "POST",
-            body: { name: workspaceName },
-            path: "dev",
-        });
-    }, {
-        validate(workspaceName) {
-            if (!workspaceName.trim()) {
-                return "workspace name is required"
-            }
-            return null
-        },
-    });
+    const { createWorkspace } = useWorkspace()
+
+    const { mutateAsync, isPending, isError, error } = createWorkspace
 
     const handleDialogSuccess = useCallback(() => {
         if (formRef.current) {
@@ -41,32 +42,69 @@ export const CreateWorkspace = ({ className }: { className?: string }) => {
 
     const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const data = await mutateAsync(name)
-        console.log(data);
-        if (data.success) {
-            setOpen(false);
+        if (!name || name.trim().length < 2) return
+        const data = await mutateAsync({
+            name
+        })
+        if (data && data.data?.workspace) {
             setName("")
+            if (page) {
+                redirect(workspaceRoutes.dash(data.data.workspace.id))
+            }
+            setOpen(false)
         }
     };
+
+    if (page) {
+        return (
+            <form ref={formRef} onSubmit={handleFormSubmit} className="w-full max-w-100">
+                <FieldGroup>
+                    <FieldSet>
+                        <FieldLegend>Create Workspace</FieldLegend>
+                        <FieldDescription>
+                            Provide a name for your workspace. Workspaces help you organize and manage your forms efficiently.
+                        </FieldDescription>
+                        <FieldGroup>
+                            <Field>
+                                <FieldLabel htmlFor="create-workspace">Workspace Name</FieldLabel>
+                                <Input
+                                    disabled={isPending}
+                                    onChange={(e) => setName(e.target.value)}
+                                    id="create-workspace"
+                                    placeholder="Enter the workspace name..."
+                                />
+                            </Field>
+                            <Field orientation='horizontal'>
+                                <Button disabled={isPending || !name || name.trim().length < 2}>
+                                    {isPending && <Spinner />}  Create
+                                </Button>
+                            </Field>
+                            {isError && <ErrorMessage error={error?.message || ""} />}
+                        </FieldGroup>
+                    </FieldSet>
+                </FieldGroup>
+            </form>
+        )
+    }
 
     return (
         <CDialog
             open={open}
             onOpenChange={() => setOpen((prev) => !prev)}
             trigger={
-                <Button className={className}>
+                <Button className={className} variant={variant}>
                     <Plus />
-                    Create Workspace
+                    {text}
                 </Button>
             }
+            disabled={!name || name.trim().length < 2}
             title="Create Workspace"
             description="Provide a name for your workspace. Workspaces help you organize and manage your forms efficiently."
             successBtnText="Create"
-            cancelBtnText="Cancel"
             isLoading={isPending}
             onSuccess={handleDialogSuccess}
         >
-            {isPending ? <Spinner /> : <form ref={formRef} onSubmit={handleFormSubmit}>
+            <form ref={formRef} onSubmit={handleFormSubmit}>
                 <Field>
                     <FieldLabel htmlFor="create-workspace">Workspace Name</FieldLabel>
                     <Input
@@ -76,8 +114,8 @@ export const CreateWorkspace = ({ className }: { className?: string }) => {
                         placeholder="Enter the workspace name..."
                     />
                 </Field>
-            </form>}
-            {isError && <ErrorMessage error={error || ""} />}
+            </form>
+            {isError && <ErrorMessage error={error?.message || ""} />}
         </CDialog>
     );
 };

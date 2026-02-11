@@ -1,67 +1,58 @@
 "use client";
 
-import { ReactNode, useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../redux/redux-provider";
-import { authUrl, appUrl } from "@/const/env-const";
-import { useRouter } from "next/navigation";
-import { UserSlice } from "@/types/slice";
-import { setUser } from "@/store/shared/user-slice";
+import { ReactNode, useEffect } from "react";
 import { BlueSpinner } from "@/components/shared/Loader";
+import useMe from "@/hooks/use-me";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/store/slice/user-slice";
+import { useAppSelector } from "../redux/redux-provider";
+import NoData from "@/components/shared/NoData";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ArrowUpLeft } from "lucide-react";
 
 export const InitProvider = ({ children }: { children: ReactNode }) => {
 
-    const router = useRouter()
+    const { me } = useMe()
 
-    const dispatch = useAppDispatch()
+    const { data, isLoading, isError } = me
 
-    const [pending, setPending] = useState(false)
+    const dispatch = useDispatch()
 
     const { user } = useAppSelector(state => state.user)
 
     useEffect(() => {
-        if (user) {
-            setPending(false);
-            return;
-        }
+        if (isLoading || user) return;
+        dispatch(setUser(data?.data))
+    }, [isLoading, data]);
 
-        setPending(true);
+    if (isError) {
+        return (
+            <div className="relative h-screen flex items-center w-full justify-center">
+                <NoData
+                    description={
+                        "We couldn't load your profile at this time. Please check your internet connection, refresh the page, or try again later."
+                    }
+                    actions={
+                        <Link href={"/"}>
+                            <Button>
+                                <ArrowUpLeft />  Go Back
+                            </Button>
+                        </Link>
+                    }
+                />
+            </div>
+        );
+    }
 
-        const loadMe = async () => {
-            try {
-                const res = await fetch("/api/me", {
-                    method: "GET",
-                });
 
-                if (!res.ok) {
-                    router.replace(authUrl + `?ref=${appUrl}`);
-                    return;
-                }
-
-                const data: { success: boolean; user: UserSlice } = await res.json();
-
-                if (data?.success && data.user) {
-                    dispatch(setUser(data.user));
-                } else {
-                    router.replace(authUrl + `?ref=${appUrl}`);
-                }
-
-            } finally {
-                setPending(false);
-            }
-        };
-
-        loadMe();
-
-    }, [])
-
-    if (pending) {
+    if (isLoading) {
         return (
             <div className="relative h-screen flex items-center w-full justify-center">
                 <BlueSpinner />
             </div>
-        )
+        );
     }
 
-    return children;
-}
-
+    return children
+};

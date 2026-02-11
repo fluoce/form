@@ -47,7 +47,7 @@ export async function exchangeCode(code: string) {
         cookieStore.set({
             name: "accessToken",
             value: `${accessToken}`,
-            ...cookieOption(59 * 60)
+            ...cookieOption(14 * 60)
         })
 
         cookieStore.set({

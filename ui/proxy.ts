@@ -74,6 +74,6 @@ export default async function proxy(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/admin/:path*", "/dev/:path*"],
+    matcher: ["/dash/:path*", "/form/:path*", "/ws/:path*"],
 };
 

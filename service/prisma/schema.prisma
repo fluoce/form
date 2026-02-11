@@ -22,13 +22,14 @@ model Workspace {
   updatedAt       DateTime                 @updatedAt
 
   members         WorkspaceMember[]
+  forms           Form[]
 
   @@index([ownerId])
 }
 
 enum WorkspaceStatus {
   ACTIVE
-  INACTIVE
+  INACTIVE  
   SUSPENDED
   DELETED
 }
@@ -71,4 +72,27 @@ enum MemberStatus {
   ACTIVE
   INVITED
   REMOVED
+}
+
+model Form {
+  id              String                   @id
+  workspaceId     String
+  userId          String
+  name            String
+  slug            String                   @unique
+  status          FormStatus               @default(DRAFT)
+  //TODO: other configs later
+
+  createdAt       DateTime                 @default(now())
+  updatedAt       DateTime                 @updatedAt
+
+  workspace       Workspace                @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, userId])
+}
+
+enum FormStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
 }

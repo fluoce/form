@@ -15,9 +15,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+//TODO: add better metadata
 export const metadata: Metadata = {
   title: "Form | Fluoce",
-  description: "", //TODO: add better description
+  description: "",
   icons: [{ rel: "icon", url: "/Form-Fluoce.svg" }],
 };
 

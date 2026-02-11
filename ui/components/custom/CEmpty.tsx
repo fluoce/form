@@ -7,14 +7,14 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty"
 import { Folder } from "lucide-react"
-import { ReactElement } from "react"
+import { ReactNode } from "react"
 
 type CEmptyPropsType = {
-  icon?: ReactElement,
+  icon?: ReactNode,
   title?: string,
   description?: string,
-  btns?: ReactElement,
-  linkBtn?: ReactElement
+  btns?: ReactNode,
+  linkBtn?: ReactNode
 }
 
 export function CEmpty({ icon, title, description, btns, linkBtn }: CEmptyPropsType) {

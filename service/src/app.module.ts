@@ -9,7 +9,7 @@ import { WorkspaceModule } from './module/workspace/workspace.module';
 import { FormModule } from './module/form/form.module';
 import { RateLimitGuard } from './ratelimit.guard';
 import { WorkspacecoreModule } from './core/workspacecore/workspacecore.module';
-import { WorkspaceMembercoreModule } from './core/workspace-membercore/workspace.membercore.module';
+import { FormcoreModule } from './core/formcore/formcore.module';
 
 @Module({
   imports: [
@@ -17,8 +17,8 @@ import { WorkspaceMembercoreModule } from './core/workspace-membercore/workspace
     LibModule,
     WorkspaceModule,
     FormModule,
+    FormcoreModule,
     WorkspacecoreModule,
-    WorkspaceMembercoreModule,
   ],
   controllers: [AppController],
   providers: [

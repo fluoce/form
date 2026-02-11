@@ -1,0 +1,1 @@
+export const workspaceIdKey = "selected-workspace-id";

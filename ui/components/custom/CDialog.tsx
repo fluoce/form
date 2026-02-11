@@ -20,6 +20,7 @@ const CDialog = ({
   successBtnText,
   cancelBtnText,
   isLoading = false,
+  disabled,
   onSuccess,
   onCancel,
   open,
@@ -32,6 +33,7 @@ const CDialog = ({
   successBtnText?: string;
   cancelBtnText?: string;
   isLoading?: boolean
+  disabled?: boolean,
   onSuccess?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   onCancel?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   open?: boolean;
@@ -55,7 +57,7 @@ const CDialog = ({
             </Button>
           </DialogClose>
           <Button
-            disabled={isLoading}
+            disabled={isLoading || disabled}
             onClick={onSuccess}>
             {isLoading && <Spinner />}
             {successBtnText || "Done"}

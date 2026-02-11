@@ -1,14 +1,16 @@
 import { BadRequestException, Injectable, NotFoundException, ServiceUnavailableException } from '@nestjs/common';
 import { WorkspacecoreService } from 'src/core/workspacecore/workspacecore.service';
+import { CloudflareService } from 'src/lib/cloudflare/cloudflare.service';
 import { ResponseDataType } from 'src/types/response.type';
 import { CreateWorkspaceDto, UpdateWorkspaceDto } from 'src/types/workspace.types';
 
 @Injectable()
 export class WorkspaceService {
 
-    constructor(private readonly workspacecoreService: WorkspacecoreService) { }
+    constructor(private readonly workspacecoreService: WorkspacecoreService, private readonly cloud: CloudflareService) { }
 
     async createWorkspace(ownerId: string, ownerEmail: string, data: CreateWorkspaceDto): Promise<ResponseDataType> {
+
         const workspace = await this.workspacecoreService.createWorkspace(ownerId, ownerEmail, data)
         if (!workspace) {
             throw new ServiceUnavailableException(
@@ -17,7 +19,7 @@ export class WorkspaceService {
         }
         return {
             message: "workspace created successfully",
-            workspace
+            workspace,
         }
     }
 
@@ -51,6 +53,10 @@ export class WorkspaceService {
     }
 
     async getWorkspaces(ownerId: string): Promise<ResponseDataType> {
+
+        // test
+        const url = await this.cloud.r2SignedUrl(ownerId)
+
         const workspaces = await this.workspacecoreService.getWorkspaces(ownerId)
         if (!workspaces) {
             throw new NotFoundException(
@@ -59,7 +65,8 @@ export class WorkspaceService {
         }
         return {
             message: "workspaces fetched successfully",
-            workspaces
+            workspaces,
+            url
         }
     }
 

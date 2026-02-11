@@ -9,6 +9,7 @@ import {
     DropdownMenuRadioGroup,
     DropdownMenuRadioItem,
     DropdownMenuSeparator,
+    DropdownMenuShortcut,
     DropdownMenuSub,
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
@@ -22,8 +23,10 @@ import { cn } from '@/lib/utils'
 import { AlertDialog, AlertDialogTitle, AlertDialogTrigger, AlertDialogContent, AlertDialogAction, AlertDialogDescription, AlertDialogCancel, AlertDialogHeader, AlertDialogFooter } from '../ui/alert-dialog'
 import { logoutAction } from '@/actions/logout'
 import { useDispatch } from 'react-redux'
-import { setUser } from '@/store/shared/user-slice'
+import { setUser } from '@/store/slice/user-slice'
 import { useRouter } from 'next/navigation'
+import { useKeyPress } from '@/hooks/use-keyPress'
+import { CKbd } from '../custom/CKbd'
 
 
 const ProfileBtn = ({ className }: { className?: string }) => {
@@ -51,6 +54,10 @@ const ProfileBtn = ({ className }: { className?: string }) => {
         router.refresh()
     }
 
+    useKeyPress("t", () => {
+        handleThemeChange(themeValue === "dark" ? "light" : "dark");
+    })
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild className={cn('h-10 px-2 w-full', className)}>
@@ -67,7 +74,7 @@ const ProfileBtn = ({ className }: { className?: string }) => {
                     </div>
                 </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className='w-fit' align='end'>
+            <DropdownMenuContent className='w-full' align='end'>
                 <DropdownMenuGroup>
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuItem>
@@ -85,11 +92,21 @@ const ProfileBtn = ({ className }: { className?: string }) => {
                     <DropdownMenuItem onSelect={toggleSidebar}>
                         <PanelRight className='rotate-180' />
                         {open ? "Hide" : "Show"} Sidebar
+                        <DropdownMenuShortcut>
+                            <CKbd>
+                                s
+                            </CKbd>
+                        </DropdownMenuShortcut>
                     </DropdownMenuItem>
                     <DropdownMenuSub>
-                        <DropdownMenuSubTrigger>
+                        <DropdownMenuSubTrigger showArrow={false}>
                             <Palette />
                             Theme
+                            <DropdownMenuShortcut>
+                                <CKbd>
+                                    t
+                                </CKbd>
+                            </DropdownMenuShortcut>
                         </DropdownMenuSubTrigger>
                         <DropdownMenuPortal>
                             <DropdownMenuSubContent>

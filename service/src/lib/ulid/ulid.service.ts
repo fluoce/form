@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { WorkspaceIdPrefix, WorkspaceMemberIdPrefix } from 'src/types/id.types';
+import { FormIdPrefix, WorkspaceIdPrefix, WorkspaceMemberIdPrefix } from 'src/types/id.types';
 import { ulid, decodeTime } from 'ulid';
 
 @Injectable()
@@ -20,5 +20,9 @@ export class UlidService {
 
   generateWorkspaceMemberId(prefix: WorkspaceMemberIdPrefix): string {
     return `${prefix}_${ulid()}`;
+  }
+
+  generateFormId(prefix: FormIdPrefix): string {
+    return `${prefix}_${ulid()}`
   }
 }

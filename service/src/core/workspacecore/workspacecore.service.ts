@@ -17,9 +17,6 @@ export class WorkspacecoreService {
             where: {
                 slug
             },
-            select: {
-                id: true
-            }
         })
         if (exist) {
             return true
