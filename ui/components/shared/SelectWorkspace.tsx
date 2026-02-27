@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, CreditCard, Settings, Square } from "lucide-react";
+import { ChevronsUpDown, CreditCard, Settings, Square } from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -20,7 +20,7 @@ import { useSyncSelectedWorkspace } from "@/hooks/use-sync-selected-workspace";
 import { CreateWorkspace } from "./CreateWorkspace";
 import Link from "next/link";
 import { workspaceRoutes } from "@/const/route-const";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 
 const SelectWorkspace = () => {
 
@@ -58,7 +58,7 @@ const SelectWorkspace = () => {
                             <span className="min-w-0 truncate text-left">
                                 {selectedWorkspace?.name ?? "Select Workspace"}
                             </span>
-                            <ChevronDown className="shrink-0 opacity-50" />
+                            <ChevronsUpDown className="shrink-0 opacity-50" />
                         </Button>
                 }
             </DropdownMenuTrigger>

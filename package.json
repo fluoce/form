@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"npm run dev --prefix ui\" \"npm run start:dev --prefix service\""
+    "dev": "concurrently \"npm run dev --prefix ui\" \"npm run start:dev --prefix service\"",
+    "start": "concurrently \"npm run start --prefix ui\" \"npm run start --prefix service\""
   },
   "keywords": [],
   "author": "",

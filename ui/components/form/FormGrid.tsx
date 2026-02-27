@@ -2,7 +2,7 @@ import { FormSlice } from "@/types/slice"
 import { FormStatusBadge } from "./FormStatusBadge"
 import { formRoutes } from "@/const/route-const"
 import Link from "next/link"
-import { ImagePlus } from "lucide-react"
+import FormHoverAction from "./FormHoverAction"
 
 export const FormGrid = ({ forms }: { forms: FormSlice[] }) => {
     return (
@@ -11,11 +11,12 @@ export const FormGrid = ({ forms }: { forms: FormSlice[] }) => {
                 <Link
                     href={formRoutes.formDash(form.workspaceId, form.id)}
                     key={form.id}
-                    className="bg-muted/50 flex flex-col gap-4 items-start justify-start cursor-pointer hover:bg-muted smooth p-4 rounded-xl overflow-hidden"
+                    className="bg-muted/50 flex flex-col gap-4 items-start group justify-start cursor-pointer hover:bg-muted smooth p-4 rounded-xl overflow-hidden"
                 >
-                    <div className="flex items-center justify-between gap-4 w-full">
+                    <div className="flex items-center justify-between gap-4 w-full relative">
                         <h3 className="line-clamp-1 font-medium">{form.name}</h3>
-                        <FormStatusBadge status={form.status} />
+                        <FormStatusBadge status={form.status} className="group-hover:opacity-0 smooth" />
+                        <FormHoverAction form={form} />
                     </div>
                 </Link>
             )}

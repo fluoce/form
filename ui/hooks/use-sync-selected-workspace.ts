@@ -16,26 +16,24 @@ export function useSyncSelectedWorkspace(workspaceList: WorkspaceSlice[]) {
 
     const dispatch = useDispatch()
 
-    const { setValue } = useLocalStorage()
+    const { setValue } = useLocalStorage(workspaceIdKey)
 
     useEffect(() => {
         if (!workspaceList || workspaceList.length === 0) return
 
         if (params?.workspaceId && workspaceList.some((workspace) => workspace.id == params.workspaceId)) {
-            setValue({
-                key: workspaceIdKey,
-                data: params.workspaceId
-            })
+            setValue(
+                params.workspaceId
+            )
             dispatch(setWorkspaceId(params.workspaceId))
             return
         }
 
         const firstWorkspaceId = workspaceList[0].id
 
-        setValue({
-            key: workspaceIdKey,
-            data: firstWorkspaceId
-        })
+        setValue(
+            firstWorkspaceId
+        )
 
         dispatch(setWorkspaceId(firstWorkspaceId))
 

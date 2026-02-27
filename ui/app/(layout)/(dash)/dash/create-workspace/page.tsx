@@ -6,35 +6,36 @@ import { workspaceIdKey } from '@/const/localstorage-key'
 import { workspaceRoutes } from '@/const/route-const'
 import useLocalStorage from '@/hooks/use-localstorage'
 import useWorkspace from '@/hooks/use-workspace'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
-const WorkspaceInit = () => {
+export default function WorkspaceInit() {
+
+    const router = useRouter()
+
     const { workspaces } = useWorkspace()
 
     const { data, isLoading } = workspaces
 
-    const { getValue } = useLocalStorage()
+    const { value: storedWorkspaceId } = useLocalStorage(workspaceIdKey)
 
     useEffect(() => {
         if (data && data.data?.workspaces && data.data.workspaces.length > 0) {
 
             const workspaceList = data.data.workspaces
 
-            const storedWorkspaceId = getValue(workspaceIdKey)
-
             const storedWorkspaceInList = workspaceList.find(
                 (ws) => ws.id === storedWorkspaceId
             )
 
             if (storedWorkspaceId && storedWorkspaceInList) {
-                setTimeout(() => redirect(workspaceRoutes.dash(storedWorkspaceId)), 0)
+                setTimeout(() => router.replace(workspaceRoutes.dash(storedWorkspaceId)), 0)
             } else {
-                setTimeout(() => redirect(workspaceRoutes.dash(workspaceList[0].id)), 0)
+                setTimeout(() => router.replace(workspaceRoutes.dash(workspaceList[0].id)), 0)
             }
         }
 
-    }, [data, getValue])
+    }, [data, storedWorkspaceId])
 
     if (isLoading) {
         return (
@@ -54,5 +55,3 @@ const WorkspaceInit = () => {
 
     return null
 }
-
-export default WorkspaceInit

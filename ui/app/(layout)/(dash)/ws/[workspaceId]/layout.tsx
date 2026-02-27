@@ -7,29 +7,27 @@ import { workspaceUrlPath } from "@/const/url-path";
 import { UseServer } from "@/hooks/use-server";
 import { ResponseType, WorkspaceResponse } from "@/types/response";
 
-export default async function WsLayout({
-    children,
-    params,
-}: Readonly<{
+type WsLayoutProps = {
     children: React.ReactNode;
-    params: {
-        workspaceId: string
-    }
-}>) {
+    params: Promise<{ workspaceId: string }>;
+};
 
-    const { workspaceId } = await params
+export default async function WsLayout({ children, params }: WsLayoutProps) {
+    const { workspaceId } = await params;
 
     const data = await UseServer({
         url: workspaceUrlPath.query(workspaceId),
-        method: 'GET',
-        path: workspaceRoutes.setting(workspaceId, "general")
-    }) as ResponseType<WorkspaceResponse>
+        method: "GET",
+        path: workspaceRoutes.setting(workspaceId, "general"),
+    }) as ResponseType<WorkspaceResponse>;
 
     if (!data || !data.data?.workspace) {
-        return <NoData
-            title="workspace not found"
-            description="We couldn't find this workspace. It may have been deleted, or you may not have access. If you believe this is an error, please contact support."
-        />
+        return (
+            <NoData
+                title="workspace not found"
+                description="We couldn't find this workspace. It may have been deleted, or you may not have access. If you believe this is an error, please contact support."
+            />
+        );
     }
 
     return (

@@ -24,3 +24,11 @@ export function BlueSpinner({ size = "md", className }: SpinnerProps) {
         />
     );
 }
+
+export function PageSpinner({ size = "md", className }: SpinnerProps) {
+    return (
+        <div className='w-full h-[calc(100vh-10rem)] flex items-center justify-center'>
+            <BlueSpinner size={size} className={className} />
+        </div>
+    )
+}

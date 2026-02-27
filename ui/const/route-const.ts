@@ -1,12 +1,9 @@
 import { formSettingTab, WorkspaceSettingTab } from "@/types/type"
 
-export const authRoutes = {
-    ex: "/exchange",
-    rf: "/refresh",
-    me: "/me"
-}
-
 const base = '/dash'
+
+
+// workspace routes
 
 const workspaceBase = '/ws'
 
@@ -23,6 +20,9 @@ export const workspaceRoutes = {
     }
 }
 
+
+// form routes
+
 const formBase = '/form'
 
 export const formRoutes = {
@@ -32,4 +32,24 @@ export const formRoutes = {
     setting: (workspaceId: string, formId: string, tab: formSettingTab) => {
         return `${formBase}/${workspaceId}/${formId}/${tab}`
     }
+}
+
+
+// form edit routes
+
+const formEditBase = "/edit"
+
+export const formEditRoutes = {
+    edit: (workspaceId: string, formId: string) => {
+        return `${formEditBase}/${workspaceId}/${formId}`
+    }
+}
+
+
+// docs routes
+
+const docsBase = "/docs"
+
+export const docsRoutes = {
+    base: `${docsBase}`
 }

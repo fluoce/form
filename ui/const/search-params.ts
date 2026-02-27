@@ -1,1 +1,0 @@
-export const formGridView = 'form-list-view'

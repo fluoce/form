@@ -19,7 +19,7 @@ const FormCommandGroup = ({ setShowCommand }: { setShowCommand: React.Dispatch<R
     }
 
     return (
-        <CommandGroup heading="Forms">
+        <CommandGroup heading="Selected Workspace's Forms">
             {formList.map((f) => (
                 <CommandItem
                     key={f.id}

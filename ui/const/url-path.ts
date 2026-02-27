@@ -1,3 +1,9 @@
+export const authRoutes = {
+    ex: "/exchange",
+    rf: "/refresh",
+    me: "/me"
+}
+
 export const meUrlPath = {
     base: '/me'
 }

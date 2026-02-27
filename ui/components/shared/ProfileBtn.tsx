@@ -81,10 +81,6 @@ const ProfileBtn = ({ className }: { className?: string }) => {
                         <UserRound />
                         Profile
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <CreditCard />
-                        Billing
-                    </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>

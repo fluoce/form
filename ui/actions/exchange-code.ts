@@ -1,7 +1,7 @@
 'use server'
 
 import { authBackendUrl } from "@/const/env-const";
-import { authRoutes } from "@/const/route-const";
+import { authRoutes } from "@/const/url-path";
 import { RefreshResponse } from "@/types/response";
 import { cookieOption } from "@/utils/cookie-option";
 import { cookies } from "next/headers"

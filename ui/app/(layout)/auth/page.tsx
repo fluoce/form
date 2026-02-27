@@ -9,8 +9,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Auth() {
+
   const searchParams = useSearchParams();
+
   const code = searchParams.get("code");
+
   let path = searchParams.get("path");
 
   if (!path || path === "null" || path === "undefined") {
@@ -18,6 +21,7 @@ export default function Auth() {
   }
 
   const router = useRouter();
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {

@@ -3,10 +3,11 @@
 import { cookies } from "next/headers";
 import type { RefreshResponse, ResponseType } from "@/types/response"
 import { appUrl, authBackendUrl, authUrl, backendUrl } from "@/const/env-const";
-import { authRoutes, workspaceRoutes } from "@/const/route-const";
+import { workspaceRoutes } from "@/const/route-const";
 import { cookieOption } from "@/utils/cookie-option";
 import { normalizeErrorMessage } from "@/func/normalize-error-message";
 import { redirect } from "next/navigation";
+import { authRoutes } from "@/const/url-path";
 
 interface ServerFetchProps {
     url: string;

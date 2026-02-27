@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import type { RefreshResponse } from "@/types/response"
 import { authBackendUrl } from "./const/env-const";
-import { authRoutes } from "./const/route-const";
+import { authRoutes } from "./const/url-path";
 import { nextAuthRedirect } from "./func/next-auth-redirect";
 import { cookieOption } from "./utils/cookie-option";
 

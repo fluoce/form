@@ -7,6 +7,11 @@ datasource db {
   provider = "postgresql"
 }
 
+
+
+
+// workspace
+
 model Workspace {
   id              String                   @id
   slug            String                   @unique
@@ -59,7 +64,7 @@ model WorkspaceMember {
   @@unique([workspaceId, userId])
   @@index([userId])
   @@index([workspaceId])
- }
+}
 
 enum WorkspaceMembersRole {
   OWNER
@@ -74,6 +79,11 @@ enum MemberStatus {
   REMOVED
 }
 
+
+
+
+// form
+
 model Form {
   id              String                   @id
   workspaceId     String
@@ -87,6 +97,7 @@ model Form {
   updatedAt       DateTime                 @updatedAt
 
   workspace       Workspace                @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  formFields      FormField[]
 
   @@index([workspaceId, userId])
 }
@@ -95,4 +106,27 @@ enum FormStatus {
   DRAFT
   PUBLISHED
   ARCHIVED
+}
+
+model FormField {
+  id              String                    @id
+  formId          String                    
+  type            FieldType
+
+  form            Form                      @relation(fields: [formId], references: [id], onDelete: Cascade)
+}
+
+enum FieldType {
+  SHORT_TEXT
+  LONG_TEXT
+  NUMBER
+  DATE
+  YES_NO
+  CHOICE
+  EMAIL
+  
+  PHONE
+
+  URL
+  FILE_UPLOAD
 }

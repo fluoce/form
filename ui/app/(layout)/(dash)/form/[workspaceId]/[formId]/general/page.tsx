@@ -2,7 +2,7 @@
 
 import ErrorMessage from '@/components/shared/ErrorMessage'
 import { Header } from '@/components/shared/Header'
-import { BlueSpinner } from '@/components/shared/Loader'
+import { PageSpinner } from '@/components/shared/Loader'
 import NoData from '@/components/shared/NoData'
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
@@ -36,15 +36,6 @@ export default function FormGeneral() {
 
     const formData = data?.data?.form;
 
-    if (!formData || isError) {
-        return (
-            <NoData
-                title={`Form not found`}
-                description="We couldn't find this Form. It may have been deleted. If you believe this is an error, please contact support."
-            />
-        );
-    }
-
     const { mutateAsync, isPending, error, isError: isUpdateError } = updateForm
 
     const handleFormUpdate = async (e: React.FormEvent<HTMLFormElement>, forDelete?: boolean) => {
@@ -56,9 +47,9 @@ export default function FormGeneral() {
                 status: 'ARCHIVED'
             }).then(() => router.replace(workspaceRoutes.allForm(workspaceId)))
         } else {
-            if (user?.id !== formData.userId) return
-            const hasNameChanged = name && name.trim().length >= 2 && name !== formData.name;
-            const hasStatusChanged = status && status !== formData.status;
+            if (user?.id !== formData?.userId) return
+            const hasNameChanged = name && name.trim().length >= 2 && name !== formData?.name;
+            const hasStatusChanged = status && status !== formData?.status;
             if (!hasNameChanged && !hasStatusChanged) {
                 return;
             }
@@ -73,9 +64,16 @@ export default function FormGeneral() {
 
     if (isLoading) {
         return (
-            <div className='w-full h-[calc(100vh-10rem)] flex items-center justify-center'>
-                <BlueSpinner />
-            </div>
+            <PageSpinner />
+        );
+    }
+
+    if (!formData || isError) {
+        return (
+            <NoData
+                title={`Form not found`}
+                description="We couldn't find this Form. It may have been deleted. If you believe this is an error, please contact support."
+            />
         );
     }
 

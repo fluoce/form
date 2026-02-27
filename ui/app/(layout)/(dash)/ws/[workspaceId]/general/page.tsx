@@ -2,7 +2,7 @@
 
 import ErrorMessage from '@/components/shared/ErrorMessage'
 import { Header } from '@/components/shared/Header'
-import { BlueSpinner } from '@/components/shared/Loader'
+import { PageSpinner } from '@/components/shared/Loader'
 import NoData from '@/components/shared/NoData'
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
@@ -84,9 +84,7 @@ export default function WorkspaceGeneral() {
 
     if (isLoading) {
         return (
-            <div className='w-full h-[calc(100vh-10rem)] flex items-center justify-center'>
-                <BlueSpinner />
-            </div>
+            <PageSpinner />
         );
     }
 

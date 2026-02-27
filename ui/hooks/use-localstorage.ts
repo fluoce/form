@@ -1,23 +1,48 @@
+'use client'
 
-export default function useLocalStorage() {
+import { useSyncExternalStore } from "react";
 
-    const getValue = (key: string) => {
-        if (typeof window === "undefined") return null;
-        return localStorage.getItem(key);
+function subscribe(callback: () => void) {
+    window.addEventListener("localstorage-update", callback);
+    window.addEventListener("storage", callback)
+    return () => {
+        window.removeEventListener("localstorage-update", callback);
+        window.removeEventListener("storage", callback)
+    };
+}
+
+function getSnapshot(key: string) {
+    if (typeof window === "undefined") return null;
+    const value = localStorage.getItem(key);
+    try {
+        return value ? JSON.parse(value) : null;
+    } catch {
+        return value;
     }
+};
 
-    const setValue = ({ key, data }: { key: string, data: any }) => {
+export default function useLocalStorage<T = any>(key: string) {
+
+    const value = useSyncExternalStore(
+        subscribe,
+        () => getSnapshot(key),
+        () => null
+    );
+
+    const setValue = (data: T) => {
         localStorage.setItem(key, JSON.stringify(data));
-    }
+        window.dispatchEvent(new Event("localstorage-update"));
+    };
 
-    const removeValue = (key: string) => {
+    const removeValue = () => {
         if (typeof window === "undefined") return null;
-        return localStorage.removeItem(key);
-    }
+        localStorage.removeItem(key);
+        window.dispatchEvent(new Event("localstorage-update"));
+    };
 
     return {
-        getValue,
+        value,
         setValue,
         removeValue
-    }
+    };
 }

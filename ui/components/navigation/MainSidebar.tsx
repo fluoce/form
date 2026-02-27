@@ -1,6 +1,6 @@
 'use client'
 
-import { SidebarGroup, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem } from '../ui/sidebar'
+import { SidebarGroup, SidebarMenu, SidebarMenuAction, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem } from '../ui/sidebar'
 import { ChevronRight, Form, House } from 'lucide-react'
 import Link from 'next/link'
 import { formRoutes, workspaceRoutes } from '@/const/route-const'
