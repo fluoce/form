@@ -22,11 +22,8 @@ export class FormController {
         @Workspace() workspace: WorkspaceType,
         @Body() data: CreateFormDto
     ) {
-        const userId = user.sub;
-        const workspaceID = workspace.id;
-        return await this.formService.createForm(userId, workspaceID, data);
+        return await this.formService.createForm(user.sub, workspace.id, data);
     }
-
 
     @UseGuards(FormGuard)
     @Patch(':formId')
@@ -35,9 +32,7 @@ export class FormController {
         @Form() form: FormType,
         @Body() data: UpdateFormDto
     ) {
-        const userId = user.sub;
-        const formId = form.id
-        return await this.formService.updateForm(userId, formId, data)
+        return await this.formService.updateForm(user.sub, form.id, data)
     }
 
     @UseGuards(FormGuard)
@@ -46,9 +41,7 @@ export class FormController {
         @User() user: UserPayload,
         @Form() form: FormType,
     ) {
-        const userId = user.sub;
-        const formId = form.id
-        return await this.formService.deleteForm(userId, formId)
+        return await this.formService.deleteForm(user.sub, form.id)
     }
 
     @UseGuards(FormGuard)
@@ -57,9 +50,7 @@ export class FormController {
         @User() user: UserPayload,
         @Form() form: FormType,
     ) {
-        const userId = user.sub;
-        const formId = form.id
-        return await this.formService.getForm(userId, formId)
+        return await this.formService.getForm(user.sub, form.id)
     }
 
     @UseGuards(WorkspaceGuard)
@@ -68,9 +59,7 @@ export class FormController {
         @User() user: UserPayload,
         @Workspace() workspace: WorkspaceType,
     ) {
-        const userId = user.sub;
-        const workspaceId = workspace.id;
-        return await this.formService.getTrashForm(userId, workspaceId)
+        return await this.formService.getTrashForm(user.sub, workspace.id)
     }
 
     @UseGuards(WorkspaceGuard)
@@ -79,9 +68,7 @@ export class FormController {
         @User() user: UserPayload,
         @Workspace() workspace: WorkspaceType,
     ) {
-        const userId = user.sub
-        const workspaceID = workspace.id;
-        return await this.formService.getForms(userId, workspaceID);
+        return await this.formService.getForms(user.sub, workspace.id);
     }
 
 }

@@ -1,23 +1,18 @@
-import CSidebar from "@/components/custom/CSidebar";
-import FormSidebar from "@/components/navigation/FormSidebar";
-import Topbar from "@/components/navigation/Topbar";
+import FormEditTopbar from "@/components/navigation/FormEditTopbar";
 
-export default function FLayout({
+export default function FormLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <>
-      <CSidebar>
-        <FormSidebar />
-      </CSidebar>
-      <div className="flex flex-col w-full">
-        <Topbar />
-        <main className="w-full flex items-center justify-center p-4">
+      <div className="flex w-full flex-col">
+        <FormEditTopbar />
+        <main className="flex w-full items-center justify-center">
           {children}
         </main>
       </div>
     </>
-  )
+  );
 }

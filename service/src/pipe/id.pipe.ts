@@ -4,9 +4,9 @@ import {
     Injectable,
 } from '@nestjs/common';
 import { UlidService } from 'src/lib/ulid/ulid.service';
-import { WorkspaceIdPrefix, WorkspaceMemberIdPrefix } from 'src/types/id.types';
+import { FormIdPrefix, FormPageIdPrefix, WorkspaceIdPrefix, WorkspaceMemberIdPrefix } from 'src/types/id.types';
 
-type IdPrefix = WorkspaceIdPrefix | WorkspaceMemberIdPrefix;
+type IdPrefix = WorkspaceIdPrefix | WorkspaceMemberIdPrefix | FormIdPrefix | FormPageIdPrefix;
 
 @Injectable()
 export class idPipe implements PipeTransform {

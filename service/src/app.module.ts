@@ -10,15 +10,19 @@ import { FormModule } from './module/form/form.module';
 import { RateLimitGuard } from './ratelimit.guard';
 import { WorkspacecoreModule } from './core/workspacecore/workspacecore.module';
 import { FormcoreModule } from './core/formcore/formcore.module';
+import { FormpagecoreModule } from './core/formpagecore/formpagecore.module';
+import { FormpageModule } from './module/formpage/formpage.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     LibModule,
     WorkspaceModule,
+    WorkspacecoreModule,
     FormModule,
     FormcoreModule,
-    WorkspacecoreModule,
+    FormpagecoreModule,
+    FormpageModule,
   ],
   controllers: [AppController],
   providers: [
@@ -30,7 +34,7 @@ import { FormcoreModule } from './core/formcore/formcore.module';
     {
       provide: APP_GUARD,
       useClass: RateLimitGuard,
-    }
+    },
   ],
 })
-export class AppModule { }
+export class AppModule {}

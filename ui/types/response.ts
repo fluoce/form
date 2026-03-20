@@ -1,31 +1,43 @@
-import { FormSlice, WorkspaceSlice } from "./slice";
+import { FormPageSlice, FormSlice, WorkspaceSlice } from "./slice";
 
 export type ResponseType<T = unknown> = {
-    statusCode?: number;
-    success?: boolean;
-    message?: string | [];
-    data?: T & { message?: string };
+  statusCode?: number;
+  success?: boolean;
+  message?: string | [];
+  data?: T & { message?: string };
 };
 
-export type RefreshResponse = ResponseType<{ refreshToken: string; accessToken: string }>;
+export type RefreshResponse = ResponseType<{
+  refreshToken: string;
+  accessToken: string;
+}>;
 
 export type WorkspaceResponse = {
-    message: string;
-    workspace: WorkspaceSlice;
+  message: string;
+  workspace: WorkspaceSlice;
 };
 
 export type WorkspacesResponse = {
-    message: string;
-    workspaces: WorkspaceSlice[];
+  message: string;
+  workspaces: WorkspaceSlice[];
 };
 
-
 export type FormResponse = {
-    message: string;
-    form: FormSlice
+  message: string;
+  form: FormSlice;
 };
 
 export type FormsResponse = {
-    message: string;
-    forms: FormSlice[]
+  message: string;
+  forms: FormSlice[];
+};
+
+export type FormPageResponse = {
+  message: string;
+  formPage: FormPageSlice;
+};
+
+export type FormPagesResponse = {
+  message: string;
+  formPages: FormPageSlice[];
 };

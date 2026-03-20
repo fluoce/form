@@ -1,24 +1,32 @@
-
 export const meQueryKey = {
-    me: ['me']
-}
+  me: ["me"],
+};
 
 export const workspaceQueryKey = {
-    workspaces: ['workspaces'],
-    workspace: (workspaceId: string) => {
-        return ['workspace', `${workspaceId}`]
-    },
-    trashWorkspaces: ['workspace', 'trash',]
-}
+  workspaces: ["workspaces"],
+  workspace: (workspaceId: string) => {
+    return ["workspace", `${workspaceId}`];
+  },
+  trashWorkspaces: ["workspace", "trash"],
+};
 
 export const formQueryKey = {
-    forms: (workspaceId: string) => {
-        return ['forms', workspaceId]
-    },
-    form: (formId: string) => {
-        return ['form', formId]
-    },
-    trashForms: (workspaceId: string) => {
-        return ['forms', 'trash', workspaceId]
-    },
-}
+  forms: (workspaceId: string) => {
+    return ["forms", workspaceId];
+  },
+  form: (formId: string) => {
+    return ["form", formId];
+  },
+  trashForms: (workspaceId: string) => {
+    return ["forms", "trash", workspaceId];
+  },
+};
+
+export const formPageQueryKey = {
+  formPages: (formId: string) => {
+    return ["formPages", formId];
+  },
+  formPage: (formId: string, formPageId: string) => {
+    return ["formPage", formId, formPageId];
+  },
+};

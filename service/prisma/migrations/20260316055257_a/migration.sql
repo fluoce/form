@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "FormField" ALTER COLUMN "position" SET DATA TYPE DECIMAL(65,30);
+
+-- AlterTable
+ALTER TABLE "FormPage" ALTER COLUMN "position" SET DATA TYPE DECIMAL(65,30);

@@ -5,7 +5,7 @@ import workspaceSlice from "./slice/workspace-slice";
 export const store = configureStore({
   reducer: {
     user: userSlice,
-    workspace: workspaceSlice
+    workspace: workspaceSlice,
   },
 });
 

@@ -259,8 +259,8 @@ function SidebarTrigger({
   const { toggleSidebar, open, isMobile } = useSidebar();
 
   useKeyPress("s", () => {
-    toggleSidebar()
-  })
+    toggleSidebar();
+  });
 
   return (
     <Button
@@ -300,7 +300,7 @@ function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
         "[[data-side=left][data-collapsible=offExamples]_&]:-right-2",
         "[[data-side=right][data-collapsible=offExamples]_&]:-left-2",
         className,
-        'cursor-pointer'
+        "cursor-pointer",
       )}
       {...props}
     />
@@ -465,7 +465,7 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
     <li
       data-slot="sidebar-menu-item"
       data-sidebar="menu-item"
-      className={cn("group/menu-item relative text-muted-foreground", className)}
+      className={cn("group/menu-item relative", className)}
       {...props}
     />
   );
@@ -483,10 +483,9 @@ const sidebarMenuButtonVariants = cva(
       size: {
         default: "h-8 text-sm",
         sm: "h-7 text-xs",
-        md: 'h-9',
+        md: "h-9",
         lg: "h-12 text-sm group-data-[collapsible=icon]:p-0!",
       },
-
     },
     defaultVariants: {
       variant: "default",
@@ -567,9 +566,9 @@ function SidebarMenuAction({
       className={cn(
         "text-sidebar-foreground ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground peer-hover/menu-button:text-sidebar-accent-foreground absolute top-1.5 right-1 flex aspect-square w-5 items-center justify-center rounded-md p-0 outline-hidden transition-transform group-data-[collapsible=icon]:hidden peer-data-[size=default]/menu-button:top-1.5 peer-data-[size=lg]/menu-button:top-2.5 peer-data-[size=sm]/menu-button:top-1 after:absolute after:-inset-2 focus-visible:ring-2 md:after:hidden [&>svg]:size-4 [&>svg]:shrink-0",
         showOnHover &&
-        "peer-data-active/menu-button:text-sidebar-accent-foreground group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-open:opacity-100 md:opacity-0",
+          "peer-data-active/menu-button:text-sidebar-accent-foreground group-focus-within/menu-item:opacity-100 group-hover/menu-item:opacity-100 data-open:opacity-100 md:opacity-0",
         className,
-        "cursor-pointer text-muted-foreground hover:bg-primary/50"
+        "text-muted-foreground hover:bg-primary/50 cursor-pointer",
       )}
       {...props}
     />
@@ -681,7 +680,7 @@ function SidebarMenuSubButton({
       className={cn(
         "text-sidebar-foreground ring-sidebar-ring hover:bg-sidebar-accent hover:text-sidebar-accent-foreground active:bg-sidebar-accent active:text-sidebar-accent-foreground [&>svg]:text-sidebar-accent-foreground data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 outline-hidden group-data-[collapsible=icon]:hidden focus-visible:ring-2 disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[size=md]:text-sm data-[size=sm]:text-xs [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0",
         className,
-        'cursor-pointer h-8 truncate text-muted-foreground'
+        "text-muted-foreground h-8 cursor-pointer truncate",
       )}
       {...props}
     />

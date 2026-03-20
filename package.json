@@ -11,10 +11,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@reduxjs/toolkit": "^2.11.2",
-    "concurrently": "^9.2.1",
-    "motion": "^12.29.2",
-    "nanoid": "^5.1.6",
-    "react-redux": "^9.2.0"
+    "concurrently": "^9.2.1"
   }
 }

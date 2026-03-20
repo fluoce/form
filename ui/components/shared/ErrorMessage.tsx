@@ -1,8 +1,7 @@
-
 const ErrorMessage = ({ error }: { error: string }) => {
-    return (
-        error ? <span className="text-xs text-red-500 font-medium break-all">{error}</span> : null
-    )
-}
+  return error ? (
+    <span className="text-xs font-medium break-all text-red-500">{error}</span>
+  ) : null;
+};
 
-export default ErrorMessage
+export default ErrorMessage;

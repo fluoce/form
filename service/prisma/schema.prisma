@@ -9,7 +9,6 @@ datasource db {
 
 
 
-
 // workspace
 
 model Workspace {
@@ -81,7 +80,6 @@ enum MemberStatus {
 
 
 
-
 // form
 
 model Form {
@@ -89,7 +87,7 @@ model Form {
   workspaceId     String
   userId          String
   name            String
-  slug            String                   @unique
+  slug            String                   
   status          FormStatus               @default(DRAFT)
   //TODO: other configs later
 
@@ -97,8 +95,11 @@ model Form {
   updatedAt       DateTime                 @updatedAt
 
   workspace       Workspace                @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  formFields      FormField[]
+  formPage        FormPage[]
+  formField       FormField[]
 
+  @@unique([workspaceId, slug])
+  @@index([workspaceId, status])
   @@index([workspaceId, userId])
 }
 
@@ -107,26 +108,36 @@ enum FormStatus {
   PUBLISHED
   ARCHIVED
 }
+   
+model FormPage {
+  id              String                   @id
+  formId          String
+  name            String?
+  position        String                  
 
-model FormField {
-  id              String                    @id
-  formId          String                    
-  type            FieldType
+  createdAt       DateTime                 @default(now())
+  updatedAt       DateTime                 @updatedAt                   
+ 
+  form            Form                     @relation(fields: [formId], references: [id], onDelete: Cascade)
+  formField       FormField[]
 
-  form            Form                      @relation(fields: [formId], references: [id], onDelete: Cascade)
+  @@unique([formId, position])
+  @@index([formId])
 }
 
-enum FieldType {
-  SHORT_TEXT
-  LONG_TEXT
-  NUMBER
-  DATE
-  YES_NO
-  CHOICE
-  EMAIL
-  
-  PHONE
+model FormField {
+  id              String                   @id
+  formId          String
+  formPageId      String                   
+  config          Json
+  position        String                   
 
-  URL
-  FILE_UPLOAD
+  createdAt       DateTime                 @default(now())
+  updatedAt       DateTime                 @updatedAt
+
+  formPage        FormPage                 @relation(fields: [formPageId], references: [id], onDelete: Cascade)
+  form            Form                     @relation(fields: [formId], references: [id], onDelete: Cascade)
+  
+  @@unique([formPageId, position])
+  @@index([formId])
 }

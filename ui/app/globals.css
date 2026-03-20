@@ -46,7 +46,7 @@
 
 #nprogress .bar {
   background: #0a66ff !important;
-  height: 3px !important;
+  height: 2px !important;
 }
 
 #nprogress .peg {
@@ -152,7 +152,7 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
+  --background: oklch(0.24 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
   --card-foreground: oklch(0.985 0 0);
@@ -175,7 +175,7 @@
   --chart-3: oklch(0.546 0.245 262.881);
   --chart-4: oklch(0.488 0.243 264.376);
   --chart-5: oklch(0.424 0.199 265.638);
-  --sidebar: oklch(0.145 0 0);
+  --sidebar: oklch(0.24 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.623 0.214 259.815);
   --sidebar-primary-foreground: oklch(0.97 0.014 254.604);

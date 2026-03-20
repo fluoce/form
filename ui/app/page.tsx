@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { workspaceRoutes } from "@/const/route-const";
@@ -9,7 +9,7 @@ export default function Page() {
   return (
     <div className="flex h-screen w-full items-center justify-center gap-2 p-4">
       <Link href={workspaceRoutes.create}>
-        <Button >
+        <Button>
           <Square /> Form Fluoce
         </Button>
       </Link>

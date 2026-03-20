@@ -12,47 +12,45 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpLeft } from "lucide-react";
 
 export const InitProvider = ({ children }: { children: ReactNode }) => {
+  const { me } = useMe();
 
-    const { me } = useMe()
+  const { data, isLoading, isError } = me;
 
-    const { data, isLoading, isError } = me
+  const dispatch = useDispatch();
 
-    const dispatch = useDispatch()
+  const { user } = useAppSelector((state) => state.user);
 
-    const { user } = useAppSelector(state => state.user)
+  useEffect(() => {
+    if (isLoading || user) return;
+    dispatch(setUser(data?.data));
+  }, [isLoading, data]);
 
-    useEffect(() => {
-        if (isLoading || user) return;
-        dispatch(setUser(data?.data))
-    }, [isLoading, data]);
+  if (isError) {
+    return (
+      <div className="relative flex h-screen w-full items-center justify-center">
+        <NoData
+          description={
+            "We couldn't load your profile at this time. Please check your internet connection, refresh the page, or try again later."
+          }
+          actions={
+            <Link href={"/"}>
+              <Button>
+                <ArrowUpLeft /> Go Back
+              </Button>
+            </Link>
+          }
+        />
+      </div>
+    );
+  }
 
-    if (isError) {
-        return (
-            <div className="relative h-screen flex items-center w-full justify-center">
-                <NoData
-                    description={
-                        "We couldn't load your profile at this time. Please check your internet connection, refresh the page, or try again later."
-                    }
-                    actions={
-                        <Link href={"/"}>
-                            <Button>
-                                <ArrowUpLeft />  Go Back
-                            </Button>
-                        </Link>
-                    }
-                />
-            </div>
-        );
-    }
+  if (isLoading) {
+    return (
+      <div className="relative flex h-screen w-full items-center justify-center">
+        <BlueSpinner />
+      </div>
+    );
+  }
 
-
-    if (isLoading) {
-        return (
-            <div className="relative h-screen flex items-center w-full justify-center">
-                <BlueSpinner />
-            </div>
-        );
-    }
-
-    return children
+  return children;
 };

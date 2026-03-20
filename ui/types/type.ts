@@ -1,18 +1,24 @@
-import { WorkspaceStatus, FormStatus } from "./slice"
+import { WorkspaceStatus, FormStatus } from "./slice";
 
-export type WorkspaceSettingTab = "general" | "member" | "billing" | "domain" | "integration" | 'notification'
+export type WorkspaceSettingTab =
+  | "general"
+  | "member"
+  | "billing"
+  | "domain"
+  | "integration"
+  | "notification";
 
 export type WorkspaceUpdateInputType = {
-    workspaceId: string,
-    name?: string,
-    status?: WorkspaceStatus,
-}
+  workspaceId: string;
+  name?: string;
+  status?: WorkspaceStatus;
+};
 
-export type formSettingTab = "general"
+export type formSettingTab = "general" | "edit" | "result" | "share";
 
 export type formUpdateInputType = {
-    formId: string
-    workspaceId: string,
-    name?: string,
-    status?: FormStatus,
-}
+  formId: string;
+  workspaceId: string;
+  name?: string;
+  status?: FormStatus;
+};

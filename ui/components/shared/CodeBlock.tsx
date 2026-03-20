@@ -1,8 +1,5 @@
-
 const CodeBlock = () => {
-    return (
-        <div>CodeBlock</div>
-    )
-}
+  return <div>CodeBlock</div>;
+};
 
-export default CodeBlock
+export default CodeBlock;

@@ -1,21 +1,21 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface WorkspaceState {
-    selectedWorkspaceId?: string;
+  selectedWorkspaceId?: string;
 }
 
 const initialState: WorkspaceState = {
-    selectedWorkspaceId: undefined,
+  selectedWorkspaceId: undefined,
 };
 
 export const workspaceSlice = createSlice({
-    name: "workspace",
-    initialState,
-    reducers: {
-        setWorkspaceId: (state, action: PayloadAction<string | undefined>) => {
-            state.selectedWorkspaceId = action.payload;
-        },
+  name: "workspace",
+  initialState,
+  reducers: {
+    setWorkspaceId: (state, action: PayloadAction<string | undefined>) => {
+      state.selectedWorkspaceId = action.payload;
     },
+  },
 });
 
 export const { setWorkspaceId } = workspaceSlice.actions;

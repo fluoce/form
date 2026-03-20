@@ -5,10 +5,10 @@ import { ResponseType } from "@/types/response";
 import { UserSlice } from "@/types/slice";
 
 export async function Me() {
-    return await useTanstack({
-        url: meUrlPath.base,
-        method: "GET",
-        auth: true,
-        path: workspaceRoutes.create
-    }) as ResponseType<UserSlice>;
+  return (await useTanstack({
+    url: meUrlPath.base,
+    method: "GET",
+    auth: true,
+    path: workspaceRoutes.create,
+  })) as ResponseType<UserSlice>;
 }

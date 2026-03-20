@@ -36,9 +36,7 @@ export default function RootLayout({
     >
       <body className="antialiased" suppressHydrationWarning>
         <Suspense fallback={null}>
-          <Providers>
-            {children}
-          </Providers>
+          <Providers>{children}</Providers>
         </Suspense>
       </body>
     </html>
