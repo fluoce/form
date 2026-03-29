@@ -1,6 +1,5 @@
-import { Decimal } from '@prisma/client/runtime/client';
 import { Transform } from 'class-transformer';
-import { IsNumber, IsOptional, IsString, MaxLength } from 'class-validator';
+import { IsOptional, IsString, MaxLength } from 'class-validator';
 
 const formPageMessage = 'Form page name must be at most 30 characters';
 
@@ -24,15 +23,19 @@ export class UpdateFormPageDto {
   name?: string;
 
   @IsOptional()
-  @IsNumber()
-  position?: number;
+  @IsString()
+  prevPageId?: string | null;
+
+  @IsOptional()
+  @IsString()
+  nextPageId?: string | null;
 }
 
 export interface FormPageType {
   id: string;
   formId: string;
   name?: string | null;
-  position: Decimal;
+  position: string;
   createdAt: Date;
   updatedAt: Date;
 }

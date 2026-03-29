@@ -8,8 +8,14 @@ import { CloudflareService } from './cloudflare/cloudflare.service';
 
 @Global()
 @Module({
-    imports: [JwtModule, RedisModule, PrismaModule],
-    providers: [UlidService, SlugService, CloudflareService],
-    exports: [UlidService, JwtModule, SlugService, PrismaModule, CloudflareService]
+  imports: [JwtModule, RedisModule, PrismaModule],
+  providers: [UlidService, SlugService, CloudflareService],
+  exports: [
+    UlidService,
+    JwtModule,
+    SlugService,
+    PrismaModule,
+    CloudflareService,
+  ],
 })
-export class LibModule { }
+export class LibModule {}

@@ -27,7 +27,7 @@ const FormCommandGroup = ({
         <CommandItem
           key={f.id}
           onSelect={() => {
-            router.push(formRoutes.formDash(f.workspaceId, f.id));
+            router.push(formRoutes.setting(f.workspaceId, f.id, "result"));
             setShowCommand(false);
           }}
         >

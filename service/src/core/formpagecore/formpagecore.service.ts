@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { createFractionalIndex } from 'src/func/fractional-indexing';
 import { PrismaService } from 'src/lib/prisma/prisma.service';
 import { UlidService } from 'src/lib/ulid/ulid.service';
 import {
@@ -24,7 +25,8 @@ export class FormpagecoreService {
         orderBy: { position: 'desc' },
         select: { position: true },
       });
-      const nextPosition = lastPage?.position ? lastPage.position.plus(1) : 1;
+      const prevPosition = lastPage?.position ?? null;
+      const nextPosition = createFractionalIndex(prevPosition, null);
       return await prisma.formPage.create({
         data: {
           id: this.ulidService.generateFormPageId('fp'),
@@ -41,7 +43,7 @@ export class FormpagecoreService {
     formPage: Pick<FormPageType, 'id' | 'position'>,
     data: UpdateFormPageDto,
   ): Promise<FormPageType | null> {
-    if (data?.name && !data?.position) {
+    if (data?.name) {
       return await this.prisma.formPage.update({
         where: {
           id: formPage.id,
@@ -53,22 +55,46 @@ export class FormpagecoreService {
       });
     }
 
-    if (data?.position && !formPage.position.equals(data.position)) {
-      const newPosition = formPage.position.plus(data.position).dividedBy(2);
+    const [prev, next] = await Promise.all([
+      data.prevPageId
+        ? this.prisma.formPage.findUnique({
+            where: {
+              id: data.prevPageId,
+              formId,
+            },
+            select: {
+              position: true,
+            },
+          })
+        : Promise.resolve(null),
 
-      return await this.prisma.formPage.update({
-        where: {
-          id: formPage.id,
-          formId,
-        },
-        data: {
-          position: newPosition,
-          name: data?.name ?? undefined,
-        },
-      });
-    }
+      data.nextPageId
+        ? this.prisma.formPage.findUnique({
+            where: {
+              id: data.nextPageId,
+              formId,
+            },
+            select: {
+              position: true,
+            },
+          })
+        : Promise.resolve(null),
+    ]);
 
-    return null;
+    const newPosition = createFractionalIndex(
+      prev?.position ?? null,
+      next?.position ?? null,
+    );
+
+    return await this.prisma.formPage.update({
+      where: {
+        formId,
+        id: formPage.id,
+      },
+      data: {
+        position: newPosition,
+      },
+    });
   }
 
   async deleteFormPage(
@@ -76,28 +102,12 @@ export class FormpagecoreService {
     formPageId: string,
   ): Promise<FormPageType | null> {
     return await this.prisma.$transaction(async (tx) => {
-      const formPage = await tx.formPage.delete({
+      return await tx.formPage.delete({
         where: {
           id: formPageId,
           formId,
         },
       });
-
-      await tx.formPage.updateMany({
-        where: {
-          formId,
-          position: {
-            gt: formPage.position,
-          },
-        },
-        data: {
-          position: {
-            decrement: 1,
-          },
-        },
-      });
-
-      return formPage;
     });
   }
 

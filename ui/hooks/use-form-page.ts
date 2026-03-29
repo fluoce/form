@@ -9,6 +9,7 @@ import {
 } from "@/actions/query/form/form-page-query";
 import { formPageQueryKey } from "@/const/query-keys";
 import { FormPagesResponse, ResponseType } from "@/types/response";
+import { formPageUpdateInputType } from "@/types/type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export default function useFormPage() {
@@ -59,18 +60,15 @@ export default function useFormPage() {
       formId,
       formPageId,
       name,
-      position,
-    }: {
-      formId: string;
-      formPageId: string;
-      name?: string;
-      position?: number;
-    }) =>
+      prevPageId,
+      nextPageId,
+    }: formPageUpdateInputType) =>
       updateFormPageMutation({
         formId,
         formPageId,
         name,
-        position,
+        nextPageId,
+        prevPageId,
       }),
     onSuccess: (data, variables) => {
       const updatedFormPage = data?.data?.formPage;

@@ -12,6 +12,8 @@ import { WorkspacecoreModule } from './core/workspacecore/workspacecore.module';
 import { FormcoreModule } from './core/formcore/formcore.module';
 import { FormpagecoreModule } from './core/formpagecore/formpagecore.module';
 import { FormpageModule } from './module/formpage/formpage.module';
+import { FormfieldcoreModule } from './core/formfieldcore/formfieldcore.module';
+import { FormfieldModule } from './module/formfield/formfield.module';
 
 @Module({
   imports: [
@@ -23,6 +25,8 @@ import { FormpageModule } from './module/formpage/formpage.module';
     FormcoreModule,
     FormpagecoreModule,
     FormpageModule,
+    FormfieldcoreModule,
+    FormfieldModule,
   ],
   controllers: [AppController],
   providers: [

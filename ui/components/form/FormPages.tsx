@@ -12,6 +12,9 @@ import { isSortable } from "@dnd-kit/react/sortable";
 import { useDragDropManager } from "@dnd-kit/react";
 import { useEffect } from "react";
 import { FormPageSlice } from "@/types/slice";
+import NoData from "../shared/NoData";
+import { NotepadText, Plus } from "lucide-react";
+import { Button } from "../ui/button";
 
 export default function FormPages({ formId }: { formId: string }) {
   const isMobile = useSize(860);
@@ -21,8 +24,6 @@ export default function FormPages({ formId }: { formId: string }) {
   const { data, isLoading, error, isError } = formPages(formId);
 
   const formPagesData = data?.data?.formPages;
-
-  console.log(formPagesData);
 
   const manager = useDragDropManager();
 
@@ -36,10 +37,19 @@ export default function FormPages({ formId }: { formId: string }) {
       if (initialIndex === index) return;
       const movedPage = formPagesData?.find((page) => page.id === source.id);
       if (!movedPage) return;
+      const newPages = [...(formPagesData ?? [])];
+      const oldIdx = newPages.findIndex((p) => p.id === movedPage.id);
+      if (oldIdx === -1) return;
+      newPages.splice(oldIdx, 1);
+      newPages.splice(index, 0, movedPage);
+      const prevPageId = index > 0 ? newPages[index - 1].id : undefined;
+      const nextPageId =
+        index < newPages.length - 1 ? newPages[index + 1].id : undefined;
       updateFormPage.mutate({
         formId,
         formPageId: movedPage.id,
-        position: index + 1,
+        prevPageId,
+        nextPageId,
       });
     });
 
@@ -57,24 +67,46 @@ export default function FormPages({ formId }: { formId: string }) {
   }
 
   return (
-    <div
-      className={cn(
-        "custom-scroll flex w-full items-center gap-2 overflow-auto p-1 pr-12",
-        isMobile && "px-11",
+    <>
+      <div
+        className={cn(
+          "custom-scroll flex w-full items-center gap-2 overflow-auto p-1 pr-12",
+          isMobile && "px-11",
+        )}
+      >
+        {isError && (
+          <ErrorMessage
+            error={error?.message || "Failed to load Form page !"}
+          />
+        )}
+        <CreateFormPage formId={formId} />
+        {formPagesData?.map((page, idx) => (
+          <SortablePages key={page.id} index={idx} page={page} />
+        ))}
+      </div>
+      {formPagesData && formPagesData.length == 0 && (
+        <div className="w-full">
+          <NoData
+            icon={<NotepadText />}
+            title="Create Your Form's First Page"
+            description="Start by adding a page to your form. Each page can contain multiple questions or fields."
+            actions={
+              <CreateFormPage
+                children={
+                  <Button>
+                    <Plus /> Page
+                  </Button>
+                }
+                formId={formId}
+              />
+            }
+          />
+        </div>
       )}
-    >
-      {isError && (
-        <ErrorMessage error={error?.message || "Failed to load Form page !"} />
-      )}
-      <CreateFormPage formId={formId} />
-      {formPagesData?.map((page, idx) => (
-        <SortablePages key={page.id} index={idx} page={page} />
-      ))}
-    </div>
+    </>
   );
 }
 
-// SortablePages stays the same
 const SortablePages = ({
   index,
   page,

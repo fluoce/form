@@ -102,7 +102,7 @@ export default function UpdateFormPage({
               <Button
                 disabled={isPending || dIsPending}
                 onClick={async () => {
-                  if (pageName == formPage.name) {
+                  if (pageName == formPage.name || !pageName) {
                     setOpen(false);
                     return;
                   }

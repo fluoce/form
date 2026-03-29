@@ -16,7 +16,6 @@ export const workspaceUrlPath = {
 };
 
 export const formUrlPath = {
-  base: `/form`,
   createMutation: (workspaceId: string) => `/form/${workspaceId}`,
   mutation: (formId: string) => `/form/${formId}`,
   query: (formId: string) => `/form/${formId}`,
@@ -25,11 +24,10 @@ export const formUrlPath = {
 };
 
 export const formPageUrlPath = {
-  base: `/formpage`,
-  createMutation: (formId: string) => `/formpage/${formId}`,
+  createMutation: (formId: string) => `/form/${formId}/formpage`,
   mutation: (formId: string, formPageId: string) =>
-    `/formpage/${formId}/${formPageId}`,
+    `/form/${formId}/formpage/${formPageId}`,
   query: (formId: string, formPageId: string) =>
-    `/formpage/${formId}/${formPageId}`,
-  queryAll: (formId: string) => `/formpage/${formId}`,
+    `/form/${formId}/formpage/${formPageId}`,
+  queryAll: (formId: string) => `/form/${formId}/formpage`,
 };

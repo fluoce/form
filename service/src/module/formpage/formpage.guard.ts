@@ -1,38 +1,45 @@
 import {
-  BadRequestException,
   CanActivate,
   ExecutionContext,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import type { Request } from 'express';
-import { FormpagecoreService } from 'src/core/formpagecore/formpagecore.service';
 import { validateId } from 'src/func/validate-id';
+import { PrismaService } from 'src/lib/prisma/prisma.service';
 import { UlidService } from 'src/lib/ulid/ulid.service';
-import { FormType } from 'src/types/form.types';
+import { UserPayload } from 'src/types/payload.types';
 
 @Injectable()
 export class FormpageGuard implements CanActivate {
   constructor(
     private readonly ulidService: UlidService,
-    private readonly formpagecoreService: FormpagecoreService,
+    private readonly prisma: PrismaService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req = context.switchToHttp().getRequest<Request>();
-    const form = (req as any).form as FormType;
-    const { formPageId } = req.params as { formPageId: string };
+    const user = (req as any).user as UserPayload;
+    const userId = user.sub;
 
-    if (!formPageId) {
-      throw new BadRequestException('Form page Id not provided');
-    }
+    const { formId, formPageId } = req.params as {
+      workspaceId: string;
+      formId: string;
+      formPageId: string;
+    };
 
+    validateId(formId, 'form', (ulid) => this.ulidService.isValidUlid(ulid));
     validateId(formPageId, 'fp', (ulid) => this.ulidService.isValidUlid(ulid));
 
-    const formPage = await this.formpagecoreService.getFormPage(
-      form.id,
-      formPageId,
-    );
+    const formPage = await this.prisma.formPage.findFirst({
+      where: {
+        id: formPageId,
+        form: {
+          id: formId,
+          userId,
+        },
+      },
+    });
 
     if (!formPage) {
       throw new NotFoundException('form page not found');

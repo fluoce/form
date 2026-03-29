@@ -19,14 +19,14 @@ export async function getWorkspaceQuery(workspaceId: string) {
   return (await useTanstack({
     url: workspaceUrlPath.query(workspaceId),
     method: "GET",
-    path: workspaceRoutes.setting(workspaceId, "general"),
+    path: workspaceRoutes.settings(workspaceId),
   })) as ResponseType<WorkspaceResponse>;
 }
 
 export async function getTrashWorkspacesQuery() {
-  return await useTanstack({
+  return (await useTanstack({
     url: workspaceUrlPath.queryTrash,
     method: "GET",
     path: workspaceRoutes.create, // TODO: add better path for workspace trash
-  });
+  })) as ResponseType<WorkspacesResponse>;
 }

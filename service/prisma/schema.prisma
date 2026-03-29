@@ -46,6 +46,10 @@ enum WorkspacePlan {
   ENTERPRISE
 }
 
+
+
+// workspace member
+
 model WorkspaceMember {
   id              String                   @id
   workspaceId     String
@@ -108,6 +112,10 @@ enum FormStatus {
   PUBLISHED
   ARCHIVED
 }
+
+
+
+// form page
    
 model FormPage {
   id              String                   @id
@@ -124,6 +132,10 @@ model FormPage {
   @@unique([formId, position])
   @@index([formId])
 }
+
+
+
+// form field
 
 model FormField {
   id              String                   @id

@@ -18,11 +18,11 @@ import { FormPage } from 'src/decorator/formpage.decorator';
 import type { FormPageType } from 'src/types/formpage.types';
 import { FormPageIdPipe } from 'src/pipe/formpage.id.pipe';
 
-@UseGuards(FormGuard)
-@Controller('formpage/:formId')
+@Controller('form/:formId/formpage')
 export class FormpageController {
   constructor(private readonly formpageService: FormpageService) {}
 
+  @UseGuards(FormGuard)
   @Post()
   async createFormPage(
     @Form() form: FormType,
@@ -34,29 +34,38 @@ export class FormpageController {
   @UseGuards(FormpageGuard)
   @Patch(':formPageId')
   async updateFormPage(
-    @Form() form: FormType,
     @FormPage() formPage: FormPageType,
     @Body() data: UpdateFormPageDto,
   ) {
-    return await this.formpageService.updateFormPage(form.id, formPage, data);
+    return await this.formpageService.updateFormPage(
+      formPage.formId,
+      formPage,
+      data,
+    );
   }
 
+  @UseGuards(FormpageGuard)
   @Delete(':formPageId')
   async deleteFormPage(
     @Param('formPageId', FormPageIdPipe) formPageId: string,
-    @Form() form: FormType,
+    @FormPage() formPage: FormPageType,
   ) {
-    return await this.formpageService.deleteFormPage(form.id, formPageId);
+    return await this.formpageService.deleteFormPage(
+      formPage.formId,
+      formPageId,
+    );
   }
 
+  @UseGuards(FormpageGuard)
   @Get(':formPageId')
   async getFormPage(
     @Param('formPageId', FormPageIdPipe) formPageId: string,
-    @Form() form: FormType,
+    @FormPage() formPage: FormPageType,
   ) {
-    return await this.formpageService.getFormPage(form.id, formPageId);
+    return await this.formpageService.getFormPage(formPage.formId, formPageId);
   }
 
+  @UseGuards(FormGuard)
   @Get()
   async getFormPages(@Form() form: FormType) {
     return await this.formpageService.getFormPages(form.id);

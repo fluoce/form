@@ -1,6 +1,7 @@
 import { formPageUrlPath } from "@/const/url-path";
 import { useTanstack } from "@/hooks/use-tanstack";
 import { FormPageResponse, ResponseType } from "@/types/response";
+import { formPageUpdateInputType } from "@/types/type";
 
 export async function createFormPageMutation({
   formId,
@@ -22,19 +23,16 @@ export async function updateFormPageMutation({
   formId,
   formPageId,
   name,
-  position,
-}: {
-  formId: string;
-  formPageId: string;
-  name?: string;
-  position?: number;
-}) {
+  nextPageId,
+  prevPageId,
+}: formPageUpdateInputType) {
   return (await useTanstack({
     url: formPageUrlPath.mutation(formId, formPageId),
     method: "PATCH",
     body: {
       name,
-      position,
+      nextPageId,
+      prevPageId,
     },
   })) as ResponseType<FormPageResponse>;
 }

@@ -196,7 +196,7 @@ export default function FormGeneral() {
                   variant="destructive"
                   onClick={(e: any) => handleFormUpdate(e, true)}
                 >
-                  {isPending && <Spinner />} Delete
+                  {isPending || (isFetching && <Spinner />)} Delete
                 </Button>
               </AlertDialogFooter>
             </AlertDialogContent>

@@ -27,7 +27,7 @@ export async function updateWorkspaceMutation({
       name,
       status,
     },
-    path: workspaceRoutes.setting(workspaceId, "general"),
+    path: workspaceRoutes.settings(workspaceId),
   })) as ResponseType<WorkspaceResponse>;
 }
 
@@ -39,6 +39,6 @@ export async function deleteWorkspaceMutation({
   return (await useTanstack({
     url: workspaceUrlPath.mutation(workspaceId),
     method: "DELETE",
-    path: workspaceRoutes.setting(workspaceId, "general"), // TODO: add better path for workspace trash
+    path: workspaceRoutes.settings(workspaceId), // TODO: add better path for workspace trash
   })) as ResponseType<WorkspaceResponse>;
 }

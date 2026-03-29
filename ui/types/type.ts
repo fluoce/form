@@ -1,13 +1,5 @@
 import { WorkspaceStatus, FormStatus } from "./slice";
 
-export type WorkspaceSettingTab =
-  | "general"
-  | "member"
-  | "billing"
-  | "domain"
-  | "integration"
-  | "notification";
-
 export type WorkspaceUpdateInputType = {
   workspaceId: string;
   name?: string;
@@ -21,4 +13,12 @@ export type formUpdateInputType = {
   workspaceId: string;
   name?: string;
   status?: FormStatus;
+};
+
+export type formPageUpdateInputType = {
+  formId: string;
+  formPageId: string;
+  name?: string;
+  prevPageId?: string | undefined;
+  nextPageId?: string | undefined;
 };

@@ -1,4 +1,4 @@
-import { formSettingTab, WorkspaceSettingTab } from "@/types/type";
+import { formSettingTab } from "@/types/type";
 
 const base = "/dash";
 
@@ -14,8 +14,8 @@ export const workspaceRoutes = {
   allForm: (workspaceId: string) => {
     return `${base}/${workspaceId}/forms`;
   },
-  setting: (workspaceId: string, tab: WorkspaceSettingTab) => {
-    return `${workspaceBase}/${workspaceId}/${tab}`;
+  settings: (workspaceId: string) => {
+    return `${base}/${workspaceId}/settings`;
   },
 };
 
@@ -26,6 +26,19 @@ const formBase = "/form";
 export const formRoutes = {
   setting: (workspaceId: string, formId: string, tab: formSettingTab) => {
     return `${formBase}/${workspaceId}/${formId}/${tab}`;
+  },
+};
+
+// trash routes
+
+const trashBase = "/trash";
+
+export const trashRoutes = {
+  forms: (workspaceId: string) => {
+    return `${workspaceRoutes.dash(workspaceId)}${trashBase}/forms`;
+  },
+  workspaces: (workspaceId: string) => {
+    return `${workspaceRoutes.dash(workspaceId)}${trashBase}/workspaces`;
   },
 };
 

@@ -27,7 +27,7 @@ const WorkspaceCommandGroup = ({
         <CommandItem
           key={w.id}
           onSelect={() => {
-            router.push(workspaceRoutes.setting(w.id, "general"));
+            router.push(workspaceRoutes.settings(w.id));
             setShowCommand(false);
           }}
         >

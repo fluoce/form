@@ -41,23 +41,21 @@ export class FormpageService {
     if (!data || Object.keys(data).length === 0) {
       throw new BadRequestException('Invalid data for updating form page');
     }
-    if (data.position && data.position < 1) {
-      throw new BadRequestException('Position must be at least 1');
-    }
-    const totalFormPageCount =
-      await this.formpagecoreService.totalFormPageCount(formId);
-    if (totalFormPageCount && data.position) {
-      if (data.position > totalFormPageCount.valueOf()) {
+
+    if (data.nextPageId && data.prevPageId) {
+      if (data.prevPageId === data.nextPageId) {
         throw new BadRequestException(
-          `Position cannot exceed ${totalFormPageCount}`,
+          'prevPageId and nextPageId cannot be the same value.',
         );
       }
     }
+
     const updatedFormPage = await this.formpagecoreService.updateFormPage(
       formId,
       formPage,
       data,
     );
+
     if (!updatedFormPage) {
       throw new ServiceUnavailableException('Unable to update form page');
     }

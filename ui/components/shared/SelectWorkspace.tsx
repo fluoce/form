@@ -62,25 +62,10 @@ const SelectWorkspace = () => {
             <DropdownMenuGroup>
               <DropdownMenuLabel className="text-muted-foreground flex justify-between gap-2 text-sm">
                 {selectedWorkspace.name}
-                <PlanBadge plan={selectedWorkspace.plan} />
+                {/* <PlanBadge plan={selectedWorkspace.plan} />  TODO: add plan badge later*/}
               </DropdownMenuLabel>
               <div className="flex w-full items-center gap-1 px-1">
-                {/* <Link href={workspaceRoutes.setting(selectedWorkspace.id, 'billing')}>
-                                    <Button
-                                        variant='secondary'
-                                        size='sm'
-                                        className="text-muted-foreground"
-                                    >
-                                        <CreditCard />
-                                        Billing
-                                    </Button>
-                                </Link> */}
-                <Link
-                  href={workspaceRoutes.setting(
-                    selectedWorkspace.id,
-                    "general",
-                  )}
-                >
+                <Link href={workspaceRoutes.settings(selectedWorkspace.id)}>
                   <Button
                     variant="secondary"
                     size="sm"
@@ -107,7 +92,7 @@ const SelectWorkspace = () => {
                   <Square className="text-primary" />
                   {w.name}
                   <DropdownMenuShortcut>
-                    <PlanBadge plan={w.plan} />
+                    {/* <PlanBadge plan={w.plan} /> */}
                   </DropdownMenuShortcut>
                 </DropdownMenuItem>
               </Link>

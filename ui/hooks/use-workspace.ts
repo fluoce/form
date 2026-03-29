@@ -40,6 +40,9 @@ export default function useWorkspace() {
       queryClient.invalidateQueries({
         queryKey: workspaceQueryKey.workspace(worksapceId),
       });
+      queryClient.invalidateQueries({
+        queryKey: workspaceQueryKey.trashWorkspaces,
+      });
     },
   });
 
@@ -50,6 +53,9 @@ export default function useWorkspace() {
       const workspaceId = variables.workspaceId;
       queryClient.invalidateQueries({
         queryKey: workspaceQueryKey.workspace(workspaceId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: workspaceQueryKey.trashWorkspaces,
       });
       queryClient.invalidateQueries({
         queryKey: workspaceQueryKey.trashWorkspaces,
@@ -68,11 +74,10 @@ export default function useWorkspace() {
       queryFn: () => getWorkspaceQuery(workspaceId),
     });
 
-  const trashWorkspaces = () =>
-    useQuery({
-      queryKey: workspaceQueryKey.trashWorkspaces,
-      queryFn: () => getTrashWorkspacesQuery(),
-    });
+  const trashWorkspaces = useQuery({
+    queryKey: workspaceQueryKey.trashWorkspaces,
+    queryFn: () => getTrashWorkspacesQuery(),
+  });
 
   return {
     createWorkspace,

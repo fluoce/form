@@ -40,7 +40,7 @@ export default function useForm() {
       if (!name && !status) {
         return null;
       }
-      updateFormMutation({
+      return updateFormMutation({
         workspaceId,
         formId,
         name,
@@ -55,6 +55,9 @@ export default function useForm() {
       queryClient.invalidateQueries({
         queryKey: formQueryKey.form(formId),
       });
+      queryClient.invalidateQueries({
+        queryKey: formQueryKey.trashForms(workspaceId as string),
+      });
     },
   });
 
@@ -65,12 +68,11 @@ export default function useForm() {
     }: {
       formId: string;
       workspaceId: string;
-    }) => {
+    }) =>
       deleteFormMutation({
         formId,
         workspaceId,
-      });
-    },
+      }),
     onSuccess: (_, variables) => {
       const workspaceId = variables.workspaceId;
       const formId = variables.formId;
@@ -79,6 +81,9 @@ export default function useForm() {
       });
       queryClient.invalidateQueries({
         queryKey: formQueryKey.form(formId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: formQueryKey.trashForms(workspaceId as string),
       });
     },
   });

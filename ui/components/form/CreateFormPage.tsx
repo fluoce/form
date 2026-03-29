@@ -1,5 +1,5 @@
 import useFormPage from "@/hooks/use-form-page";
-import { useCallback, useRef, useState } from "react";
+import { ReactNode, useCallback, useRef, useState } from "react";
 import CDialog from "../custom/CDialog";
 import { Button } from "../ui/button";
 import { Plus } from "lucide-react";
@@ -7,7 +7,13 @@ import { Field, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
 import ErrorMessage from "../shared/ErrorMessage";
 
-export default function CreateFormPage({ formId }: { formId: string }) {
+export default function CreateFormPage({
+  formId,
+  children,
+}: {
+  formId: string;
+  children?: ReactNode;
+}) {
   const [pageName, setPageName] = useState("");
 
   const [open, setOpen] = useState(false);
@@ -39,9 +45,13 @@ export default function CreateFormPage({ formId }: { formId: string }) {
       open={open}
       onOpenChange={() => setOpen((prev) => !prev)}
       trigger={
-        <Button size="icon" variant="outline">
-          <Plus />
-        </Button>
+        children ? (
+          children
+        ) : (
+          <Button size="icon" variant="outline">
+            <Plus />
+          </Button>
+        )
       }
       title="Add a New Page to this Form"
       description="Create a new page for your form to organize questions and improve

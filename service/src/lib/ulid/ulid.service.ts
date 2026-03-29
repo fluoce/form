@@ -1,16 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { FormIdPrefix, FormPageIdPrefix, WorkspaceIdPrefix, WorkspaceMemberIdPrefix } from 'src/types/id.types';
+import {
+  FormFieldIdPrefix,
+  FormIdPrefix,
+  FormPageIdPrefix,
+  WorkspaceIdPrefix,
+  WorkspaceMemberIdPrefix,
+} from 'src/types/id.types';
 import { ulid, decodeTime } from 'ulid';
 
 @Injectable()
 export class UlidService {
-
   isValidUlid(value: string): boolean {
     try {
-      decodeTime(value)
-      return true
+      decodeTime(value);
+      return true;
     } catch (error) {
-      return false
+      return false;
     }
   }
 
@@ -23,10 +28,14 @@ export class UlidService {
   }
 
   generateFormId(prefix: FormIdPrefix): string {
-    return `${prefix}_${ulid()}`
+    return `${prefix}_${ulid()}`;
   }
 
   generateFormPageId(prefix: FormPageIdPrefix): string {
-    return `${prefix}_${ulid()}`
+    return `${prefix}_${ulid()}`;
+  }
+
+  generateFormFieldId(prefix: FormFieldIdPrefix): string {
+    return `${prefix}_${ulid()}`;
   }
 }

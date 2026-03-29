@@ -3,14 +3,7 @@
 import { Plus } from "lucide-react";
 import { Button } from "../ui/button";
 import CDialog from "../custom/CDialog";
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-  FieldLegend,
-  FieldSet,
-} from "../ui/field";
+import { Field, FieldDescription, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
 import { useRef, useState, useCallback } from "react";
 import ErrorMessage from "./ErrorMessage";
@@ -61,6 +54,29 @@ export const CreateWorkspace = ({
       setOpen(false);
     }
   };
+
+  if (page) {
+    return (
+      <form ref={formRef} onSubmit={handleFormSubmit} className="max-w-80">
+        <Field>
+          <FieldLabel htmlFor="create-workspace">Create Workspace</FieldLabel>
+          <FieldDescription>
+            Provide a name for your workspace. Workspaces help you organize and
+            manage your forms efficiently.
+          </FieldDescription>
+          <Input
+            disabled={isPending}
+            onChange={(e) => setName(e.target.value)}
+            id="create-workspace"
+            placeholder="Enter the workspace name..."
+          />
+          <Button disabled={isPending}>
+            {isPending && <Spinner />} Create
+          </Button>
+        </Field>
+      </form>
+    );
+  }
 
   return (
     <CDialog
