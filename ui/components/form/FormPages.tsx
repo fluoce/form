@@ -10,13 +10,17 @@ import UpdateFormPage from "./UpdateFormPage";
 import { useSortable } from "@dnd-kit/react/sortable";
 import { isSortable } from "@dnd-kit/react/sortable";
 import { useDragDropManager } from "@dnd-kit/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FormPageSlice } from "@/types/slice";
 import NoData from "../shared/NoData";
-import { NotepadText, Plus } from "lucide-react";
+import { Monitor, NotepadText, Plus, Smartphone } from "lucide-react";
 import { Button } from "../ui/button";
+import { ButtonGroup } from "../ui/button-group";
+import FormPreview from "./FormPreview";
 
 export default function FormPages({ formId }: { formId: string }) {
+  const [isMobileView, setIsMobileView] = useState(false);
+
   const isMobile = useSize(860);
 
   const { formPages, updateFormPage } = useFormPage();
@@ -68,23 +72,29 @@ export default function FormPages({ formId }: { formId: string }) {
 
   return (
     <>
+      {isError && (
+        <ErrorMessage
+          className="px-2 pt-2"
+          error={error?.message || "Failed to load Form page !"}
+        />
+      )}
       <div
         className={cn(
-          "custom-scroll flex w-full items-center gap-2 overflow-auto p-1 pr-12",
+          "custom-scroll flex w-full items-center gap-2 overflow-auto p-2 pr-12",
           isMobile && "px-11",
         )}
       >
-        {isError && (
-          <ErrorMessage
-            error={error?.message || "Failed to load Form page !"}
-          />
-        )}
         <CreateFormPage formId={formId} />
         {formPagesData?.map((page, idx) => (
-          <SortablePages key={page.id} index={idx} page={page} />
+          <SortablePages
+            isActive={false}
+            key={page.id}
+            index={idx}
+            page={page}
+          />
         ))}
       </div>
-      {formPagesData && formPagesData.length == 0 && (
+      {formPagesData && formPagesData.length == 0 ? (
         <div className="w-full">
           <NoData
             icon={<NotepadText />}
@@ -102,24 +112,56 @@ export default function FormPages({ formId }: { formId: string }) {
             }
           />
         </div>
+      ) : (
+        <div className="flex h-[calc(100%-48px)] w-full flex-col items-center justify-center gap-2 px-2 pb-2">
+          <div
+            className={cn(
+              "custom-scroll bg-background flex h-full w-full items-center justify-center overflow-auto rounded-lg border",
+              isMobileView && !isMobile && "w-90",
+            )}
+          >
+            <FormPreview isMobileView={isMobileView} />
+          </div>
+          {!isMobile && (
+            <ButtonGroup>
+              <Button
+                size="icon"
+                onClick={() => setIsMobileView(false)}
+                variant={isMobileView ? "outline" : "default"}
+              >
+                <Monitor />
+              </Button>
+              <Button
+                size="icon"
+                onClick={() => setIsMobileView(true)}
+                variant={isMobileView ? "default" : "outline"}
+              >
+                <Smartphone />
+              </Button>
+            </ButtonGroup>
+          )}
+        </div>
       )}
     </>
   );
 }
 
-const SortablePages = ({
-  index,
-  page,
-}: {
+type SortablePagesProps = {
   index: number;
   page: FormPageSlice;
-}) => {
+  isActive?: boolean;
+};
+
+const SortablePages = ({ index, page, isActive }: SortablePagesProps) => {
   const { ref } = useSortable({ id: page.id, index });
 
   return (
     <div
       ref={ref}
-      className="bg-background flex cursor-grab items-center gap-2 rounded-md px-2 py-1"
+      className={cn(
+        "bg-background flex cursor-grab items-center gap-2 rounded-md border px-2 py-1 text-sm",
+        isActive && "bg-primary text-white",
+      )}
     >
       <span className="line-clamp-1">{page.name}</span>
       <UpdateFormPage formPage={page} />

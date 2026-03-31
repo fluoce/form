@@ -93,6 +93,9 @@ model Form {
   name            String
   slug            String                   
   status          FormStatus               @default(DRAFT)
+  title           String?
+  description     String?
+  theme           FormTheme                @default(BLUE)
   //TODO: other configs later
 
   createdAt       DateTime                 @default(now())
@@ -112,6 +115,27 @@ enum FormStatus {
   PUBLISHED
   ARCHIVED
 }
+
+enum FormTheme {
+  AMBER
+  BLUE
+  CYAN
+  EMERALD
+  FUCHSIA
+  GREEN
+  INDIGO
+  LIME
+  ORANGE
+  PINK
+  PURPLE
+  RED
+  ROSE
+  SKY
+  TEAL
+  VIOLET
+  YELLOW
+}
+
 
 
 

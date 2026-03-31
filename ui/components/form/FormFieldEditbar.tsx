@@ -19,7 +19,7 @@ const FormFieldEditbar = () => {
   if (isMobile) {
     return (
       <Sheet>
-        <SheetTrigger asChild className="absolute top-1 right-1">
+        <SheetTrigger asChild className="absolute top-2 right-1">
           <Button size="icon">
             <SquarePen />
           </Button>

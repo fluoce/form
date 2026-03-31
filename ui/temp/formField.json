@@ -1,0 +1,185 @@
+{
+  "id": "form_01HXYZ123",
+  "workspaceId": "ws_01HABC456",
+  "name": "Application Form For Data",
+  "slug": "job-application",
+  "title": "Application Form For Data",
+  "description": "Please fill out this application form to help us get to know you and your qualifications for the job.",
+  "status": "PUBLISHED",
+  "createdAt": "2026-03-30T10:00:00.000Z",
+  "updatedAt": "2026-03-30T10:00:00.000Z",
+  "fields": [
+    {
+      "id": "fld_txt1",
+      "config": {
+        "type": "text",
+        "label": "Full Name",
+        "helpText": "Your legal name (first and last)",
+        "required": true,
+        "placeholder": "Eg: John Doe",
+        "validation": {
+          "minLength": 2,
+          "maxLength": 50
+        }
+      },
+      "prevFieldId": null,
+      "nextFieldId": "fld_txt2"
+    },
+    {
+      "id": "fld_txt2",
+      "config": {
+        "type": "textarea",
+        "label": "About Yourself",
+        "helpText": "Describe your background in detail",
+        "required": false,
+        "placeholder": "Tell us about your journey so far",
+        "validation": {
+          "minLength": 0,
+          "maxLength": 1000
+        }
+      },
+      "prevFieldId": "fld_txt1",
+      "nextFieldId": "fld_num1"
+    },
+    {
+      "id": "fld_num1",
+      "config": {
+        "type": "number",
+        "label": "Years of Experience",
+        "helpText": "Enter your total years of professional experience",
+        "required": true,
+        "placeholder": "Eg: 3",
+        "validation": {
+          "min": 0,
+          "max": 50,
+          "step": 1
+        }
+      },
+      "prevFieldId": "fld_txt2",
+      "nextFieldId": "fld_email1"
+    },
+    {
+      "id": "fld_email1",
+      "config": {
+        "type": "email",
+        "label": "Email Address",
+        "helpText": "We'll contact you here",
+        "required": true,
+        "placeholder": "your@email.com"
+      },
+      "prevFieldId": "fld_num1",
+      "nextFieldId": "fld_phone1"
+    },
+    {
+      "id": "fld_phone1",
+      "config": {
+        "type": "phone",
+        "label": "Mobile Number",
+        "helpText": "Your main contact number",
+        "required": false,
+        "placeholder": "+1 234 567 8900",
+        "validation": {
+          "defaultCountryCode": "us",
+          "allowCountryChange": true,
+          "allowedCountry": ["us", "in"]
+        }
+      },
+      "prevFieldId": "fld_email1",
+      "nextFieldId": "fld_url1"
+    },
+    {
+      "id": "fld_url1",
+      "config": {
+        "type": "url",
+        "label": "Personal Website",
+        "helpText": "Portfolio or LinkedIn (optional)",
+        "required": false,
+        "placeholder": "https://yourwebsite.com",
+        "validation": {
+          "protocols": ["https"],
+          "allowedDomains": ["linkedin.com", "github.com", "personal.com"]
+        }
+      },
+      "prevFieldId": "fld_phone1",
+      "nextFieldId": "fld_date1"
+    },
+    {
+      "id": "fld_date1",
+      "config": {
+        "type": "date",
+        "label": "Available Start Date",
+        "helpText": "When can you start working?",
+        "required": true,
+        "placeholder": "YYYY-MM-DD",
+        "validation": {
+          "minDate": "2026-04-01",
+          "maxDate": "2026-12-31"
+        }
+      },
+      "prevFieldId": "fld_url1",
+      "nextFieldId": "fld_dd1"
+    },
+    {
+      "id": "fld_dd1",
+      "config": {
+        "type": "dropdown",
+        "label": "Preferred Role",
+        "helpText": "Select your primary role",
+        "required": true,
+        "placeholder": "Select a role",
+        "options": [
+          { "label": "Frontend Developer", "value": "frontend" },
+          { "label": "Backend Developer", "value": "backend" },
+          { "label": "Fullstack Developer", "value": "fullstack" },
+          { "label": "QA Engineer", "value": "qa" }
+        ],
+        "validation": {
+          "multiple": false,
+          "minSelected": 1,
+          "maxSelected": 1,
+          "searchable": true
+        }
+      },
+      "prevFieldId": "fld_date1",
+      "nextFieldId": "fld_radio1"
+    },
+    {
+      "id": "fld_radio1",
+      "config": {
+        "type": "radio",
+        "label": "Availability",
+        "helpText": "When can you join?",
+        "required": true,
+        "placeholder": "Select availability",
+        "options": [
+          { "label": "Immediate", "value": "immediate" },
+          { "label": "In 1 Month", "value": "1_month" },
+          { "label": "In 3 Months", "value": "3_months" }
+        ]
+      },
+      "prevFieldId": "fld_dd1",
+      "nextFieldId": "fld_chk1"
+    },
+    {
+      "id": "fld_chk1",
+      "config": {
+        "type": "checkbox",
+        "label": "Skills",
+        "helpText": "Select all that apply",
+        "required": false,
+        "placeholder": "Choose your skills",
+        "options": [
+          { "label": "React", "value": "react" },
+          { "label": "Node.js", "value": "node" },
+          { "label": "PostgreSQL", "value": "postgres" }
+        ],
+        "validation": {
+          "minSelected": 1,
+          "maxSelected": 3
+        }
+      },
+      "prevFieldId": "fld_radio1",
+      "nextFieldId": null
+    }
+  ]
+}

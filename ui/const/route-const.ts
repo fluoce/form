@@ -27,6 +27,9 @@ export const formRoutes = {
   setting: (workspaceId: string, formId: string, tab: formSettingTab) => {
     return `${formBase}/${workspaceId}/${formId}/${tab}`;
   },
+  preview: (formId: string) => {
+    return `${formBase}/preview/${formId}`;
+  },
 };
 
 // trash routes

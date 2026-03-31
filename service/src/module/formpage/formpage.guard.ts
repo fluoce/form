@@ -23,7 +23,6 @@ export class FormpageGuard implements CanActivate {
     const userId = user.sub;
 
     const { formId, formPageId } = req.params as {
-      workspaceId: string;
       formId: string;
       formPageId: string;
     };

@@ -8,7 +8,7 @@ export default function FormEditLayout({
 }>) {
   return (
     <>
-      <main className="relative flex h-[calc(100vh-52px)] w-full items-start justify-between">
+      <main className="relative flex h-[calc(100vh-52px)] w-full items-start justify-between overflow-hidden">
         <FormFieldbar />
         {children}
         <FormFieldEditbar />

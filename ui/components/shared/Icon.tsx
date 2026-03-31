@@ -1,16 +1,23 @@
 import { cn } from "@/lib/utils";
 import { ComponentType } from "react";
 
-const Icon = ({
-  icon: IconComp,
-  className,
-}: {
-  icon: ComponentType;
+interface IconProps {
+  icon: ComponentType<any>;
   className?: string;
-}) => {
+  size?: number;
+}
+
+const Icon = ({ icon: IconComp, className, size = 20 }: IconProps) => {
   return (
-    <i className={cn("text-muted-foreground", className)}>
-      <IconComp />
+    <i
+      className={cn("text-muted-foreground", className)}
+      style={{
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <IconComp size={size} />
     </i>
   );
 };

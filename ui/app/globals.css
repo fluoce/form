@@ -184,3 +184,73 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.552 0.016 285.938);
 }
+
+/* themes.css */
+.theme-amber {
+  --primary: oklch(0.6 0.14 49);
+  --primary-foreground: oklch(1 0 0);
+}
+.theme-blue {
+  --primary: oklch(0.58 0.22 259);
+  --primary-foreground: oklch(1 0 0);
+}
+.theme-cyan {
+  --primary: oklch(0.53 0.17 209);
+  --primary-foreground: oklch(1 0 0);
+}
+.theme-emerald {
+  --primary: oklch(0.42 0.17 157);
+  --primary-foreground: oklch(1 0 0);
+}
+.theme-fuchsia {
+  --primary: oklch(0.56 0.19 326);
+  --primary-foreground: oklch(1 0 0);
+}
+.theme-green {
+  --primary: oklch(0.42 0.16 136);
+  --primary-foreground: oklch(1 0 0);
+}
+.theme-indigo {
+  --primary: oklch(0.59 0.2 288);
+  --primary-foreground: oklch(1 0 0);
+}
+.theme-lime {
+  --primary: oklch(0.42 0.16 136);
+  --primary-foreground: oklch(1 0 0);
+}
+.theme-orange {
+  --primary: oklch(0.5 0.18 38.4);
+  --primary-foreground: oklch(1 0 0);
+}
+.theme-pink {
+  --primary: oklch(0.59 0.2 342.3);
+  --primary-foreground: oklch(1 0 0);
+}
+.theme-purple {
+  --primary: oklch(0.52 0.18 313.5);
+  --primary-foreground: oklch(1 0 0);
+}
+.theme-red {
+  --primary: oklch(0.42 0.17 27);
+  --primary-foreground: oklch(1 0 0);
+}
+.theme-rose {
+  --primary: oklch(0.54 0.19 17.5);
+  --primary-foreground: oklch(1 0 0);
+}
+.theme-sky {
+  --primary: oklch(0.48 0.18 229.2);
+  --primary-foreground: oklch(1 0 0);
+}
+.theme-teal {
+  --primary: oklch(0.44 0.17 190.6);
+  --primary-foreground: oklch(1 0 0);
+}
+.theme-violet {
+  --primary: oklch(0.56 0.2 293.5);
+  --primary-foreground: oklch(1 0 0);
+}
+.theme-yellow {
+  --primary: oklch(0.96 0.17 102);
+  --primary-foreground: oklch(0.2 0 0); /* black text */
+}

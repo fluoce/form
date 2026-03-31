@@ -18,7 +18,6 @@ import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
 import Icon from "../shared/Icon";
 import { formSettingTab } from "@/types/type";
 import useForm from "@/hooks/use-form";
-import NoData from "../shared/NoData";
 import ProfileBtn from "../shared/ProfileBtn";
 import { useSize } from "@/hooks/use-size";
 import {
@@ -100,7 +99,7 @@ const FormEditTopbar = () => {
           <Skeleton className="size-9 rounded-full" />
         </div>
       ) : (
-        <FormEditTopbarActionButton />
+        <FormEditTopbarActionButton formId={formData?.id || ""} />
       )}
     </div>
   );
@@ -169,16 +168,18 @@ function FormMenuTabs() {
   );
 }
 
-function FormEditTopbarActionButton() {
+function FormEditTopbarActionButton({ formId }: { formId: string }) {
   const isMobile = useSize(760);
 
   return (
     <div className="flex items-center">
       <div className="flex items-center gap-2">
-        <Button variant="outline" size={isMobile ? "icon" : "default"}>
-          <Eye />
-          {!isMobile && " Preview"}
-        </Button>
+        <Link href={formRoutes.preview(formId)}>
+          <Button variant="outline" size={isMobile ? "icon" : "default"}>
+            <Eye />
+            {!isMobile && " Preview"}
+          </Button>
+        </Link>
         <Button size={isMobile ? "icon" : "default"}>
           <Share />
           {!isMobile && " Publish"}
