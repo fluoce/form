@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import Logo from "./Logo";
 
 interface SpinnerProps {
   size?: "sm" | "md" | "lg";
