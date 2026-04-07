@@ -215,7 +215,7 @@
   --primary-foreground: oklch(1 0 0);
 }
 .LIME {
-  --primary: oklch(0.42 0.16 136);
+  --primary: #7ccf00;
   --primary-foreground: oklch(1 0 0);
 }
 .ORANGE {

@@ -196,7 +196,7 @@ const THEME_DATA: ThemeFieldType[] = [
   },
   {
     name: "Lime",
-    color: "#497D00",
+    color: "#7CCF00",
     class: "LIME",
   },
   {
