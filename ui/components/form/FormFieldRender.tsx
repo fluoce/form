@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CalendarDays, Dot } from "lucide-react";
+import { Asterisk, CalendarDays } from "lucide-react";
 import { Field, FieldLabel, FieldDescription } from "../ui/field";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
@@ -175,7 +175,7 @@ function Label({ label, required }: { label: string; required?: boolean }) {
   return (
     <FieldLabel htmlFor={label}>
       {label || "Label or Question"}{" "}
-      {required && <Dot className="text-primary" />}
+      {required && <Asterisk size={16} className="text-primary" />}
     </FieldLabel>
   );
 }

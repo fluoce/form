@@ -57,17 +57,13 @@ export class FormcoreService {
     formId: string,
     data: UpdateFormDto,
   ): Promise<FormType | null> {
-    const updateData = {
-      name: data.name ?? undefined,
-      status: data.status ?? undefined,
-    };
     return await this.prisma.form.update({
       where: {
         id: formId,
         userId,
       },
       data: {
-        ...updateData,
+        ...data,
       },
     });
   }
