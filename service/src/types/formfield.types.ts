@@ -293,6 +293,26 @@ export class CreateFormFieldDto {
   config: FieldBaseConfigDto;
 }
 
+export class UpdateFormFieldDto {
+  @IsOptional()
+  @IsString()
+  prevFieldId?: string | null;
+
+  @IsOptional()
+  @IsString()
+  nextFieldId?: string | null;
+
+  @IsOptional()
+  @IsNotEmptyObject()
+  @IsObject()
+  @ValidateNested()
+  @Type((e) => {
+    const type = e?.object?.config?.type;
+    return configTypeMap[type] || FieldBaseConfigDto;
+  })
+  config: FieldBaseConfigDto;
+}
+
 export interface FormFieldType {
   id: string;
   formId: string;
