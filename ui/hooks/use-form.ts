@@ -36,6 +36,9 @@ export default function useForm() {
       formId,
       name,
       status,
+      description,
+      theme,
+      title,
     }: formUpdateInputType) => {
       if (!name && !status) {
         return null;
@@ -45,6 +48,9 @@ export default function useForm() {
         formId,
         name,
         status,
+        description,
+        theme,
+        title,
       });
     },
     onSuccess: (_, variables) => {

@@ -4,7 +4,7 @@ import FormPages from "@/components/form/FormPages";
 import { useParams } from "next/navigation";
 
 export default function FormEdit() {
-  const { formId, workspaceId } = useParams<{
+  const { formId } = useParams<{
     workspaceId: string;
     formId: string;
   }>();

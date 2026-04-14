@@ -5,6 +5,7 @@ import { ReactNode } from "react";
 import ReduxProvider from "./redux/redux-provider";
 import AppRouterNProgress, { ProgressProvider } from "@/utils/js-loader";
 import { TanstackProvider } from "./tanstack/tanstack-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
@@ -13,6 +14,7 @@ export function Providers({ children }: { children: ReactNode }) {
         <ProgressProvider>
           <AppRouterNProgress />
           <ThemeProvider>{children} </ThemeProvider>
+          <Toaster />
         </ProgressProvider>
       </TanstackProvider>
     </ReduxProvider>

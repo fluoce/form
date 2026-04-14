@@ -17,17 +17,30 @@ import { Monitor, NotepadText, Plus, Smartphone } from "lucide-react";
 import { Button } from "../ui/button";
 import { ButtonGroup } from "../ui/button-group";
 import FormPreview from "./FormPreview";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "@/providers/redux/redux-provider";
+import { setFormPages } from "@/store/slice/form-slice";
 
 export default function FormPages({ formId }: { formId: string }) {
   const [isMobileView, setIsMobileView] = useState(false);
 
+  const dispatch = useAppDispatch();
+
   const isMobile = useSize(860);
+
+  const { formPages: pages } = useAppSelector((state) => state.form);
 
   const { formPages, updateFormPage } = useFormPage();
 
   const { data, isLoading, error, isError } = formPages(formId);
 
-  const formPagesData = data?.data?.formPages;
+  useEffect(() => {
+    if (data) {
+      dispatch(setFormPages(data?.data?.formPages ?? []));
+    }
+  }, [data]);
 
   const manager = useDragDropManager();
 
@@ -39,9 +52,9 @@ export default function FormPages({ formId }: { formId: string }) {
       if (!isSortable(source)) return;
       const { initialIndex, index } = source;
       if (initialIndex === index) return;
-      const movedPage = formPagesData?.find((page) => page.id === source.id);
+      const movedPage = pages?.find((page) => page.id === source.id);
       if (!movedPage) return;
-      const newPages = [...(formPagesData ?? [])];
+      const newPages = [...(pages ?? [])];
       const oldIdx = newPages.findIndex((p) => p.id === movedPage.id);
       if (oldIdx === -1) return;
       newPages.splice(oldIdx, 1);
@@ -58,7 +71,7 @@ export default function FormPages({ formId }: { formId: string }) {
     });
 
     return () => unsubscribe();
-  }, [manager, formPagesData, formId, updateFormPage]);
+  }, [manager, pages, formId, updateFormPage]);
 
   if (isLoading) {
     return (
@@ -85,7 +98,7 @@ export default function FormPages({ formId }: { formId: string }) {
         )}
       >
         <CreateFormPage formId={formId} />
-        {formPagesData?.map((page, idx) => (
+        {pages?.map((page, idx) => (
           <SortablePages
             isActive={false}
             key={page.id}
@@ -94,7 +107,7 @@ export default function FormPages({ formId }: { formId: string }) {
           />
         ))}
       </div>
-      {formPagesData && formPagesData.length == 0 ? (
+      {pages && pages.length == 0 ? (
         <div className="w-full">
           <NoData
             icon={<NotepadText />}

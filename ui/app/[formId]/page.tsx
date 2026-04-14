@@ -13,9 +13,5 @@ export default function Form() {
     return <NoData />;
   }
 
-  return (
-    <div className="flex h-full w-full justify-center">
-      <FormPreview />
-    </div>
-  );
+  return <FormPreview />;
 }

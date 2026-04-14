@@ -26,6 +26,9 @@ export async function updateFormMutation({
   status,
   name,
   workspaceId,
+  description,
+  theme,
+  title,
 }: formUpdateInputType) {
   return (await useTanstack({
     url: formUrlPath.mutation(formId),
@@ -33,6 +36,9 @@ export async function updateFormMutation({
     body: {
       name,
       status,
+      description: description ?? undefined,
+      theme: theme ?? undefined,
+      title: title ?? undefined,
     },
     path: formRoutes.setting(workspaceId, formId, "general"),
   })) as ResponseType<FormResponse>;

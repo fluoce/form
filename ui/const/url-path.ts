@@ -31,3 +31,14 @@ export const formPageUrlPath = {
     `/form/${formId}/formpage/${formPageId}`,
   queryAll: (formId: string) => `/form/${formId}/formpage`,
 };
+
+export const formFieldUrlPath = {
+  createMutation: (formId: string, formPageId: string) =>
+    `/form/${formId}/formpage/${formPageId}/formfield`,
+  mutation: (formId: string, formPageId: string, formFieldId: string) =>
+    `/form/${formId}/formpage/${formPageId}/formfield/${formFieldId}`,
+  query: (formId: string, formPageId: string, formFieldId: string) =>
+    `/form/${formId}/formpage/${formPageId}/formfield/${formFieldId}`,
+  queryAll: (formId: string, formPageId: string) =>
+    `/form/${formId}/formpage/${formPageId}/formfield`,
+};

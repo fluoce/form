@@ -1,4 +1,9 @@
-import { FormPageSlice, FormSlice, WorkspaceSlice } from "./slice";
+import {
+  FormFieldSlice,
+  FormPageSlice,
+  FormSlice,
+  WorkspaceSlice,
+} from "./slice";
 
 export type ResponseType<T = unknown> = {
   statusCode?: number;
@@ -40,4 +45,14 @@ export type FormPageResponse = {
 export type FormPagesResponse = {
   message: string;
   formPages: FormPageSlice[];
+};
+
+export type FormFieldsResponse = {
+  message: string;
+  formPages: FormFieldSlice[];
+};
+
+export type FormFieldResponse = {
+  message: string;
+  formPages: FormFieldSlice;
 };

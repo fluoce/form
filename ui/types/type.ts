@@ -13,6 +13,9 @@ export type formUpdateInputType = {
   workspaceId: string;
   name?: string;
   status?: FormStatus;
+  title?: string;
+  description?: string;
+  theme?: string;
 };
 
 export type formPageUpdateInputType = {

@@ -30,3 +30,12 @@ export const formPageQueryKey = {
     return ["formPage", formId, formPageId];
   },
 };
+
+export const formFieldQueryKey = {
+  formFields: (formId: string, formPageId: string) => {
+    return ["formField", formId, formPageId];
+  },
+  formField: (formId: string, formPageId: string, formFieldId: string) => {
+    return ["formField", formId, formPageId, formFieldId];
+  },
+};

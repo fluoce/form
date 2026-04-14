@@ -17,79 +17,79 @@ import { Checkbox } from "../ui/checkbox";
 import { Button } from "../ui/button";
 import { Popover, PopoverTrigger, PopoverContent } from "../ui/popover";
 import { Calendar } from "../ui/calendar";
-import type { FormFieldType } from "@/types/formfield";
+import { FormFieldSlice } from "@/types/slice";
 
-export function FieldRenderer({ field }: { field: FormFieldType }) {
-  switch (field.type) {
+export function FieldRenderer({ field }: { field: FormFieldSlice }) {
+  const config = field?.config || {};
+
+  switch (config?.type) {
     case "text":
       return (
         <Field>
-          <Label label={field?.label} required={field?.required} />
-          <Helptext helpText={field?.helpText} />
+          <Label label={config?.label} required={config?.required} />
+          <Helptext helpText={config?.helpText} />
           <Input
             className="bg-background dark:bg-background"
             type="text"
-            placeholder={field?.placeholder || undefined}
-            minLength={field?.validation?.minLength || 0}
-            maxLength={field?.validation?.maxLength || 199}
-            required={field?.required}
+            placeholder={config?.placeholder || undefined}
+            minLength={config?.validation?.minLength || 0}
+            maxLength={config?.validation?.maxLength || 199}
+            required={config?.required}
           />
         </Field>
       );
-
     case "textarea":
       return (
         <Field>
-          <Label label={field?.label} required={field?.required} />
-          <Helptext helpText={field?.helpText} />
+          <Label label={config?.label} required={config?.required} />
+          <Helptext helpText={config?.helpText} />
           <Textarea
             className="bg-background dark:bg-background max-h-60"
-            placeholder={field?.placeholder || undefined}
-            required={field?.required}
-            minLength={field?.validation?.minLength || 0}
-            maxLength={field?.validation?.maxLength || 999}
+            placeholder={config?.placeholder || undefined}
+            required={config?.required}
+            minLength={config?.validation?.minLength || 0}
+            maxLength={config?.validation?.maxLength || 999}
           />
         </Field>
       );
     case "email":
       return (
         <Field>
-          <Label label={field?.label} required={field?.required} />
-          <Helptext helpText={field?.helpText} />
+          <Label label={config?.label} required={config?.required} />
+          <Helptext helpText={config?.helpText} />
           <Input
             className="bg-background dark:bg-background"
-            placeholder={field?.placeholder || undefined}
+            placeholder={config?.placeholder || undefined}
             type="email"
-            required={field?.required}
+            required={config?.required}
           />
         </Field>
       );
     case "number":
       return (
         <Field>
-          <Label label={field?.label} required={field?.required} />
-          <Helptext helpText={field?.helpText} />
+          <Label label={config?.label} required={config?.required} />
+          <Helptext helpText={config?.helpText} />
           <Input
             className="bg-background dark:bg-background"
-            placeholder={field?.placeholder || undefined}
-            required={field?.required}
+            placeholder={config?.placeholder || undefined}
+            required={config?.required}
             type="number"
-            min={field?.validation?.min || undefined}
-            max={field?.validation?.max || undefined}
-            step={field?.validation?.step || undefined}
+            min={config?.validation?.min || undefined}
+            max={config?.validation?.max || undefined}
+            step={config?.validation?.step || undefined}
           />
         </Field>
       );
-
     case "phone":
       return (
         <Field>
-          <Label label={field?.label} required={field?.required} />
-          <Helptext helpText={field?.helpText} />
+          <Label label={config?.label} required={config?.required} />
+          <Helptext helpText={config?.helpText} />
           <Input
             className="bg-background dark:bg-background"
-            placeholder={field?.placeholder || undefined}
-            required={field?.required}
+            placeholder={config?.placeholder || undefined}
+            required={config?.required}
             type="number"
           />
         </Field>
@@ -97,11 +97,11 @@ export function FieldRenderer({ field }: { field: FormFieldType }) {
     case "url":
       return (
         <Field>
-          <Label label={field?.label} required={field?.required} />
-          <Helptext helpText={field?.helpText} />
+          <Label label={config?.label} required={config?.required} />
+          <Helptext helpText={config?.helpText} />
           <Input
             className="bg-background dark:bg-background"
-            placeholder={field?.placeholder || undefined}
+            placeholder={config?.placeholder || undefined}
             type="url"
           />
         </Field>
@@ -112,14 +112,14 @@ export function FieldRenderer({ field }: { field: FormFieldType }) {
     case "dropdown":
       return (
         <Field>
-          <Label label={field?.label} required={field?.required} />
-          <Helptext helpText={field?.helpText} />
+          <Label label={config?.label} required={config?.required} />
+          <Helptext helpText={config?.helpText} />
           <Select>
             <SelectTrigger className="bg-background dark:bg-background cursor-pointer">
-              <SelectValue placeholder={field?.placeholder || "Select"} />
+              <SelectValue placeholder={config?.placeholder || "Select"} />
             </SelectTrigger>
             <SelectContent>
-              {field?.options?.map((o) => (
+              {config?.options?.map((o: any) => (
                 <SelectItem key={o?.value || o?.label} value={o?.value || ""}>
                   {o?.label}
                 </SelectItem>
@@ -131,10 +131,10 @@ export function FieldRenderer({ field }: { field: FormFieldType }) {
     case "radio":
       return (
         <Field>
-          <Label label={field?.label} required={field?.required} />
-          <Helptext helpText={field?.helpText} />
+          <Label label={config?.label} required={config?.required} />
+          <Helptext helpText={config?.helpText} />
           <RadioGroup>
-            {field?.options?.map((o) => (
+            {config?.options?.map((o: any) => (
               <div
                 key={o?.value || o?.label}
                 className="flex items-center gap-3"
@@ -152,9 +152,9 @@ export function FieldRenderer({ field }: { field: FormFieldType }) {
     case "checkbox":
       return (
         <Field>
-          <Label label={field?.label} required={field?.required} />
-          <Helptext helpText={field?.helpText} />
-          {field?.options?.map((o) => (
+          <Label label={config?.label} required={config?.required} />
+          <Helptext helpText={config?.helpText} />
+          {config?.options?.map((o: any) => (
             <Field orientation="horizontal" key={o?.value || o?.label}>
               <Checkbox
                 className="bg-background dark:bg-background cursor-pointer"
@@ -165,17 +165,16 @@ export function FieldRenderer({ field }: { field: FormFieldType }) {
           ))}
         </Field>
       );
-
     default:
       return null;
   }
 }
 
-function Label({ label, required }: { label: string; required?: boolean }) {
+function Label({ label, required }: { label?: string; required?: boolean }) {
   return (
     <FieldLabel htmlFor={label}>
       {label || "Label or Question"}{" "}
-      {required && <Asterisk size={16} className="text-primary" />}
+      {required && <Asterisk size={12} className="text-primary" />}
     </FieldLabel>
   );
 }
@@ -185,14 +184,16 @@ function Helptext({ helpText }: { helpText?: string }) {
   return <FieldDescription>{helpText}</FieldDescription>;
 }
 
-function DatePickerSimple({ field }: { field: FormFieldType }) {
+// Adjust to support the new expected field shape
+function DatePickerSimple({ field }: { field: FormFieldSlice }) {
+  const config = field?.config || {};
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<Date | undefined>(undefined);
 
   return (
     <Field>
-      <FieldLabel htmlFor={field?.label}>{field?.label}</FieldLabel>
-      <Helptext helpText={field?.helpText} />
+      <FieldLabel htmlFor={config?.label}>{config?.label}</FieldLabel>
+      <Helptext helpText={config?.helpText} />
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button

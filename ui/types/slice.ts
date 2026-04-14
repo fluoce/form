@@ -1,8 +1,10 @@
+import { FormFieldConfig } from "./formfield";
+
 export type UserSlice = {
   id: string;
   email: string;
   name: string;
-  createdAt: string;
+  createdAt?: string;
   updatedAt?: string;
   mobile?: string | null;
   photo?: string | null;
@@ -25,7 +27,7 @@ export type WorkspaceSlice = {
   ownerEmail: string;
   plan: WorkspacePlan;
   status: WorkspaceStatus;
-  createdAt: string;
+  createdAt?: string;
   updatedAt?: string;
   limits?: any | null;
 };
@@ -38,19 +40,21 @@ export type FormSlice = {
   userId: string;
   name: string;
   slug: string;
+  formPage: FormPageSlice[];
   description?: string;
+  title?: string;
   status: FormStatus;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type FormPageSlice = {
   id: string;
   formId: string;
   name?: string | null;
-  position: number;
-  createdAt: string;
-  updatedAt: string;
+  position: string;
+  createdAt?: string;
+  updatedAt?: string;
   formField: FormFieldSlice[];
 };
 
@@ -58,8 +62,8 @@ export type FormFieldSlice = {
   id: string;
   formId: string;
   formPageId: string;
-  config: any; //TODO: Replace 'any' with a more specific type if available
-  position: number;
-  createdAt: string;
-  updatedAt: string;
+  config: FormFieldConfig;
+  position: string;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
 };
