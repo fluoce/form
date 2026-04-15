@@ -94,6 +94,15 @@ export class FormpagecoreService {
       data: {
         position: newPosition,
       },
+      select: {
+        id: true,
+        formId: true,
+        name: true,
+        position: true,
+        createdAt: true,
+        updatedAt: true,
+        formField: true,
+      },
     });
   }
 
@@ -127,6 +136,15 @@ export class FormpagecoreService {
     return await this.prisma.formPage.findMany({
       where: {
         formId,
+      },
+      select: {
+        id: true,
+        formId: true,
+        name: true,
+        position: true,
+        createdAt: true,
+        updatedAt: true,
+        formField: true,
       },
       orderBy: {
         position: 'asc',

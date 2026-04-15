@@ -14,7 +14,7 @@ export function Providers({ children }: { children: ReactNode }) {
         <ProgressProvider>
           <AppRouterNProgress />
           <ThemeProvider>{children} </ThemeProvider>
-          <Toaster />
+          <Toaster position="top-right" />
         </ProgressProvider>
       </TanstackProvider>
     </ReduxProvider>

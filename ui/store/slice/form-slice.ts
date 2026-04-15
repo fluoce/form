@@ -36,7 +36,7 @@ export const formSlice = createSlice({
       }
     },
     setSelectedPage: (state, action) => {
-      state.selectedPage == action.payload;
+      state.selectedPage = action.payload;
     },
     addField: (
       state,
@@ -90,6 +90,7 @@ export const {
   addPage,
   removePage,
   updatePage,
+  setSelectedPage,
   addField,
   removeField,
   updateField,

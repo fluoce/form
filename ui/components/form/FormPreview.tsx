@@ -19,7 +19,13 @@ const FormPreview = ({ isMobileView }: { isMobileView?: boolean }) => {
     (state) => state.form,
   );
 
-  const formPage = formPages.find((page) => page.id == selectedPage);
+  const formPage = formPages?.find((page, idx) => {
+    if (selectedPage) {
+      return page.id === selectedPage;
+    } else {
+      return idx === 0;
+    }
+  });
 
   return (
     <div

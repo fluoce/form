@@ -21,15 +21,29 @@ export class FormfieldcoreService {
     data: CreateFormFieldDto,
   ): Promise<FormFieldType | null> {
     const config = data?.config ? JSON.parse(JSON.stringify(data.config)) : {};
+    let prevFieldId = data?.prevFieldId ?? null;
+    let nextFieldId = data?.nextFieldId ?? null;
+    if (!prevFieldId && !nextFieldId) {
+      const lastField = await this.prisma.formField.findFirst({
+        where: {
+          formPageId,
+        },
+        orderBy: {
+          position: 'desc',
+        },
+        select: {
+          id: true,
+          position: true,
+        },
+      });
+      prevFieldId = lastField ? lastField?.position : null;
+    }
     return await this.prisma.formField.create({
       data: {
         id: this.ulidService.generateFormFieldId('ff'),
         formId,
         formPageId,
-        position: createFractionalIndex(
-          data?.prevFieldId ?? null,
-          data?.nextFieldId ?? null,
-        ),
+        position: createFractionalIndex(prevFieldId, nextFieldId),
         config,
       },
     });
@@ -92,6 +106,9 @@ export class FormfieldcoreService {
       where: {
         formId,
         formPageId,
+      },
+      orderBy: {
+        position: 'asc',
       },
     });
   }

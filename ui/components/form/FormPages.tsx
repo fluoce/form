@@ -10,7 +10,7 @@ import UpdateFormPage from "./UpdateFormPage";
 import { useSortable } from "@dnd-kit/react/sortable";
 import { isSortable } from "@dnd-kit/react/sortable";
 import { useDragDropManager } from "@dnd-kit/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FormPageSlice } from "@/types/slice";
 import NoData from "../shared/NoData";
 import { Monitor, NotepadText, Plus, Smartphone } from "lucide-react";
@@ -21,7 +21,7 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "@/providers/redux/redux-provider";
-import { setFormPages } from "@/store/slice/form-slice";
+import { setFormPages, setSelectedPage } from "@/store/slice/form-slice";
 
 export default function FormPages({ formId }: { formId: string }) {
   const [isMobileView, setIsMobileView] = useState(false);
@@ -30,7 +30,9 @@ export default function FormPages({ formId }: { formId: string }) {
 
   const isMobile = useSize(860);
 
-  const { formPages: pages } = useAppSelector((state) => state.form);
+  const { formPages: pages, selectedPage } = useAppSelector(
+    (state) => state.form,
+  );
 
   const { formPages, updateFormPage } = useFormPage();
 
@@ -39,6 +41,7 @@ export default function FormPages({ formId }: { formId: string }) {
   useEffect(() => {
     if (data) {
       dispatch(setFormPages(data?.data?.formPages ?? []));
+      dispatch(setSelectedPage(data?.data?.formPages?.[0].id ?? ""));
     }
   }, [data]);
 
@@ -100,7 +103,7 @@ export default function FormPages({ formId }: { formId: string }) {
         <CreateFormPage formId={formId} />
         {pages?.map((page, idx) => (
           <SortablePages
-            isActive={false}
+            isActive={selectedPage == page?.id}
             key={page.id}
             index={idx}
             page={page}
@@ -168,6 +171,28 @@ type SortablePagesProps = {
 const SortablePages = ({ index, page, isActive }: SortablePagesProps) => {
   const { ref } = useSortable({ id: page.id, index });
 
+  const manager = useDragDropManager();
+
+  const wasDragging = useRef(false);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (!manager) return;
+    const unsubEnd = manager.monitor.addEventListener("dragend", (event) => {
+      if (event.operation.source?.id === page.id) {
+        if (!wasDragging.current && !event.canceled) {
+          dispatch(setSelectedPage(page?.id));
+        }
+        wasDragging.current = false;
+      }
+    });
+
+    return () => {
+      unsubEnd();
+    };
+  }, [manager, page.id]);
+
   return (
     <div
       ref={ref}
@@ -181,3 +206,5 @@ const SortablePages = ({ index, page, isActive }: SortablePagesProps) => {
     </div>
   );
 };
+
+//1236

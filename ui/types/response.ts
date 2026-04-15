@@ -49,10 +49,10 @@ export type FormPagesResponse = {
 
 export type FormFieldsResponse = {
   message: string;
-  formPages: FormFieldSlice[];
+  formFields: FormFieldSlice[];
 };
 
 export type FormFieldResponse = {
   message: string;
-  formPages: FormFieldSlice;
+  formField: FormFieldSlice;
 };

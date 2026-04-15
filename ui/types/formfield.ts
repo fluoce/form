@@ -158,7 +158,7 @@ export type UpdateFormFieldType = {
   formFieldId: string;
 };
 
-export type CommenFormFieldType = {
+export type CommonFormFieldType = {
   formId: string;
   formPageId: string;
   formFieldId: string;
