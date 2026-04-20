@@ -7,8 +7,6 @@ import { ResType } from "@/types/res-types"
 import { FormCreateType, FormType, FormUpdateType } from "@/types/form-types"
 import { toast } from "sonner"
 
-const queryClient = useQueryClient()
-
 export function useForms() {
   const { workspaceId } = useParams<{ workspaceId: string }>()
   return useQuery({
@@ -34,6 +32,7 @@ export function useForm() {
 }
 
 export function useFormCreate() {
+  const queryClient = useQueryClient()
   const { workspaceId } = useParams<{ workspaceId: string }>()
   return useMutation({
     mutationFn: (body: FormCreateType) =>
@@ -53,6 +52,7 @@ export function useFormCreate() {
 }
 
 export function useFormUpdate() {
+  const queryClient = useQueryClient()
   const { workspaceId } = useParams<{ workspaceId: string }>()
   return useMutation({
     mutationFn: ({ body, id }: { body: FormUpdateType; id: string }) =>
@@ -75,6 +75,7 @@ export function useFormUpdate() {
 }
 
 export function useFormDelete() {
+  const queryClient = useQueryClient()
   const { workspaceId } = useParams<{ workspaceId: string }>()
   const { formId } = useParams<{ formId: string }>()
   return useMutation({
