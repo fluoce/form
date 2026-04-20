@@ -111,6 +111,9 @@ export class FormcoreService {
           not: 'ARCHIVED',
         },
       },
+      orderBy: {
+        createdAt: 'asc',
+      },
     });
   }
 }

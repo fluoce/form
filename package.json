@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"pnpm --filter ui dev\" \"pnpm --filter service start:dev\"",
-    "start": "concurrently \"pnpm --filter ui start\" \"pnpm --filter service start\""
+    "dev": "concurrently \"pnpm --prefix ui dev\" \"pnpm --prefix service start:dev\"",
+    "start": "concurrently \"pnpm --prefix ui start\" \"pnpm --prefix service start\""
   },
   "keywords": [],
   "author": "",

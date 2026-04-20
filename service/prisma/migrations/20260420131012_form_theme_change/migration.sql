@@ -1,0 +1,5 @@
+-- AlterEnum
+ALTER TYPE "FormTheme" ADD VALUE 'DEFAULT';
+
+-- AlterTable
+ALTER TABLE "Form" ALTER COLUMN "theme" SET DEFAULT 'DEFAULT';

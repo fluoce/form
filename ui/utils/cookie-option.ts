@@ -1,4 +1,4 @@
-const isProd = process.env.NODE_ENV === "production";
+const isProd = process.env.NODE_ENV === "production"
 
 export function cookieOption(age: number) {
   return {
@@ -7,5 +7,5 @@ export function cookieOption(age: number) {
     sameSite: isProd ? "none" : "lax",
     path: "/",
     maxAge: age,
-  } as const;
+  } as const
 }

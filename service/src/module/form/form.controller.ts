@@ -18,7 +18,7 @@ import type { WorkspaceType } from 'src/types/workspace.types';
 import { Form } from 'src/decorator/form.decorator';
 import { FormGuard } from './form.guard';
 
-@Controller('/form')
+@Controller('form')
 export class FormController {
   constructor(private readonly formService: FormService) {}
 

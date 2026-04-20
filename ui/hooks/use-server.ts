@@ -1,96 +1,85 @@
-"use server";
+"use server"
 
-import { cookies } from "next/headers";
-import type { RefreshResponse, ResponseType } from "@/types/response";
-import { appUrl, authBackendUrl, authUrl, backendUrl } from "@/const/env-const";
-import { workspaceRoutes } from "@/const/route-const";
-import { cookieOption } from "@/utils/cookie-option";
-import { normalizeErrorMessage } from "@/func/normalize-error-message";
-import { redirect } from "next/navigation";
-import { authRoutes } from "@/const/url-path";
+import { envs } from "@/const/envs"
+import { routes } from "@/const/routes"
+import { urls } from "@/const/urls"
+import { RefreshResType, ResType } from "@/types/res-types"
+import { cookieOption } from "@/utils/cookie-option"
+import { cookies } from "next/headers"
+import { redirect } from "next/navigation"
 
-interface ServerFetchProps {
-  url: string;
-  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-  body?: {};
-  path?: string;
-  auth?: boolean;
+interface ServerProps {
+  url: string
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE"
+  body?: {}
+  path?: string
+  auth?: boolean
 }
 
-export async function UseServer({
+export default async function UseServer({
   url,
   method,
-  path = workspaceRoutes.create,
-  body,
   auth = false,
-}: ServerFetchProps): Promise<ResponseType> {
-  const redirectUrl = path
-    ? `${authUrl}?ref=${encodeURIComponent(appUrl)}&path=${encodeURIComponent(path)}`
-    : `${authUrl}?ref=${encodeURIComponent(appUrl)}`;
+  body,
+  path = routes.dashboard.base,
+}: ServerProps) {
+  const authRedirect = path
+    ? `${envs.authUrl}?ref=${encodeURIComponent(envs.appUrl)}&path=${encodeURIComponent(path)}`
+    : `${envs.authUrl}?ref=${encodeURIComponent(envs.appUrl)}`
 
-  const endpoint = auth ? `${authBackendUrl}${url}` : `${backendUrl}${url}`;
+  const endpoint = auth
+    ? `${envs.authBackendUrl}${url}`
+    : `${envs.backendUrl}${url}`
 
-  const cookieStore = await cookies();
+  const cookieStore = await cookies()
 
-  let at = cookieStore.get("accessToken")?.value;
-
-  let rt = cookieStore.get("refreshToken")?.value;
+  let at = cookieStore.get("accessToken")?.value!
+  let rt = cookieStore.get("refreshToken")?.value!
 
   if (!rt) {
-    redirect(redirectUrl);
+    redirect(authRedirect)
   }
 
   if (!at && rt) {
-    const tokenRespaonse = await refresh(rt);
-
+    const tokenRespaonse = await refresh(rt)
     if (!tokenRespaonse) {
-      redirect(redirectUrl);
+      redirect(authRedirect)
     }
-
-    at = tokenRespaonse.accessToken;
-
-    rt = tokenRespaonse.refreshToken;
+    at = tokenRespaonse.accessToken
+    rt = tokenRespaonse.refreshToken
   }
 
   let res = await dataFetch({
     endpoint,
-    // @ts-ignore
     at,
     method,
     body,
-  });
+  })
 
-  let data: ResponseType | null = null;
+  let data: ResType | null = null
+  let contentType = res.headers.get("content-type")
 
-  let contentType = res.headers.get("content-type");
-
-  if (res.status === 401) {
-    const tokenRespaonse = await refresh(rt);
-
+  if (res.status == 401) {
+    const tokenRespaonse = await refresh(rt)
     if (!tokenRespaonse) {
-      redirect(redirectUrl);
+      redirect(authRedirect)
     }
-
-    at = tokenRespaonse.accessToken;
-
-    rt = tokenRespaonse.refreshToken;
-
+    at = tokenRespaonse.accessToken
+    rt = tokenRespaonse.refreshToken
     res = await dataFetch({
       endpoint,
-      //@ts-ignore
       at: tokenRespaonse.accessToken,
       method,
       body,
-    });
-
-    contentType = res.headers.get("content-type");
+    })
+    contentType = res.headers.get("content-type")
   }
 
   if (contentType?.includes("application/json")) {
     try {
-      data = await res.json();
+      data = await res.json()
     } catch {
-      data = null;
+      data = null
     }
   }
 
@@ -99,69 +88,69 @@ export async function UseServer({
       success: false,
       message: normalizeErrorMessage(data?.message),
       statusCode: res.status,
-    };
+    }
   }
 
   return (
     data ?? {
       success: true,
     }
-  );
+  )
 }
 
 const refresh = async (
-  rt: string,
+  rt: string
 ): Promise<{ accessToken: string; refreshToken: string } | false> => {
-  await new Promise((resolve) => setTimeout(resolve, 2000)); //TODO - remove resolver
+  await new Promise((resolve) => setTimeout(resolve, 1000))
 
   try {
-    const res = await fetch(`${authBackendUrl}${authRoutes.rf}`, {
+    const res = await fetch(`${envs.authBackendUrl}${urls.auth.refresh}`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${rt}`,
       },
-    });
+    })
 
     if (!res.ok) {
-      return false;
+      return false
     }
 
-    let data: RefreshResponse;
+    let data: RefreshResType
 
     try {
-      data = await res.json();
+      data = await res.json()
     } catch (error) {
-      return false;
+      return false
     }
 
     if (data.success && data.data) {
-      const cookieStore = await cookies();
+      const cookieStore = await cookies()
 
-      const { accessToken, refreshToken } = data.data;
+      const { accessToken, refreshToken } = data.data
 
       cookieStore.set({
         name: "accessToken",
         value: `${accessToken}`,
         ...cookieOption(14 * 60),
-      });
+      })
 
       cookieStore.set({
         name: "refreshToken",
         value: `${refreshToken}`,
         ...cookieOption(59 * 24 * 60 * 60),
-      });
+      })
 
       return {
         accessToken,
         refreshToken,
-      };
+      }
     } else {
-      return false;
+      return false
     }
   } catch (error) {
-    return false;
+    return false
   }
-};
+}
 
 const dataFetch = async ({
   endpoint,
@@ -169,10 +158,10 @@ const dataFetch = async ({
   method,
   body,
 }: {
-  endpoint: string;
-  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-  at: string;
-  body?: {};
+  endpoint: string
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE"
+  at: string
+  body?: {}
 }): Promise<Response> => {
   return await fetch(endpoint, {
     method,
@@ -181,5 +170,18 @@ const dataFetch = async ({
       Authorization: `Bearer ${at}`,
     },
     ...(body && { body: JSON.stringify(body) }),
-  });
-};
+  })
+}
+
+function normalizeErrorMessage(
+  message: unknown,
+  fallback = "Something went wrong, try again."
+): string {
+  if (typeof message === "string") {
+    return message
+  }
+  if (Array.isArray(message)) {
+    return typeof message[0] === "string" ? message[0] : fallback
+  }
+  return fallback
+}

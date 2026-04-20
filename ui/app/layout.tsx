@@ -1,44 +1,35 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
-import "./globals.css";
-import { Providers } from "@/providers";
-import { Suspense } from "react";
+import { Geist_Mono, Inter } from "next/font/google"
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+import "./globals.css"
+import { cn } from "@/lib/utils"
+import Provider from "@/provider"
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
+
+const fontMono = Geist_Mono({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-//TODO: add better metadata
-export const metadata: Metadata = {
-  title: "Form | Fluoce",
-  description: "",
-  icons: [{ rel: "icon", url: "/Form-Fluoce.svg" }],
-};
+  variable: "--font-mono",
+})
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${geistSans.variable} ${geistMono.variable}`}
       suppressHydrationWarning
+      className={cn(
+        "antialiased",
+        fontMono.variable,
+        "font-sans",
+        inter.variable
+      )}
     >
-      <body className="antialiased" suppressHydrationWarning>
-        <Suspense fallback={null}>
-          <Providers>{children}</Providers>
-        </Suspense>
+      <body suppressHydrationWarning>
+        <Provider>{children}</Provider>
       </body>
     </html>
-  );
+  )
 }

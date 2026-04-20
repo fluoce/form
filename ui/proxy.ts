@@ -1,73 +1,35 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import type { RefreshResponse } from "@/types/response";
-import { authBackendUrl } from "./const/env-const";
-import { authRoutes } from "./const/url-path";
-import { nextAuthRedirect } from "./func/next-auth-redirect";
-import { cookieOption } from "./utils/cookie-option";
+import { NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
+import { envs } from "./const/envs"
+import { useAuthRefresh } from "./action/auth/refresh"
 
 export default async function proxy(req: NextRequest) {
-  const { pathname } = req.nextUrl;
+  const refreshToken = req.cookies.get("refreshToken")?.value
 
-  if (pathname === "/f") {
-    return NextResponse.next();
+  const accessToken = req.cookies.get("accessToken")?.value
+
+  if (!refreshToken) {
+    return NextResponse.redirect(
+      `${envs.authUrl}?ref=${envs?.appUrl}&path=${req?.url}`
+    )
   }
 
-  const rt = req.cookies.get("refreshToken")?.value;
-  const at = req.cookies.get("accessToken")?.value;
-
-  if (!rt) {
-    return nextAuthRedirect(req.url);
-  }
-
-  if (!at && rt) {
+  if (!accessToken && refreshToken) {
     try {
-      const res = await fetch(`${authBackendUrl}${authRoutes.rf}`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${rt}`,
-        },
-      });
-
-      if (res.ok) {
-        const nextResponse = NextResponse.next();
-
-        const data: RefreshResponse = await res.json();
-
-        if (data.success && data.data) {
-          const { accessToken, refreshToken } = data.data;
-
-          if (refreshToken) {
-            nextResponse.cookies.set(
-              "refreshToken",
-              refreshToken,
-              cookieOption(59 * 24 * 60 * 60),
-            );
-          }
-
-          if (accessToken) {
-            nextResponse.cookies.set(
-              "accessToken",
-              accessToken,
-              cookieOption(59 * 60),
-            );
-          }
-        } else {
-          return nextAuthRedirect(req.url);
-        }
-
-        return nextResponse;
-      } else {
-        return nextAuthRedirect(req.url);
+      const res = await useAuthRefresh({ refreshToken })
+      if (res?.success) {
+        return NextResponse.next()
       }
     } catch (error) {
-      return nextAuthRedirect(req.url);
+      return NextResponse.redirect(
+        `${envs.authUrl}?ref=${envs?.appUrl}&path=${req?.url}`
+      )
     }
   }
 
-  return NextResponse.next();
+  return NextResponse.next()
 }
 
 export const config = {
-  matcher: ["/dash/:path*", "/ws/:path*", "/form/:path*", "/edit/:path*"],
-};
+  matcher: ["/dashboard/:path*"],
+}

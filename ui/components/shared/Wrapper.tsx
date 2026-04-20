@@ -1,13 +1,18 @@
-import React from "react";
+import { cn } from "@/lib/utils"
+import { ReactNode } from "react"
 
-const Wrapper = ({ children }: { children: React.ReactNode }) => {
+export function Wrapper({
+  children,
+  className,
+}: {
+  children: ReactNode
+  className?: string
+}) {
   return (
-    <div className="flex w-full items-center justify-center">
-      <div className="flex w-full max-w-220 flex-col gap-8 md:p-6">
-        {children}
-      </div>
+    <div
+      className={cn("flex w-full items-center justify-center p-4", className)}
+    >
+      <div className="w-full max-w-6xl"> {children}</div>
     </div>
-  );
-};
-
-export default Wrapper;
+  )
+}

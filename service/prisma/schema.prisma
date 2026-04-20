@@ -95,7 +95,7 @@ model Form {
   status          FormStatus               @default(DRAFT)
   title           String?
   description     String?
-  theme           FormTheme                @default(BLUE)
+  theme           FormTheme                @default(DEFAULT)
   //TODO: other configs later
 
   createdAt       DateTime                 @default(now())
@@ -117,6 +117,7 @@ enum FormStatus {
 }
 
 enum FormTheme {
+  DEFAULT
   AMBER
   BLUE
   CYAN

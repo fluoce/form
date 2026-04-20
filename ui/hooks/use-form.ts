@@ -1,128 +1,98 @@
-import {
-  createFormMutation,
-  deleteFormMutation,
-  updateFormMutation,
-} from "@/actions/mutation/form/form-mutation";
-import {
-  getFormQuery,
-  getFormsQuery,
-  getTrashFormsQuery,
-} from "@/actions/query/form/form-query";
-import { formQueryKey } from "@/const/query-keys";
-import { useAppSelector } from "@/providers/redux/redux-provider";
-import { formUpdateInputType } from "@/types/type";
-import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
+import { queryKeys } from "@/const/query-key"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useParams } from "next/navigation"
+import { useFetch } from "./use-fetch"
+import { urls } from "@/const/urls"
+import { ResType } from "@/types/res-types"
+import { FormCreateType, FormType, FormUpdateType } from "@/types/form-types"
+import { toast } from "sonner"
 
-export default function useForm() {
-  const queryClient = useQueryClient();
+const queryClient = useQueryClient()
 
-  const workspaceId = useAppSelector(
-    (state) => state.workspace.selectedWorkspaceId,
-  );
+export function useForms() {
+  const { workspaceId } = useParams<{ workspaceId: string }>()
+  return useQuery({
+    queryKey: queryKeys.form.all({ workspaceId }),
+    queryFn: () =>
+      useFetch({
+        url: urls.form.all({ workspaceId }),
+        method: "GET",
+      }) as Promise<ResType<{ forms: FormType[] }>>,
+  })
+}
 
-  const createForm = useMutation({
-    mutationFn: async ({ name }: { name: string }) =>
-      createFormMutation({ name, workspaceId: workspaceId as string }),
+export function useForm() {
+  const { formId } = useParams<{ formId: string }>()
+  return useQuery({
+    queryKey: queryKeys.form.byId({ formId }),
+    queryFn: () =>
+      useFetch({
+        url: urls.form.byId({ formId }),
+        method: "GET",
+      }) as Promise<ResType<{ form: FormType }>>,
+  })
+}
+
+export function useFormCreate() {
+  const { workspaceId } = useParams<{ workspaceId: string }>()
+  return useMutation({
+    mutationFn: (body: FormCreateType) =>
+      useFetch({
+        url: urls.form.create({ workspaceId }),
+        method: "POST",
+        body,
+      }) as Promise<ResType<{ form: FormType }>>,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: formQueryKey.forms(workspaceId as string),
-      });
+        queryKey: queryKeys.form.all({
+          workspaceId,
+        }),
+      })
     },
-  });
+  })
+}
 
-  const updateForm = useMutation({
-    mutationFn: async ({
-      workspaceId,
-      formId,
-      name,
-      status,
-      description,
-      theme,
-      title,
-    }: formUpdateInputType) => {
-      if (!name && !status) {
-        return null;
-      }
-      return updateFormMutation({
-        workspaceId,
-        formId,
-        name,
-        status,
-        description,
-        theme,
-        title,
-      });
+export function useFormUpdate() {
+  const { workspaceId } = useParams<{ workspaceId: string }>()
+  return useMutation({
+    mutationFn: ({ body, id }: { body: FormUpdateType; id: string }) =>
+      useFetch({
+        url: urls.form.byId({ formId: id }),
+        method: "PATCH",
+        body,
+      }) as Promise<ResType<{ form: FormType }>>,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.form.all({
+          workspaceId,
+        }),
+      })
     },
-    onSuccess: (_, variables) => {
-      const formId = variables.formId;
-      queryClient.invalidateQueries({
-        queryKey: formQueryKey.forms(workspaceId as string),
-      });
-      queryClient.invalidateQueries({
-        queryKey: formQueryKey.form(formId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: formQueryKey.trashForms(workspaceId as string),
-      });
+    onError: (error) => {
+      toast.error(error?.message)
     },
-  });
+  })
+}
 
-  const deleteForm = useMutation({
-    mutationFn: async ({
-      formId,
-      workspaceId,
-    }: {
-      formId: string;
-      workspaceId: string;
-    }) =>
-      deleteFormMutation({
-        formId,
-        workspaceId,
-      }),
-    onSuccess: (_, variables) => {
-      const workspaceId = variables.workspaceId;
-      const formId = variables.formId;
+export function useFormDelete() {
+  const { workspaceId } = useParams<{ workspaceId: string }>()
+  const { formId } = useParams<{ formId: string }>()
+  return useMutation({
+    mutationFn: (body: FormUpdateType) =>
+      useFetch({
+        url: urls.form.byId({ formId }),
+        method: "DELETE",
+        body,
+      }) as Promise<ResType<{ form: FormType }>>,
+    onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: formQueryKey.trashForms(workspaceId),
-      });
+        queryKey: queryKeys.form.all({
+          workspaceId,
+        }),
+      })
       queryClient.invalidateQueries({
-        queryKey: formQueryKey.form(formId),
-      });
-      queryClient.invalidateQueries({
-        queryKey: formQueryKey.trashForms(workspaceId as string),
-      });
+        queryKey: queryKeys.form.trash,
+      })
     },
-  });
-
-  const forms = useQuery({
-    queryKey: formQueryKey.forms(workspaceId as string),
-    queryFn: () => getFormsQuery({ workspaceId: workspaceId as string }),
-    enabled: Boolean(workspaceId),
-  });
-
-  const form = (formId: string) =>
-    useQuery({
-      queryKey: formQueryKey.form(formId),
-      queryFn: () =>
-        getFormQuery({ formId, workspaceId: workspaceId as string }),
-      enabled: Boolean(formId),
-    });
-
-  const trashForm = useQuery({
-    queryKey: formQueryKey.trashForms(workspaceId as string),
-    queryFn: () =>
-      getTrashFormsQuery({
-        workspaceId: workspaceId as string,
-      }),
-    enabled: Boolean(workspaceId),
-  });
-
-  return {
-    createForm,
-    updateForm,
-    deleteForm,
-    forms,
-    form,
-    trashForm,
-  };
+  })
 }
