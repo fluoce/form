@@ -15,10 +15,10 @@ import { Field, FieldDescription, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Spinner } from "@/components/ui/spinner"
 import { routes } from "@/const/routes"
-import { useWorkspaceCreate, useWorkspaces } from "@/hooks/use-workspace"
+import { useWorkspaceCreate } from "@/hooks/use-workspace"
 import { WorkspaceCreateType } from "@/types/workspace-types"
 import { useRouter } from "next/navigation"
-import { ReactNode, useEffect, useState } from "react"
+import { ReactNode, useState } from "react"
 import { useForm } from "react-hook-form"
 
 export default function CreateWorkspace({
@@ -33,6 +33,7 @@ export default function CreateWorkspace({
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<WorkspaceCreateType>()
 
@@ -85,7 +86,13 @@ export default function CreateWorkspace({
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(open) => {
+        setOpen(open)
+        reset()
+      }}
+    >
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader className="h-0">

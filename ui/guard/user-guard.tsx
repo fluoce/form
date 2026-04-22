@@ -3,11 +3,13 @@
 import { PageSpinner } from "@/components/shared/loader"
 import { routes } from "@/const/routes"
 import { useUser } from "@/hooks/use-user"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { ReactNode, useEffect } from "react"
 
 export default function UserGuard({ children }: { children: ReactNode }) {
   const router = useRouter()
+
+  const path = usePathname()
 
   const { data, isLoading } = useUser()
 

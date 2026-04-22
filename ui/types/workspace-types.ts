@@ -9,7 +9,7 @@ export type WorkspaceStatusType =
   | "ACTIVE"
   | "INACTIVE"
   | "SUSPENDED"
-  | "DELETED"
+  | "ARCHIVED"
 
 export interface WorkspaceType {
   id: string
@@ -29,7 +29,6 @@ export type WorkspaceCreateType = {
 }
 
 export type WorkspaceUpdateType = {
-  workspaceId: string
   name?: string
   status?: WorkspaceStatusType
 }

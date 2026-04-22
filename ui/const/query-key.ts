@@ -10,6 +10,10 @@ export const queryKeys = {
   form: {
     all: ({ workspaceId }: { workspaceId: string }) => ["forms", workspaceId],
     byId: ({ formId }: { formId: string }) => ["form", formId],
-    trash: ["form", "trash"],
+    trash: ({ workspaceId }: { workspaceId: string }) => [
+      "form",
+      "trash",
+      workspaceId,
+    ],
   },
 }

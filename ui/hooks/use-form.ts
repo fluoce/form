@@ -31,6 +31,18 @@ export function useForm() {
   })
 }
 
+export function useFormTrash() {
+  const { workspaceId } = useParams<{ workspaceId: string }>()
+  return useQuery({
+    queryKey: queryKeys.form.trash({ workspaceId }),
+    queryFn: () =>
+      useFetch({
+        url: urls.form.trash({ workspaceId }),
+        method: "GET",
+      }) as Promise<ResType<{ forms: FormType[] }>>,
+  })
+}
+
 export function useFormCreate() {
   const queryClient = useQueryClient()
   const { workspaceId } = useParams<{ workspaceId: string }>()
@@ -61,12 +73,20 @@ export function useFormUpdate() {
         method: "PATCH",
         body,
       }) as Promise<ResType<{ form: FormType }>>,
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.form.all({
           workspaceId,
         }),
       })
+      if (
+        variables.body.status == "ARCHIVED" ||
+        variables.body.status == "DRAFT"
+      ) {
+        queryClient.refetchQueries({
+          queryKey: queryKeys.form.trash({ workspaceId }),
+        })
+      }
     },
     onError: (error) => {
       toast.error(error?.message)
@@ -77,22 +97,15 @@ export function useFormUpdate() {
 export function useFormDelete() {
   const queryClient = useQueryClient()
   const { workspaceId } = useParams<{ workspaceId: string }>()
-  const { formId } = useParams<{ formId: string }>()
   return useMutation({
-    mutationFn: (body: FormUpdateType) =>
+    mutationFn: ({ formId }: { formId: string }) =>
       useFetch({
         url: urls.form.byId({ formId }),
         method: "DELETE",
-        body,
       }) as Promise<ResType<{ form: FormType }>>,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.form.all({
-          workspaceId,
-        }),
-      })
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.form.trash,
+        queryKey: queryKeys.form.trash({ workspaceId }),
       })
     },
   })

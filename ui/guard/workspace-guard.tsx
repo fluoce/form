@@ -5,13 +5,15 @@ import { localStorageKey } from "@/const/local-storage-key"
 import { routes } from "@/const/routes"
 import useLocalStorage from "@/hooks/use-local-storage"
 import { useWorkspaces } from "@/hooks/use-workspace"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { ReactNode, useEffect } from "react"
 
 export default function WorkspaceGuard({ children }: { children: ReactNode }) {
   const router = useRouter()
 
   const { data, isLoading } = useWorkspaces()
+
+  const path = usePathname()
 
   const { value, setValue } = useLocalStorage<string>({
     key: localStorageKey.selectedWorkspace,
@@ -31,11 +33,13 @@ export default function WorkspaceGuard({ children }: { children: ReactNode }) {
         setValue(workspaceId)
       }
 
-      router.replace(
-        routes.dashboard.workspace({
-          workspaceId,
-        })
-      )
+      if (path.includes(routes.dashboard.createWorkspace)) {
+        router.replace(
+          routes.dashboard.workspace({
+            workspaceId,
+          })
+        )
+      }
     } else {
       router.replace(routes.dashboard.createWorkspace)
     }

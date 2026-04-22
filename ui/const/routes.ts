@@ -1,3 +1,5 @@
+import { FormTabType } from "@/types/form-types"
+
 export const routes = {
   base: "/",
   dashboard: {
@@ -5,6 +7,10 @@ export const routes = {
     createWorkspace: "/dashboard/create-workspace",
     workspace: ({ workspaceId }: { workspaceId: string }) =>
       `/dashboard/${workspaceId}`,
+    workspaceSetting: ({ workspaceId }: { workspaceId: string }) =>
+      `/dashboard/${workspaceId}/setting`,
+    trash: ({ workspaceId }: { workspaceId: string }) =>
+      `/dashboard/${workspaceId}/trash`,
   },
   form: {
     forms: ({ workspaceId }: { workspaceId: string }) =>

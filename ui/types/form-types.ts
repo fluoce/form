@@ -1,3 +1,10 @@
+import {
+  CreateFormFieldDto,
+  UpdateFormFieldDto,
+} from "./formfield-config-types"
+
+export type FormTabType = "general" | "edit" | "result" | "share"
+
 export type FormStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED"
 
 export interface FormType {
@@ -13,26 +20,6 @@ export interface FormType {
   theme: FormThemeType
   createdAt?: string
   updatedAt?: string
-}
-
-export interface FormPageType {
-  id: string
-  formId: string
-  name?: string | null
-  position: string
-  createdAt?: string
-  updatedAt?: string
-  formField: FormFieldType[]
-}
-
-export interface FormFieldType {
-  id: string
-  formId: string
-  formPageId: string
-  config: any
-  position: string
-  createdAt?: string | Date
-  updatedAt?: string | Date
 }
 
 export type FormCreateType = {
@@ -61,8 +48,53 @@ export type FormThemeType =
 
 export type FormUpdateType = {
   name?: string
-  status?: string
+  status?: FormStatus
   theme?: FormThemeType
   title?: string
   description?: string
+}
+
+export interface FormPageType {
+  id: string
+  formId: string
+  name?: string | null
+  position: string
+  createdAt?: string
+  updatedAt?: string
+  formField: FormFieldType[]
+}
+
+export type FormPageCreateType = {
+  name: string
+}
+
+export type FormPageUpdateType = {
+  formId: string
+  formPageId: string
+  name?: string
+  prevPageId?: string | undefined
+  nextPageId?: string | undefined
+}
+
+export interface FormFieldType {
+  id: string
+  formId: string
+  formPageId: string
+  config: any
+  position: string
+  createdAt?: string | Date
+  updatedAt?: string | Date
+}
+
+export type FormFieldCreateType = {
+  body: CreateFormFieldDto
+  formId: string
+  formPageId: string
+}
+
+export type FormFieldUpdateType = {
+  body: UpdateFormFieldDto
+  formId: string
+  formPageId: string
+  formFieldId: string
 }

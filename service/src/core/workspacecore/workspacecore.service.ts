@@ -87,7 +87,7 @@ export class WorkspacecoreService {
       where: {
         id,
         ownerId,
-        status: { not: 'DELETED' },
+        status: { not: 'ARCHIVED' },
       },
     });
   }
@@ -96,7 +96,7 @@ export class WorkspacecoreService {
     return await this.prisma.workspace.findMany({
       where: {
         ownerId,
-        status: { not: 'DELETED' },
+        status: { not: 'ARCHIVED' },
       },
       orderBy: {
         createdAt: 'asc',
@@ -108,7 +108,7 @@ export class WorkspacecoreService {
     return await this.prisma.workspace.findMany({
       where: {
         ownerId,
-        status: 'DELETED',
+        status: 'ARCHIVED',
       },
     });
   }

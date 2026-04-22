@@ -10,7 +10,10 @@ export function Wrapper({
 }) {
   return (
     <div
-      className={cn("flex w-full items-center justify-center p-4", className)}
+      className={cn(
+        "flex w-full items-center justify-center p-4 sm:p-8",
+        className
+      )}
     >
       <div className="w-full max-w-6xl"> {children}</div>
     </div>

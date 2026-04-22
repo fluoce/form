@@ -12,13 +12,19 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu"
 import { useWorkspaces } from "@/hooks/use-workspace"
-import { Check, ChevronsUpDown, Plus } from "lucide-react"
+import { Check, ChevronsUpDown, Plus, Settings } from "lucide-react"
 import { cn } from "@/lib/utils"
 import CreateWorkspace from "@/app/dashboard/create-workspace/page"
 import { routes } from "@/const/routes"
+import useLocalStorage from "@/hooks/use-local-storage"
+import { localStorageKey } from "@/const/local-storage-key"
 
 export function SelectWorkspace() {
   const router = useRouter()
+
+  const { setValue } = useLocalStorage({
+    key: localStorageKey.selectedWorkspace,
+  })
 
   const { workspaceId } = useParams<{
     workspaceId: string
@@ -47,9 +53,14 @@ export function SelectWorkspace() {
           {data?.data?.workspaces?.map((w) => (
             <DropdownMenuItem
               onSelect={() => {
-                router.replace(
-                  routes.dashboard.workspace({ workspaceId: w?.id })
-                )
+                w?.id == selectedWorkspace?.id
+                  ? router.push(
+                      routes.dashboard.workspaceSetting({ workspaceId: w?.id })
+                    )
+                  : router.replace(
+                      routes.dashboard.workspace({ workspaceId: w?.id })
+                    )
+                setValue(w?.id)
               }}
               key={w?.id}
               className={cn(
@@ -59,7 +70,7 @@ export function SelectWorkspace() {
               )}
             >
               {w?.name}
-              {w?.id == selectedWorkspace?.id && <Check />}
+              {w?.id == selectedWorkspace?.id && <Settings />}
             </DropdownMenuItem>
           ))}
         </DropdownMenuGroup>

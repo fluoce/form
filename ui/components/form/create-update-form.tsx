@@ -28,6 +28,7 @@ export function CreateUpdateForm({
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormCreateType>({
     defaultValues: {
@@ -60,7 +61,13 @@ export function CreateUpdateForm({
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(open) => {
+        setOpen(open)
+        reset()
+      }}
+    >
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>

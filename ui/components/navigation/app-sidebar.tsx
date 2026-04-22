@@ -19,7 +19,7 @@ import { SelectWorkspace } from "../workspace/select-workspace"
 import { ReactElement, useState } from "react"
 import { NavUser } from "./nav-user"
 import { useParams, usePathname } from "next/navigation"
-import { ChevronRight, House, Plus, Trash2 } from "lucide-react"
+import { ChevronRight, Form, House, Plus, Trash2 } from "lucide-react"
 import { useForms } from "@/hooks/use-form"
 import { Avatar, AvatarFallback } from "../ui/avatar"
 import {
@@ -33,6 +33,13 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
 import { cn } from "@/lib/utils"
+import { CreateUpdateForm } from "../form/create-update-form"
+
+type MenuType = {
+  name: string
+  paht: string
+  icon: ReactElement
+}
 
 export function AppSidebar() {
   const { workspaceId } = useParams<{
@@ -47,15 +54,24 @@ export function AppSidebar() {
 
   const { data, isLoading } = useForms()
 
-  const MENU: {
-    name: string
-    paht: string
-    icon: ReactElement
-  }[] = [
+  const MENU: MenuType[] = [
     {
       name: "Dashboard",
       paht: routes.dashboard.workspace({ workspaceId }),
       icon: <House />,
+    },
+    {
+      name: "All Forms",
+      paht: routes.form.forms({ workspaceId }),
+      icon: <Form />,
+    },
+  ]
+
+  const OTHERS_MENU: MenuType[] = [
+    {
+      name: "Trash",
+      paht: routes.dashboard.trash({ workspaceId }),
+      icon: <Trash2 />,
     },
   ]
 
@@ -87,7 +103,12 @@ export function AppSidebar() {
           <SidebarGroup className="flex flex-col gap-1">
             <Collapsible defaultOpen onOpenChange={setIsFormShow}>
               <CollapsibleTrigger asChild>
-                <SidebarGroupLabel className="flex w-fit cursor-pointer items-center gap-2 hover:bg-muted">
+                <SidebarGroupLabel
+                  className={cn(
+                    "mb-1 flex w-fit cursor-pointer items-center gap-2",
+                    isFormShow ? "hover:bg-sidebar-accent" : "bg-sidebar-accent"
+                  )}
+                >
                   Forms
                   <ChevronRight
                     className={cn(isFormShow && "rotate-90", "smooth")}
@@ -152,9 +173,11 @@ export function AppSidebar() {
                   )
                 ) : (
                   <SidebarMenuItem>
-                    <SidebarMenuButton>
-                      <Plus /> Form
-                    </SidebarMenuButton>
+                    <CreateUpdateForm>
+                      <SidebarMenuButton>
+                        <Plus /> Form
+                      </SidebarMenuButton>
+                    </CreateUpdateForm>
                   </SidebarMenuItem>
                 )}
               </CollapsibleContent>
@@ -163,11 +186,16 @@ export function AppSidebar() {
         )}
         <SidebarGroup>
           <SidebarGroupLabel>Others</SidebarGroupLabel>
-          <SidebarMenuItem>
-            <SidebarMenuButton>
-              <Trash2 /> Trash
-            </SidebarMenuButton>
-          </SidebarMenuItem>
+          {OTHERS_MENU?.map((m) => (
+            <Link key={m?.paht} href={m.paht}>
+              <SidebarMenuItem>
+                <SidebarMenuButton isActive={path == m.paht}>
+                  {m?.icon}
+                  {m?.name}
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </Link>
+          ))}
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="border-t">
