@@ -16,4 +16,28 @@ export const queryKeys = {
       workspaceId,
     ],
   },
+  formPage: {
+    all: ({ formId }: { formId: string }) => ["form-page", formId],
+    byId: ({ formId, formPageId }: { formId: string; formPageId: string }) => [
+      "form-page",
+      formId,
+      formPageId,
+    ],
+  },
+  field: {
+    all: ({ formId, formPageId }: { formId: string; formPageId: string }) => [
+      "field",
+      formId,
+      formPageId,
+    ],
+    byId: ({
+      formId,
+      formPageId,
+      fieldId,
+    }: {
+      formId: string
+      formPageId: string
+      fieldId: string
+    }) => ["field", formId, formPageId, fieldId],
+  },
 }

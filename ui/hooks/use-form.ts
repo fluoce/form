@@ -79,6 +79,11 @@ export function useFormUpdate() {
           workspaceId,
         }),
       })
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.form.byId({
+          formId: variables?.id,
+        }),
+      })
       if (
         variables.body.status == "ARCHIVED" ||
         variables.body.status == "DRAFT"

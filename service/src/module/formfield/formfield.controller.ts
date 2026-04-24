@@ -19,7 +19,7 @@ import {
   type FormFieldType,
 } from 'src/types/formfield.types';
 
-@Controller('form/:formId/formpage/:formPageId/formfield')
+@Controller('form/:formId/formpage/:formPageId/field')
 export class FormfieldController {
   constructor(private readonly formfieldService: FormfieldService) {}
 

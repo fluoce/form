@@ -20,4 +20,25 @@ export const urls = {
     all: ({ workspaceId }: { workspaceId: string }) =>
       `/form/all/${workspaceId}`,
   },
+  formPage: {
+    create: ({ formId }: { formId: string }) => `/form/${formId}/formpage`,
+    byId: ({ formId, formPageId }: { formId: string; formPageId: string }) =>
+      `/form/${formId}/formpage/${formPageId}`,
+    all: ({ formId }: { formId: string }) => `/form/${formId}/formpage`,
+  },
+  field: {
+    create: ({ formId, formPageId }: { formId: string; formPageId: string }) =>
+      `/form/${formId}/formpage/${formPageId}/field`,
+    byId: ({
+      formId,
+      formPageId,
+      fieldId,
+    }: {
+      formId: string
+      formPageId: string
+      fieldId: string
+    }) => `/form/${formId}/formpage/${formPageId}/field/${fieldId}`,
+    all: ({ formId, formPageId }: { formId: string; formPageId: string }) =>
+      `/form/${formId}/formpage/${formPageId}/field`,
+  },
 }

@@ -11,7 +11,7 @@ export default function ({ children }: { children: ReactNode }) {
     <ThemeProvider>
       <TanstackProvider>
         <TooltipProvider>{children}</TooltipProvider>
-        <Toaster />
+        <Toaster position="top-right" />
       </TanstackProvider>
     </ThemeProvider>
   )

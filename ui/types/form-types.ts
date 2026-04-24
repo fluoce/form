@@ -1,5 +1,6 @@
 import {
   CreateFormFieldDto,
+  FormFieldConfig,
   UpdateFormFieldDto,
 } from "./formfield-config-types"
 
@@ -57,7 +58,7 @@ export type FormUpdateType = {
 export interface FormPageType {
   id: string
   formId: string
-  name?: string | null
+  name: string
   position: string
   createdAt?: string
   updatedAt?: string
@@ -69,8 +70,6 @@ export type FormPageCreateType = {
 }
 
 export type FormPageUpdateType = {
-  formId: string
-  formPageId: string
   name?: string
   prevPageId?: string | undefined
   nextPageId?: string | undefined
@@ -80,21 +79,12 @@ export interface FormFieldType {
   id: string
   formId: string
   formPageId: string
-  config: any
+  config: FormFieldConfig
   position: string
   createdAt?: string | Date
   updatedAt?: string | Date
 }
 
-export type FormFieldCreateType = {
-  body: CreateFormFieldDto
-  formId: string
-  formPageId: string
-}
+export type FormFieldCreateType = CreateFormFieldDto
 
-export type FormFieldUpdateType = {
-  body: UpdateFormFieldDto
-  formId: string
-  formPageId: string
-  formFieldId: string
-}
+export type FormFieldUpdateType = UpdateFormFieldDto

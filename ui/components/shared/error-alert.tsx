@@ -14,8 +14,10 @@ export function ErrorAlert({
   return (
     <Alert variant="destructive">
       {icon}
-      <AlertTitle>{error}</AlertTitle>
-      {description && <AlertDescription>{description}</AlertDescription>}
+      <AlertTitle className="break-all">{error}</AlertTitle>
+      {description && (
+        <AlertDescription className="break-all">{description}</AlertDescription>
+      )}
     </Alert>
   )
 }

@@ -197,7 +197,7 @@ export class DropdownValidationDto {
 
   @IsOptional()
   @IsNumber()
-  @Min(0)
+  @Min(1)
   minSelected?: number;
 
   @IsOptional()

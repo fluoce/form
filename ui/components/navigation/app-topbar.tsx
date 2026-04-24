@@ -23,7 +23,7 @@ export function AppTopbar() {
   const isOnFormPage = paht == routes.form.byId({ workspaceId, formId })
 
   return (
-    <nav className="flex items-center justify-between gap-2 border-b bg-sidebar p-2">
+    <nav className="sticky top-0 z-20 flex h-12 items-center justify-between gap-2 border-b bg-sidebar p-2">
       <SidebarTrigger />
       {isOnFormPage ? (
         <Tabs

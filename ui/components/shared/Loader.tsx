@@ -11,7 +11,7 @@ const sizeMap = {
   lg: "h-12 w-12 border-4",
 }
 
-export function BlueSpinner({ size = "md", className }: SpinnerProps) {
+export function PrimarySpinner({ size = "md", className }: SpinnerProps) {
   return (
     <div
       aria-label="Loading"
@@ -28,7 +28,7 @@ export function BlueSpinner({ size = "md", className }: SpinnerProps) {
 export function PageSpinner({ size = "md", className }: SpinnerProps) {
   return (
     <div className="flex h-[calc(100vh-10rem)] w-full items-center justify-center">
-      <BlueSpinner size={size} className={className} />
+      <PrimarySpinner size={size} className={className} />
     </div>
   )
 }

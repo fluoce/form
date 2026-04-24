@@ -24,7 +24,7 @@ import {
   useWorkspaceTrash,
   useWorkspaceUpdate,
 } from "@/hooks/use-workspace"
-import { BadgeInfo, RotateCcw, Trash2 } from "lucide-react"
+import { RotateCcw, Trash2 } from "lucide-react"
 
 const page = () => {
   const { data, isLoading } = useWorkspaceTrash()
@@ -141,8 +141,7 @@ const page = () => {
         {formTrash?.data?.forms.length ? (
           <div className="flex flex-col gap-4">
             <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
-              <BadgeInfo size={16} className="text-blue-600" /> selected
-              workspace's form
+              Forms (selected workspace's forms)
             </span>
             <div className="flex flex-col gap-2 px-4">
               {formTrash?.data?.forms.map((f) => (
