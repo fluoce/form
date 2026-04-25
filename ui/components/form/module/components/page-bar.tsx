@@ -5,8 +5,10 @@ import { CreateUpdateFormPage } from "./create-update-form-page"
 import { EllipsisVertical, Monitor, Plus, Smartphone } from "lucide-react"
 import { useFormPages } from "@/hooks/use-form-page"
 import { PrimarySpinner } from "@/components/shared/loader"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Dispatch, SetStateAction } from "react"
+import { useAppDispatch } from "@/provider/store"
+import { setFieldId } from "@/provider/store/slice/field-id-slice"
 
 export function PageBar({
   isMobile,
@@ -17,7 +19,13 @@ export function PageBar({
 }) {
   const { data, isLoading } = useFormPages()
 
+  const dispatch = useAppDispatch()
+
   const router = useRouter()
+
+  const searchParams = useSearchParams()
+
+  const pageId = searchParams.get("page")
 
   return (
     <div className="flex h-fit items-center gap-2">
@@ -37,14 +45,14 @@ export function PageBar({
               <Button
                 key={p?.id}
                 onClick={() => {
-                  const search = window.location.search
-                  const params = new URLSearchParams(search)
+                  dispatch(setFieldId(null))
+                  const params = new URLSearchParams(window.location.search)
                   params.set("page", p.id)
-                  router.push(`?${params.toString()}`)
+                  window.history.replaceState(null, "", `?${params.toString()}`)
                 }}
                 size="sm"
                 className="overflow-hidden pr-0"
-                variant="secondary"
+                variant={pageId == p?.id ? "default" : "secondary"}
               >
                 {p?.name}
                 <CreateUpdateFormPage formPage={p}>

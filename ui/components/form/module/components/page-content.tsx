@@ -20,19 +20,10 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { type RefObject } from "react"
 import { useAppDispatch, useAppSelector } from "@/provider/store"
 import { setFieldId } from "@/provider/store/slice/field-id-slice"
 
-export function PageContent({
-  isMobile,
-  fieldRef,
-}: {
-  isMobile: boolean
-  fieldRef: RefObject<HTMLDivElement | null>
-}) {
-  const router = useRouter()
-
+export function PageContent({ isMobile }: { isMobile: boolean }) {
   const dispatch = useAppDispatch()
 
   const searchParams = useSearchParams()
@@ -69,12 +60,11 @@ export function PageContent({
             >
               <div className="flex w-full max-w-140 flex-col gap-8">
                 <div
-                  ref={fieldRef}
                   onClick={() => {
                     dispatch(setFieldId("base"))
                   }}
                   className={cn(
-                    "flex cursor-pointer flex-col gap-1 rounded-b-lg border bg-primary p-6 text-primary-foreground",
+                    "smooth flex cursor-pointer flex-col gap-1 rounded-b-lg border bg-primary p-6 text-primary-foreground",
                     fieldId == "base" && "scale-103 border-stone-500"
                   )}
                 >
@@ -87,7 +77,6 @@ export function PageContent({
                 </div>
                 {data?.data?.formFields?.map((field) => (
                   <div
-                    ref={fieldRef}
                     key={field?.id}
                     onClick={() => {
                       dispatch(setFieldId(field?.id))
@@ -99,7 +88,7 @@ export function PageContent({
                   >
                     <FieldRenderer field={field} />
                     {fieldId == field?.id ? (
-                      <div className="absolute -top-2 -right-2 flex flex-col gap-1">
+                      <div className="absolute top-0 -right-8.5 flex flex-col gap-1">
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
                             <Button
@@ -137,6 +126,16 @@ export function PageContent({
                             </AlertDialogFooter>
                           </AlertDialogContent>
                         </AlertDialog>
+                        <Button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            dispatch(setFieldId(null))
+                          }}
+                          size="icon-sm"
+                          variant="outline"
+                        >
+                          <X />
+                        </Button>
                       </div>
                     ) : null}
                   </div>

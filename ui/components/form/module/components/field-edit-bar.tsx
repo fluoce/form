@@ -2,6 +2,7 @@
 
 import { PrimarySpinner } from "@/components/shared/loader"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
@@ -9,15 +10,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { useField } from "@/hooks/use-field"
 import { useForm } from "@/hooks/use-form"
 import { useAppSelector } from "@/provider/store"
-import { BadgeInfo, Cog } from "lucide-react"
-import { useSearchParams } from "next/navigation"
-import { type RefObject } from "react"
+import { BadgeInfo, Cog, GripVertical, Plus } from "lucide-react"
 
-export function FieldEditBar({
-  fieldRef,
-}: {
-  fieldRef: RefObject<HTMLDivElement | null>
-}) {
+export function FieldEditBar() {
   const { fieldId } = useAppSelector((state) => state.fieldId)
 
   const { data: formData, isPending: formIsPending } = useForm()
@@ -25,10 +20,7 @@ export function FieldEditBar({
   const { data, isPending } = useField({ fieldId: fieldId! })
 
   return (
-    <div
-      ref={fieldRef}
-      className="h-full w-80 shrink-0 rounded-lg bg-muted p-2 [&_input]:bg-background dark:[&_input]:bg-background [&_textarea]:bg-background dark:[&_textarea]:bg-background"
-    >
+    <div className="h-full w-80 shrink-0 rounded-lg bg-muted p-2 [&_input]:bg-background dark:[&_input]:bg-background [&_textarea]:bg-background dark:[&_textarea]:bg-background">
       {fieldId == "base" ? (
         <div className="custom-scroll h-full overflow-y-auto">
           <div className="flex flex-col gap-8 px-2">
@@ -116,14 +108,31 @@ export function FieldEditBar({
                     />
                   </Field>
                   <Field>
-                    <FieldLabel htmlFor="field-placeholder">
-                      Required
-                    </FieldLabel>
+                    <FieldLabel htmlFor="field-required">Required</FieldLabel>
                     <Switch
                       className="ml-1"
                       defaultChecked={!!data?.data?.formField?.config?.required}
                     />
                   </Field>
+                  {["checkbox", "radio", "dropdown"].includes(
+                    data?.data?.formField?.config?.type ?? ""
+                  ) && (
+                    <Field>
+                      <FieldLabel htmlFor="field-options">Options</FieldLabel>
+                      {/* @ts-ignore */}
+                      {data?.data?.formField?.config?.options?.map((o) => (
+                        <div key={o?.value} className="flex items-center gap-1">
+                          <GripVertical className="cursor-grab" size={20} />
+                          <Input
+                            type="text"
+                            value={o?.label}
+                            onChange={(e) => {}}
+                          />
+                        </div>
+                      ))}
+                      <AddOption />
+                    </Field>
+                  )}
                 </FieldGroup>
               </FieldSet>
               <FieldSet>
@@ -365,11 +374,22 @@ export function FieldEditBar({
           </div>
         ) : null
       ) : (
-        <span className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
-          <BadgeInfo size={14} className="text-blue-500" /> select field to
+        <span className="flex items-center gap-2 p-1 text-sm font-medium text-muted-foreground">
+          <BadgeInfo size={18} className="text-blue-500" /> select field to
           edit.
         </span>
       )}
+    </div>
+  )
+}
+
+function AddOption() {
+  return (
+    <div className="flex items-center gap-2">
+      <Input type="text" placeholder="Add more . . ." onChange={(e) => {}} />
+      <Button disabled variant="secondary" size="icon-sm">
+        <Plus />
+      </Button>
     </div>
   )
 }

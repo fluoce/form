@@ -27,8 +27,8 @@
 }
 
 .custom-scroll::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 
 .custom-scroll::-webkit-scrollbar-track {
@@ -36,8 +36,9 @@
 }
 
 .custom-scroll::-webkit-scrollbar-thumb {
-  background-color: rgba(126, 126, 126, 0.289);
+  background-color: rgba(126, 126, 126, 0.2);
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .custom-scroll::-webkit-scrollbar-thumb:hover {
