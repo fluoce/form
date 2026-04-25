@@ -1,11 +1,10 @@
 "use server"
 
+import { useAuthCookies } from "@/action/auth/cookies"
+import { useAuthRefresh } from "@/action/auth/refresh"
 import { envs } from "@/const/envs"
 import { routes } from "@/const/routes"
-import { urls } from "@/const/urls"
-import { RefreshResType, ResType } from "@/types/res-types"
-import { cookieOption } from "@/utils/cookie-option"
-import { cookies } from "next/headers"
+import { ResType } from "@/types/res-types"
 import { redirect } from "next/navigation"
 
 interface ServerProps {
@@ -31,22 +30,32 @@ export default async function UseServer({
     ? `${envs.authBackendUrl}${url}`
     : `${envs.backendUrl}${url}`
 
-  const cookieStore = await cookies()
+  let at: string
+  let rt: string
 
-  let at = cookieStore.get("accessToken")?.value!
-  let rt = cookieStore.get("refreshToken")?.value!
+  try {
+    const cookiesRes = await useAuthCookies()
+
+    const cookiesData = await cookiesRes.json()
+
+    at = cookiesData.at
+    rt = cookiesData.rt
+  } catch (e) {
+    at = ""
+    rt = ""
+  }
 
   if (!rt) {
     redirect(authRedirect)
   }
 
   if (!at && rt) {
-    const tokenRespaonse = await refresh(rt)
-    if (!tokenRespaonse) {
+    const tokenResponse = await useAuthRefresh({ refreshToken: rt })
+    if (!tokenResponse || !tokenResponse.success || !tokenResponse.data) {
       redirect(authRedirect)
     }
-    at = tokenRespaonse.accessToken
-    rt = tokenRespaonse.refreshToken
+    at = tokenResponse.data.accessToken
+    rt = tokenResponse.data.refreshToken
   }
 
   let res = await dataFetch({
@@ -60,15 +69,15 @@ export default async function UseServer({
   let contentType = res.headers.get("content-type")
 
   if (res.status == 401) {
-    const tokenRespaonse = await refresh(rt)
-    if (!tokenRespaonse) {
+    const tokenResponse = await useAuthRefresh({ refreshToken: rt })
+    if (!tokenResponse || !tokenResponse.success || !tokenResponse.data) {
       redirect(authRedirect)
     }
-    at = tokenRespaonse.accessToken
-    rt = tokenRespaonse.refreshToken
+    at = tokenResponse.data.accessToken
+    rt = tokenResponse.data.refreshToken
     res = await dataFetch({
       endpoint,
-      at: tokenRespaonse.accessToken,
+      at: tokenResponse.data.accessToken,
       method,
       body,
     })
@@ -96,60 +105,6 @@ export default async function UseServer({
       success: true,
     }
   )
-}
-
-const refresh = async (
-  rt: string
-): Promise<{ accessToken: string; refreshToken: string } | false> => {
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-
-  try {
-    const res = await fetch(`${envs.authBackendUrl}${urls.auth.refresh}`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${rt}`,
-      },
-    })
-
-    if (!res.ok) {
-      return false
-    }
-
-    let data: RefreshResType
-
-    try {
-      data = await res.json()
-    } catch (error) {
-      return false
-    }
-
-    if (data.success && data.data) {
-      const cookieStore = await cookies()
-
-      const { accessToken, refreshToken } = data.data
-
-      cookieStore.set({
-        name: "accessToken",
-        value: `${accessToken}`,
-        ...cookieOption(14 * 60),
-      })
-
-      cookieStore.set({
-        name: "refreshToken",
-        value: `${refreshToken}`,
-        ...cookieOption(59 * 24 * 60 * 60),
-      })
-
-      return {
-        accessToken,
-        refreshToken,
-      }
-    } else {
-      return false
-    }
-  } catch (error) {
-    return false
-  }
 }
 
 const dataFetch = async ({

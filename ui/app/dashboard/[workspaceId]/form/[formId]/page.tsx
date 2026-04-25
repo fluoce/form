@@ -4,7 +4,6 @@ import { FormEdit } from "@/components/form/module/edit"
 import { FormGeneral } from "@/components/form/module/general"
 import { FormResult } from "@/components/form/module/result"
 import { FormShare } from "@/components/form/module/share"
-import { useSidebar } from "@/components/ui/sidebar"
 import { FormTabType } from "@/types/form-types"
 import { useSearchParams } from "next/navigation"
 

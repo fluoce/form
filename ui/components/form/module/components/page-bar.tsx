@@ -6,7 +6,7 @@ import { EllipsisVertical, Monitor, Plus, Smartphone } from "lucide-react"
 import { useFormPages } from "@/hooks/use-form-page"
 import { PrimarySpinner } from "@/components/shared/loader"
 import { useRouter } from "next/navigation"
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { Dispatch, SetStateAction } from "react"
 
 export function PageBar({
   isMobile,
@@ -19,14 +19,6 @@ export function PageBar({
 
   const router = useRouter()
 
-  useEffect(() => {
-    if (!data?.data?.formPages?.length) return
-    const search = window?.location?.search
-    const params = new URLSearchParams(search)
-    params.set("page", data?.data?.formPages?.[0]?.id)
-    router.replace(`?${params.toString()}`)
-  }, [data, isLoading])
-
   return (
     <div className="flex h-fit items-center gap-2">
       <div className="custom-scroll flex w-full items-center overflow-x-auto overflow-y-clip rounded-lg bg-muted p-2">
@@ -37,7 +29,9 @@ export function PageBar({
             </Button>
           </CreateUpdateFormPage>
           {isLoading ? (
-            <PrimarySpinner />
+            <div>
+              <PrimarySpinner size="sm" />
+            </div>
           ) : (
             data?.data?.formPages?.map((p) => (
               <Button

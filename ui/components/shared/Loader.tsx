@@ -17,7 +17,7 @@ export function PrimarySpinner({ size = "md", className }: SpinnerProps) {
       aria-label="Loading"
       role="status"
       className={clsx(
-        "animate-spin rounded-full border-muted border-t-primary",
+        "animate-spin rounded-full border-accent border-t-primary",
         sizeMap[size],
         className
       )}

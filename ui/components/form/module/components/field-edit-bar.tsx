@@ -8,20 +8,27 @@ import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
 import { useField } from "@/hooks/use-field"
 import { useForm } from "@/hooks/use-form"
+import { useAppSelector } from "@/provider/store"
 import { BadgeInfo, Cog } from "lucide-react"
 import { useSearchParams } from "next/navigation"
+import { type RefObject } from "react"
 
-export function FieldEditBar() {
-  const searchParams = useSearchParams()
-
-  const fieldId = searchParams.get("field")
+export function FieldEditBar({
+  fieldRef,
+}: {
+  fieldRef: RefObject<HTMLDivElement | null>
+}) {
+  const { fieldId } = useAppSelector((state) => state.fieldId)
 
   const { data: formData, isPending: formIsPending } = useForm()
 
-  const { data, isPending } = useField()
+  const { data, isPending } = useField({ fieldId: fieldId! })
 
   return (
-    <div className="h-full w-80 shrink-0 rounded-lg bg-muted p-2 [&_input]:bg-background dark:[&_input]:bg-background [&_textarea]:bg-background dark:[&_textarea]:bg-background">
+    <div
+      ref={fieldRef}
+      className="h-full w-80 shrink-0 rounded-lg bg-muted p-2 [&_input]:bg-background dark:[&_input]:bg-background [&_textarea]:bg-background dark:[&_textarea]:bg-background"
+    >
       {fieldId == "base" ? (
         <div className="custom-scroll h-full overflow-y-auto">
           <div className="flex flex-col gap-8 px-2">

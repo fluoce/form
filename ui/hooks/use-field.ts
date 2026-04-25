@@ -10,6 +10,8 @@ import {
 } from "@/types/form-types"
 import { toast } from "sonner"
 import { ResType } from "@/types/res-types"
+import { useAppDispatch } from "@/provider/store"
+import { setFieldId } from "@/provider/store/slice/field-id-slice"
 
 export function useFields() {
   const { formId } = useParams<{ formId: string }>()
@@ -32,11 +34,10 @@ export function useFields() {
   })
 }
 
-export function useField() {
+export function useField({ fieldId }: { fieldId: string }) {
   const { formId } = useParams<{ formId: string }>()
   const searchParmas = useSearchParams()
   const formPageId = searchParmas.get("page")!
-  const fieldId = searchParmas.get("field")!
   return useQuery({
     queryKey: queryKeys.field.byId({
       formId,
@@ -126,6 +127,7 @@ export function useFieldUpdate() {
 }
 
 export function useFieldDelete() {
+  const dispatch = useAppDispatch()
   const { formId } = useParams<{ formId: string }>()
   const searchParmas = useSearchParams()
   const formPageId = searchParmas.get("page")!
@@ -147,6 +149,7 @@ export function useFieldDelete() {
           formPageId,
         }),
       })
+      dispatch(setFieldId(null))
     },
     onError: (error) => {
       toast.error(error?.message)

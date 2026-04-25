@@ -50,6 +50,14 @@ export async function useAuthRefresh({
       value: `${refreshToken}`,
       ...cookieOption(59 * 24 * 60 * 60),
     })
+
+    return {
+      success: true,
+      data: {
+        accessToken,
+        refreshToken,
+      },
+    }
   }
 
   return {
