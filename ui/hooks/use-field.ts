@@ -12,8 +12,10 @@ import { toast } from "sonner"
 import { ResType } from "@/types/res-types"
 import { useAppDispatch } from "@/provider/store"
 import { setFieldId } from "@/provider/store/slice/field-id-slice"
+import { setPageFields } from "@/provider/store/slice/page-fields-slice"
 
 export function useFields() {
+  const dispatch = useAppDispatch()
   const { formId } = useParams<{ formId: string }>()
   const searchParmas = useSearchParams()
   const formPageId = searchParmas.get("page")!
@@ -63,11 +65,16 @@ export function useField({ fieldId }: { fieldId: string }) {
 export function useFieldCreate() {
   const { formId } = useParams<{ formId: string }>()
   const searchParmas = useSearchParams()
-  const formPageId = searchParmas.get("page")!
+  const formPageId = searchParmas.get("page")
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: ({ body }: { body: FormFieldCreateType }) =>
-      useFetch({
+    mutationFn: ({ body }: { body: FormFieldCreateType }) => {
+      if (!formPageId) {
+        return Promise.reject(
+          new Error("Select or create form page to add fields")
+        )
+      }
+      return useFetch({
         url: urls.field.create({ formId, formPageId }),
         method: "POST",
         body,
@@ -75,11 +82,13 @@ export function useFieldCreate() {
         ResType<{
           formField: FormFieldType
         }>
-      >,
+      >
+    },
     onError: (error) => {
       toast.error(error?.message)
     },
     onSuccess: () => {
+      if (!formPageId) return
       queryClient.invalidateQueries({
         queryKey: queryKeys.field.all({
           formId,
@@ -94,7 +103,6 @@ export function useFieldUpdate() {
   const { formId } = useParams<{ formId: string }>()
   const searchParmas = useSearchParams()
   const formPageId = searchParmas.get("page")!
-  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: ({
       body,
@@ -112,14 +120,6 @@ export function useFieldUpdate() {
           formField: FormFieldType
         }>
       >,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.field.all({
-          formId,
-          formPageId,
-        }),
-      })
-    },
     onError: (error) => {
       toast.error(error?.message)
     },

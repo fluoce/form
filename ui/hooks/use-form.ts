@@ -21,7 +21,7 @@ export function useForms() {
 
 export function useForm() {
   const { formId } = useParams<{ formId: string }>()
-  return useQuery({
+  return useQuery<ResType<{ form: FormType }>>({
     queryKey: queryKeys.form.byId({ formId }),
     queryFn: () =>
       useFetch({

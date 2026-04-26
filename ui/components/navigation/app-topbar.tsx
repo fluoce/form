@@ -3,7 +3,7 @@
 import { Eye, Search, Upload } from "lucide-react"
 import { Button } from "../ui/button"
 import { SidebarTrigger } from "../ui/sidebar"
-import { useParams, usePathname, useRouter } from "next/navigation"
+import { useParams, usePathname } from "next/navigation"
 import { routes } from "@/const/routes"
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
 import { FormTabType } from "@/types/form-types"
@@ -16,8 +16,6 @@ export function AppTopbar() {
     formId: string
   }>()
 
-  const router = useRouter()
-
   const paht = usePathname()
 
   const isOnFormPage = paht == routes.form.byId({ workspaceId, formId })
@@ -28,7 +26,11 @@ export function AppTopbar() {
       {isOnFormPage ? (
         <Tabs
           defaultValue={TABS[1]}
-          onValueChange={(v) => router.push(`?tab=${v}`)}
+          onValueChange={(v) => {
+            const params = new URLSearchParams(window.location.search)
+            params.set("tab", v)
+            window.history.replaceState(null, "", `?${params.toString()}`)
+          }}
         >
           <TabsList variant="line">
             {TABS.map((t) => (

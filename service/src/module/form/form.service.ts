@@ -94,4 +94,15 @@ export class FormService {
       forms,
     };
   }
+
+  async getFullForm(formId: string) {
+    const form = await this.formcoreService.getFullForm(formId);
+    if (!form) {
+      throw new NotFoundException('Forms not found');
+    }
+    return {
+      message: 'form fetched successfully',
+      form,
+    };
+  }
 }

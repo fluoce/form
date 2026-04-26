@@ -104,6 +104,8 @@ export function useFormPageDelete() {
   const { formId } = useParams<{
     formId: string
   }>()
+  const searchParams = useSearchParams()
+  const pageId = searchParams.get("page")
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: ({ formPageId }: { formPageId: string }) =>
@@ -111,12 +113,17 @@ export function useFormPageDelete() {
         url: urls.formPage.byId({ formId, formPageId }),
         method: "DELETE",
       }),
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.formPage.all({
           formId,
         }),
       })
+      if (pageId == variables?.formPageId) {
+        const params = new URLSearchParams(window.location.search)
+        params.delete("page")
+        window.history.replaceState(null, "", `?${params.toString()}`)
+      }
     },
   })
 }

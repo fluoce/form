@@ -22,6 +22,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { FormFieldType } from "@/types/form-types"
+import { Option } from "@/types/formfield-config-types"
 
 export function FieldRenderer({ field }: { field: FormFieldType }) {
   const config = field?.config || {}
@@ -35,6 +36,7 @@ export function FieldRenderer({ field }: { field: FormFieldType }) {
             <Helptext helpText={config?.helpText} />
           </div>
           <Input
+            id={config?.label}
             className="bg-background dark:bg-background"
             type="text"
             placeholder={config?.placeholder || undefined}
@@ -52,6 +54,7 @@ export function FieldRenderer({ field }: { field: FormFieldType }) {
             <Helptext helpText={config?.helpText} />
           </div>
           <Textarea
+            id={config?.label}
             className="max-h-60 bg-background dark:bg-background"
             placeholder={config?.placeholder || undefined}
             required={config?.required}
@@ -68,6 +71,7 @@ export function FieldRenderer({ field }: { field: FormFieldType }) {
             <Helptext helpText={config?.helpText} />
           </div>
           <Input
+            id={config?.label}
             className="bg-background dark:bg-background"
             placeholder={config?.placeholder || undefined}
             type="email"
@@ -83,6 +87,7 @@ export function FieldRenderer({ field }: { field: FormFieldType }) {
             <Helptext helpText={config?.helpText} />
           </div>
           <Input
+            id={config?.label}
             className="bg-background dark:bg-background"
             placeholder={config?.placeholder || undefined}
             required={config?.required}
@@ -101,6 +106,7 @@ export function FieldRenderer({ field }: { field: FormFieldType }) {
             <Helptext helpText={config?.helpText} />
           </div>
           <Input
+            id={config?.label}
             className="bg-background dark:bg-background"
             placeholder={config?.placeholder || undefined}
             required={config?.required}
@@ -116,6 +122,7 @@ export function FieldRenderer({ field }: { field: FormFieldType }) {
             <Helptext helpText={config?.helpText} />
           </div>
           <Input
+            id={config?.label}
             className="bg-background dark:bg-background"
             placeholder={config?.placeholder || undefined}
             type="url"
@@ -137,8 +144,8 @@ export function FieldRenderer({ field }: { field: FormFieldType }) {
               <SelectValue placeholder={config?.placeholder || "Select"} />
             </SelectTrigger>
             <SelectContent>
-              {config?.options?.map((o: any) => (
-                <SelectItem key={o?.value || o?.label} value={o?.value || ""}>
+              {config?.options?.map((o, idx) => (
+                <SelectItem key={idx} value={o?.value || ""}>
                   {o?.label}
                 </SelectItem>
               ))}
@@ -153,12 +160,9 @@ export function FieldRenderer({ field }: { field: FormFieldType }) {
             <Label label={config?.label} required={config?.required} />
             <Helptext helpText={config?.helpText} />
           </div>
-          <RadioGroup>
-            {config?.options?.map((o: any) => (
-              <div
-                key={o?.value || o?.label}
-                className="flex items-center gap-3"
-              >
+          <RadioGroup className="mt-2">
+            {config?.options?.map((o: Option, idx) => (
+              <div key={idx} className="flex items-center gap-3">
                 <RadioGroupItem
                   className="cursor-pointer bg-background dark:bg-background"
                   value={o?.value || ""}
@@ -176,34 +180,23 @@ export function FieldRenderer({ field }: { field: FormFieldType }) {
             <Label label={config?.label} required={config?.required} />
             <Helptext helpText={config?.helpText} />
           </div>
-          {config?.options?.map((o: any) => (
-            <Field orientation="horizontal" key={o?.value || o?.label}>
-              <Checkbox
-                className="cursor-pointer bg-background dark:bg-background"
-                value={o?.value}
-              />
-              <FieldLabel htmlFor={o?.label}>{o?.label}</FieldLabel>
-            </Field>
-          ))}
+          <div className="mt-2 flex flex-col gap-2">
+            {config?.options?.map((o: any) => (
+              <Field orientation="horizontal" key={o?.value || o?.label}>
+                <Checkbox
+                  id={config?.label}
+                  className="cursor-pointer bg-background dark:bg-background"
+                  value={o?.value}
+                />
+                <FieldLabel htmlFor={o?.label}>{o?.label}</FieldLabel>
+              </Field>
+            ))}
+          </div>
         </Field>
       )
     default:
       return null
   }
-}
-
-function Label({ label, required }: { label?: string; required?: boolean }) {
-  return (
-    <FieldLabel htmlFor={label} className="flex items-start gap-2">
-      {label || "Label or Question"}
-      {required && <Asterisk size={12} className="text-primary" />}
-    </FieldLabel>
-  )
-}
-
-function Helptext({ helpText }: { helpText?: string }) {
-  if (!helpText) return null
-  return <FieldDescription>{helpText}</FieldDescription>
 }
 
 function DatePickerSimple({ field }: { field: FormFieldType }) {
@@ -214,7 +207,7 @@ function DatePickerSimple({ field }: { field: FormFieldType }) {
   return (
     <Field>
       <div>
-        <FieldLabel htmlFor={config?.label}>{config?.label}</FieldLabel>
+        <Label label={config?.label} required={config?.required} />
         <Helptext helpText={config?.helpText} />
       </div>
       <Popover open={open} onOpenChange={setOpen}>
@@ -225,7 +218,13 @@ function DatePickerSimple({ field }: { field: FormFieldType }) {
             className="justify-start bg-background font-normal dark:bg-background"
           >
             <CalendarDays />{" "}
-            {date ? date.toISOString().slice(0, 10) : "Select date"}
+            {date ? (
+              date.toISOString().slice(0, 10)
+            ) : (
+              <span className="text-muted-foreground">
+                {config?.placeholder ?? "Select Date"}
+              </span>
+            )}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-auto overflow-hidden p-0" align="start">
@@ -243,4 +242,18 @@ function DatePickerSimple({ field }: { field: FormFieldType }) {
       </Popover>
     </Field>
   )
+}
+
+function Label({ label, required }: { label?: string; required?: boolean }) {
+  return (
+    <FieldLabel htmlFor={label} className="flex items-start gap-2">
+      {label || "Label or Question"}
+      {required && <Asterisk size={12} className="text-primary" />}
+    </FieldLabel>
+  )
+}
+
+function Helptext({ helpText }: { helpText?: string }) {
+  if (!helpText) return null
+  return <FieldDescription>{helpText}</FieldDescription>
 }

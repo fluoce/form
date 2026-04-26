@@ -22,6 +22,9 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useAppDispatch, useAppSelector } from "@/provider/store"
 import { setFieldId } from "@/provider/store/slice/field-id-slice"
+import { useEffect } from "react"
+import { setPageFields } from "@/provider/store/slice/page-fields-slice"
+import Link from "next/link"
 
 export function PageContent({ isMobile }: { isMobile: boolean }) {
   const dispatch = useAppDispatch()
@@ -34,7 +37,14 @@ export function PageContent({ isMobile }: { isMobile: boolean }) {
 
   const { data, isLoading } = useFields()
 
-  const { data: formData } = useForm()
+  useEffect(() => {
+    if (!data?.data?.formFields) return
+    dispatch(setPageFields(data?.data?.formFields!))
+  }, [data])
+
+  const pageFields = useAppSelector((state) => state.pageFields.fields)
+
+  const { data: formData, isLoading: formLoading } = useForm()
 
   const { mutateAsync, isPending } = useFieldDelete()
 
@@ -47,7 +57,7 @@ export function PageContent({ isMobile }: { isMobile: boolean }) {
         )}
       >
         {pageId ? (
-          isLoading ? (
+          isLoading || formLoading ? (
             <div className="flex h-full w-full items-center justify-center">
               <PrimarySpinner />
             </div>
@@ -75,7 +85,7 @@ export function PageContent({ isMobile }: { isMobile: boolean }) {
                     {formData?.data?.form?.description}
                   </p>
                 </div>
-                {data?.data?.formFields?.map((field) => (
+                {pageFields?.map((field) => (
                   <div
                     key={field?.id}
                     onClick={() => {
@@ -93,7 +103,7 @@ export function PageContent({ isMobile }: { isMobile: boolean }) {
                           <AlertDialogTrigger asChild>
                             <Button
                               disabled={isPending}
-                              className="bg-red-500"
+                              variant="destructive"
                               size="icon-sm"
                             >
                               {isPending ? <Spinner /> : <Trash2 />}
@@ -140,6 +150,21 @@ export function PageContent({ isMobile }: { isMobile: boolean }) {
                     ) : null}
                   </div>
                 ))}
+                <div className="grid grid-cols-3 gap-4">
+                  <Button className="p-4" variant="outline">
+                    Clear
+                  </Button>
+                  <Button className="col-span-2 p-4">Submit</Button>
+                </div>
+                <div className="flex w-full items-center justify-center gap-2 text-xs">
+                  Powered by
+                  <Link
+                    href="https://fluoce.com"
+                    className="font-medium text-primary underline"
+                  >
+                    Fluoce
+                  </Link>
+                </div>
               </div>
             </div>
           )

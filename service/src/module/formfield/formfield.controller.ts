@@ -3,8 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  Patch,
   Post,
-  Put,
   UseGuards,
 } from '@nestjs/common';
 import { FormpageGuard } from '../formpage/formpage.guard';
@@ -37,7 +37,7 @@ export class FormfieldController {
   }
 
   @UseGuards(FormfieldGuard)
-  @Put(':formFieldId')
+  @Patch(':formFieldId')
   async updateField(
     @FormField() formField: FormFieldType,
     @Body() data: UpdateFormFieldDto,

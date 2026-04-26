@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Param,
   Patch,
   Post,
   UseGuards,
@@ -17,6 +18,7 @@ import { Workspace } from 'src/decorator/workspace.decorator';
 import type { WorkspaceType } from 'src/types/workspace.types';
 import { Form } from 'src/decorator/form.decorator';
 import { FormGuard } from './form.guard';
+import { Public } from 'src/decorator/public.decorator';
 
 @Controller('form')
 export class FormController {
@@ -70,5 +72,11 @@ export class FormController {
     @Workspace() workspace: WorkspaceType,
   ) {
     return await this.formService.getForms(user.sub, workspace.id);
+  }
+
+  @Public()
+  @Get('public/:formId')
+  async getFullForm(@Param('formId') formId: string) {
+    return await this.formService.getFullForm(formId);
   }
 }

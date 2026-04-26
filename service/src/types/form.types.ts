@@ -52,9 +52,6 @@ export class UpdateFormDto {
 
   @IsOptional()
   @IsString()
-  @MinLength(2, {
-    message: formTitleMessage,
-  })
   @MaxLength(100, {
     message: formTitleMessage,
   })
@@ -62,9 +59,6 @@ export class UpdateFormDto {
 
   @IsOptional()
   @IsString()
-  @MinLength(2, {
-    message: formDescriptionMessage,
-  })
   @MaxLength(200, {
     message: formDescriptionMessage,
   })

@@ -1,6 +1,6 @@
 "use client"
 
-import { useFormUpdate } from "@/hooks/use-form"
+import { useForm, useFormUpdate } from "@/hooks/use-form"
 import { BASE_DATA } from "../data/base"
 import { useParams } from "next/navigation"
 
@@ -9,24 +9,34 @@ export function Base() {
     formId: string
   }>()
 
+  const { data } = useForm()
+
   const { mutateAsync } = useFormUpdate()
 
   return BASE_DATA?.map((b) => (
     <div
-      onClick={() =>
-        mutateAsync({
-          body: {
-            title:
-              b.type == "title" ? "Galactic Pizza Feedback Sheet" : undefined,
-            description:
-              b?.type == "description"
-                ? "Tell us about your cosmic pizza experience and favorite interstellar toppings."
-                : undefined,
-          },
+      onClick={() => {
+        if (!data?.data?.form?.title && b.type == "title") {
+          mutateAsync({
+            body: {
+              title: b.type == "title" ? "Form Title ." : undefined,
+            },
 
-          id: formId,
-        })
-      }
+            id: formId,
+          })
+        } else if (!data?.data?.form?.description && b.type == "description") {
+          mutateAsync({
+            body: {
+              description:
+                b?.type == "description"
+                  ? "Form's detailed description ."
+                  : undefined,
+            },
+
+            id: formId,
+          })
+        }
+      }}
       key={b?.name}
       className="flex cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-accent"
     >
