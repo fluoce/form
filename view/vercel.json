@@ -1,8 +1,8 @@
 {
   "routes": [
     {
-      "src": "/f/(.*)",
-      "dest": "/index.html"
+      "src": "^/f/(.*)",
+      "dest": "/form.html"
     }
   ]
 }
