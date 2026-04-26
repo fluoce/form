@@ -1,8 +1,8 @@
 {
-  "routes": [
+  "rewrites": [
     {
-      "src": "^/f/(.*)",
-      "dest": "/form.html"
+      "source": "/f/:id",
+      "destination": "/form.html"
     }
   ]
 }
