@@ -8,6 +8,8 @@ const form = await fetchForm({
   formId,
 });
 
+console.log(formId);
+
 const container = document.querySelector(".fluoce-form");
 
 if (!form) {
