@@ -86,7 +86,13 @@ export function renderForm(container, form) {
         form?.formPage?.[currentPageIdx]?.id ?? `page_${currentPageIdx}`;
       pagesData[pageId] = data;
       console.log("Collected data by pages:", pagesData);
-      wrapper.submit();
+      // Prevent form reload by not calling wrapper.submit();
+      // Instead, handle the form submission here (e.g., send data via fetch or trigger a custom event)
+      // Example: dispatch a custom event with the collected data
+      const submitEvent = new CustomEvent("fluoceFormSubmit", {
+        detail: { allPagesData: pagesData },
+      });
+      wrapper.dispatchEvent(submitEvent);
     }
   });
 
