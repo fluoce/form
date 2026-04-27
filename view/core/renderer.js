@@ -63,16 +63,32 @@ export function renderForm(container, form) {
     submitBtn.textContent = currentPageIdx < totalPages - 1 ? "Next" : "Submit";
   }
 
+  const pagesData = {};
+
   submitBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    // if (!wrapper.checkValidity()) {
-    //   wrapper.reportValidity();
-    //   return;
-    // }
+    if (!wrapper.checkValidity()) {
+      wrapper.reportValidity();
+      return;
+    }
+    const page = form.formPage[currentPageIdx];
+    if (page && Array.isArray(page.formField)) {
+      pagesData[page.id] = {};
+      page.formField.forEach((field) => {
+        const input = wrapper.querySelector(
+          `#${field.id} input, #${field.id} textarea, #${field.id} select`,
+        );
+        if (input) {
+          pagesData[page.id][field.id] = input.value;
+        }
+      });
+      wrapper.fo;
+    }
     if (currentPageIdx < totalPages - 1) {
       currentPageIdx++;
       renderCurrentPage();
     } else {
+      console.log("Collected data by pages:", pagesData);
       wrapper.submit();
     }
   });

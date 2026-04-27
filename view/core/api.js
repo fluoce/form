@@ -1,6 +1,5 @@
 const baseUrl = "https://form-servise/form/public";
 
-// Create a beautiful loader element and center it in the parent with min-h-screen
 function createBeautifulLoader() {
   const loader = document.createElement("div");
   loader.className = "fluoce-beautiful-loader";
@@ -14,7 +13,6 @@ function createBeautifulLoader() {
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
-        /* This ensures the loader centers with min-h-screen (min-height: 100vh) */
       }
       .fluoce-beautiful-loader {
         display: flex;
@@ -70,11 +68,8 @@ export async function fetchForm({ formId }) {
   let loaderEl;
   if (targetDiv) {
     loaderEl = createBeautifulLoader();
-    // Remove all children to ensure only loader is present during loading/centering
     targetDiv.innerHTML = "";
     targetDiv.appendChild(loaderEl);
-
-    // Ensure parent is flex (for vertical centering, in case min-h-screen matters)
     targetDiv.style.minHeight = "100vh";
     targetDiv.style.display = "flex";
     targetDiv.style.justifyContent = "center";
@@ -92,7 +87,6 @@ export async function fetchForm({ formId }) {
     if (loaderEl && loaderEl.parentNode) {
       loaderEl.parentNode.removeChild(loaderEl);
     }
-    // Optionally, remove the inline styles after loader is removed
     if (targetDiv) {
       targetDiv.style.removeProperty("display");
       targetDiv.style.removeProperty("justify-content");
