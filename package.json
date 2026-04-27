@@ -12,5 +12,8 @@
   "description": "",
   "dependencies": {
     "concurrently": "^9.2.1"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.0"
   }
 }
