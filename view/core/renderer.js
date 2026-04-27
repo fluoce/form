@@ -71,23 +71,20 @@ export function renderForm(container, form) {
       wrapper.reportValidity();
       return;
     }
-    const page = form.formPage[currentPageIdx];
-    if (page && Array.isArray(page.formField)) {
-      pagesData[page.id] = {};
-      page.formField.forEach((field) => {
-        const input = wrapper.querySelector(
-          `#${field.id} input, #${field.id} textarea, #${field.id} select`,
-        );
-        if (input) {
-          pagesData[page.id][field.id] = input.value;
-        }
-      });
-      wrapper.fo;
-    }
+    const formData = new FormData(wrapper);
+    const data = Object.fromEntries(formData.entries());
+    const pageId =
+      form?.formPage?.[currentPageIdx]?.id ?? `page_${currentPageIdx}`;
+    pagesData[pageId] = data;
     if (currentPageIdx < totalPages - 1) {
       currentPageIdx++;
       renderCurrentPage();
     } else {
+      const formData = new FormData(wrapper);
+      const data = Object.fromEntries(formData.entries());
+      const pageId =
+        form?.formPage?.[currentPageIdx]?.id ?? `page_${currentPageIdx}`;
+      pagesData[pageId] = data;
       console.log("Collected data by pages:", pagesData);
       wrapper.submit();
     }
