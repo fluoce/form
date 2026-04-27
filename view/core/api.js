@@ -1,4 +1,4 @@
-const baseUrl = "https://form-servise/form/public";
+const baseUrl = "https://form-servise.fluoce.com/form/public";
 
 function createBeautifulLoader() {
   const loader = document.createElement("div");
