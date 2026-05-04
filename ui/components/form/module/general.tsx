@@ -1,6 +1,6 @@
 import { PageSpinner } from "@/components/shared/loader"
 import { PageHeader } from "@/components/shared/page-header"
-import { Wrapper } from "@/components/shared/wrapper"
+import { Wrapper } from "@/components/shared/wrapper-r"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Kbd } from "@/components/ui/kbd"
 import {

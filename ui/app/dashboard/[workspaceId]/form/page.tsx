@@ -2,20 +2,11 @@
 
 import { PageSpinner } from "@/components/shared/loader"
 import { PageHeader } from "@/components/shared/page-header"
-import { Wrapper } from "@/components/shared/wrapper"
+import { Wrapper } from "@/components/shared/wrapper-r"
 import { Button } from "@/components/ui/button"
 import { useParams } from "next/navigation"
 import { useWorkspaces } from "@/hooks/use-workspace"
-import {
-  BadgeInfo,
-  EllipsisVertical,
-  ExternalLink,
-  FileText,
-  Palette,
-  Pencil,
-  Plus,
-  Trash2,
-} from "lucide-react"
+import { EllipsisVertical, Palette, Pencil, Plus, Trash2 } from "lucide-react"
 import Link from "next/link"
 import { routes } from "@/const/routes"
 import { cn } from "@/lib/utils"
