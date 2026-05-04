@@ -1,7 +1,7 @@
 "use client"
 
 import { useAuthExchange } from "@/action/auth/exchange"
-import { PageSpinner } from "@/components/shared/loader"
+import { PageSpinner } from "@/components/shared/loader-r"
 import { routes } from "@/const/routes"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Suspense, useEffect } from "react"

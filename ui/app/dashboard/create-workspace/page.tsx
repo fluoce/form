@@ -1,7 +1,7 @@
 "use client"
 
 import { ErrorAlert } from "@/components/shared/error-alert"
-import { PageSpinner } from "@/components/shared/loader"
+import { PageSpinner } from "@/components/shared/loader-r"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,

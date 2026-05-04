@@ -1,6 +1,6 @@
 "use client"
 
-import { PageSpinner } from "@/components/shared/loader"
+import { PageSpinner } from "@/components/shared/loader-r"
 import { routes } from "@/const/routes"
 import { useUser } from "@/hooks/use-user"
 import { usePathname, useRouter } from "next/navigation"

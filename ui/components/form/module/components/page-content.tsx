@@ -1,6 +1,6 @@
 "use client"
 
-import { PrimarySpinner } from "@/components/shared/loader"
+import { PrimarySpinner } from "@/components/shared/loader-r"
 import { useFieldDelete, useFields } from "@/hooks/use-field"
 import { cn } from "@/lib/utils"
 import { useRouter, useSearchParams } from "next/navigation"

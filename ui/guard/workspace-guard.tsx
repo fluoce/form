@@ -1,6 +1,6 @@
 "use client"
 
-import { PageSpinner } from "@/components/shared/loader"
+import { PageSpinner } from "@/components/shared/loader-r"
 import { localStorageKey } from "@/const/local-storage-key"
 import { routes } from "@/const/routes"
 import useLocalStorage from "@/hooks/use-local-storage"
