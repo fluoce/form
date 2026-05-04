@@ -4,9 +4,9 @@ import { useAuthExchange } from "@/action/auth/exchange"
 import { PageSpinner } from "@/components/shared/loader"
 import { routes } from "@/const/routes"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useEffect } from "react"
+import { Suspense, useEffect } from "react"
 
-export default function Auth() {
+function Auth() {
   const router = useRouter()
 
   const searchParams = useSearchParams()
@@ -37,4 +37,12 @@ export default function Auth() {
   }, [code])
 
   return <PageSpinner />
+}
+
+export default function AuthPage() {
+  return (
+    <Suspense>
+      <Auth />
+    </Suspense>
+  )
 }

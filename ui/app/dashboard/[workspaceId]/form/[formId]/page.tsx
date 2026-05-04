@@ -6,8 +6,9 @@ import { FormResult } from "@/components/form/module/result"
 import { FormShare } from "@/components/form/module/share"
 import { FormTabType } from "@/types/form-types"
 import { useSearchParams } from "next/navigation"
+import { Suspense } from "react"
 
-const FormSection = () => {
+function FormSection() {
   const searchParams = useSearchParams()
 
   const tab = searchParams.get("tab") as FormTabType
@@ -24,4 +25,10 @@ const FormSection = () => {
   return SelectedComponent ? <SelectedComponent /> : <FormEdit />
 }
 
-export default FormSection
+export default function FormSectionPage() {
+  return (
+    <Suspense>
+      <FormSection />
+    </Suspense>
+  )
+}
