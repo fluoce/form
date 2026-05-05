@@ -3,4 +3,5 @@ export const envs = {
   backendUrl: process.env.NEXT_PUBLIC_BACKEND_URL!,
   authUrl: process.env.NEXT_PUBLIC_AUTH_URL!,
   authBackendUrl: process.env.AUTH_BACKEND_URL!,
+  shareLink: "https://f.fluoce.com/f",
 }
