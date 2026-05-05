@@ -1,7 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/f/:path*",
+      "source": "/:path*",
       "destination": "/form.html"
     }
   ]
