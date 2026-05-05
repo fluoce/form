@@ -290,14 +290,14 @@ export function FieldEditBar() {
                   )}
                 </FieldGroup>
               </FieldSet>
-              <FieldSet>
+              {/* <FieldSet>
                 <FieldGroup>
                   <span className="flex items-center gap-2 pt-2 text-sm font-medium text-muted-foreground">
                     <Cog size={18} /> Field validations
                   </span>
                   <FieldValidationsEditBar field={field} />
                 </FieldGroup>
-              </FieldSet>
+              </FieldSet> */}
             </div>
           </div>
         ) : null
