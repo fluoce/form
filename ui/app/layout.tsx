@@ -27,6 +27,14 @@ export default function RootLayout({
         inter.variable
       )}
     >
+      <head>
+        <title>Form Fluoce | Build, Share, and Collect Data</title>
+        <meta
+          name="description"
+          content="Form Fluoce is your platform to easily build, share, and collect data with interactive forms."
+        />
+        <link rel="icon" href="/Form-Fluoce.svg" type="image/svg+xml" />
+      </head>
       <body suppressHydrationWarning>
         <Provider>{children}</Provider>
       </body>
