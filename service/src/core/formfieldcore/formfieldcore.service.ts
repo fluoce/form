@@ -54,22 +54,33 @@ export class FormfieldcoreService {
     formPageId: string,
     data: UpdateFormFieldDto,
   ): Promise<FormFieldType | null> {
-    const position =
-      data?.prevFieldId || data?.nextFieldId
-        ? createFractionalIndex(
-            data?.prevFieldId ?? null,
-            data?.nextFieldId ?? null,
-          )
-        : undefined;
-    const config = data?.config ? JSON.parse(JSON.stringify(data.config)) : {};
+    const dataToUpdate: Record<string, any> = {};
+    if (data?.prevFieldId || data?.nextFieldId) {
+      const [prevPosition, nextPosition] = await Promise.all([
+        data?.prevFieldId
+          ? this.getFieldPosition(data.prevFieldId)
+          : Promise.resolve(null),
+        data?.nextFieldId
+          ? this.getFieldPosition(data.nextFieldId)
+          : Promise.resolve(null),
+      ]);
+      dataToUpdate.position = createFractionalIndex(
+        prevPosition?.position ?? null,
+        nextPosition?.position ?? null,
+      );
+    }
+
+    if (data?.config) {
+      dataToUpdate.config = JSON.parse(JSON.stringify(data.config));
+    }
+
     return await this.prisma.formField.update({
       where: {
         id: formFieldId,
         formPageId,
       },
       data: {
-        position,
-        config,
+        ...dataToUpdate,
       },
     });
   }
@@ -94,6 +105,18 @@ export class FormfieldcoreService {
       where: {
         id: formFieldId,
         formPageId,
+      },
+    });
+  }
+
+  async getFieldPosition(formFieldId: string) {
+    if (!formFieldId) return null;
+    return await this.prisma.formField.findUnique({
+      where: {
+        id: formFieldId,
+      },
+      select: {
+        position: true,
       },
     });
   }
