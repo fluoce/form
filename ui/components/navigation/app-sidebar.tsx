@@ -19,7 +19,14 @@ import { SelectWorkspace } from "../workspace/select-workspace"
 import { ReactElement, useState } from "react"
 import { NavUser } from "./nav-user"
 import { useParams, usePathname } from "next/navigation"
-import { ChevronRight, Form, House, Plus, Trash2 } from "lucide-react"
+import {
+  BadgeInfo,
+  ChevronRight,
+  Form,
+  House,
+  Plus,
+  Trash2,
+} from "lucide-react"
 import { useForms } from "@/hooks/use-form"
 import { Avatar, AvatarFallback } from "../ui/avatar"
 import {
@@ -198,9 +205,25 @@ export function AppSidebar() {
           ))}
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="border-t">
+
+      <SidebarFooter>
+        {open ? <InfoCard /> : <></>}
         <NavUser />
       </SidebarFooter>
     </Sidebar>
+  )
+}
+
+function InfoCard() {
+  return (
+    <div className="flex w-full flex-col gap-2 rounded-md border-2 p-3 text-xs">
+      <span className="flex items-center gap-2 font-medium">
+        <BadgeInfo size={14} className="text-blue-600" /> Test Mode Enabled
+      </span>
+      <span className="text-muted-foreground">
+        This app is currently in test mode. Some features may not work as
+        expected, so avoid using important or sensitive data for now.
+      </span>
+    </div>
   )
 }
