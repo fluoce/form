@@ -22,11 +22,11 @@ export function funcHandleFieldSortEnd({
   const newIndex = pageFields?.findIndex((f) => f.id === source.id)
   const prevField = pageFields[newIndex - 1] ?? null
   const nextField = pageFields[newIndex + 1] ?? null
-  updateField({
-    body: {
-      prevFieldId: prevField?.id,
-      nextFieldId: nextField?.id,
-    },
-    fieldId: String(source?.id),
-  })
+  // updateField({
+  //   body: {
+  //     prevFieldId: prevField?.id,
+  //     nextFieldId: nextField?.id,
+  //   },
+  //   fieldId: String(source?.id),
+  // })
 }
