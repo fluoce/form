@@ -10,12 +10,13 @@ import { useForm, useFormUpdate } from "@/hooks/use-form"
 import { useAppDispatch, useAppSelector } from "@/provider/store"
 import { updatePageField } from "@/provider/store/slice/page-fields-slice"
 import { BadgeInfo, Cog, GripVertical, Pencil, Trash2 } from "lucide-react"
-import { FieldValidationsEditBar } from "./field-validations-edit-bar"
 import { AddOption } from "./add-option"
 import { Option } from "@/types/formfield-config-types"
 import { normalizeString } from "@/utils/normalize-string"
 import { useUpdateField } from "@/hooks/use-update-field"
 import { UpdateFormTitleDescription } from "./update-form-title-description"
+import { toast } from "sonner"
+import { FieldValidationsEditBar } from "./field-validations-edit-bar"
 
 export function FieldEditBar() {
   const { updateField } = useUpdateField()
@@ -211,11 +212,11 @@ export function FieldEditBar() {
                       {/* @ts-ignore */}
                       {field?.config?.options?.map((o, idx) => (
                         <div key={idx} className="flex items-center gap-1">
-                          <GripVertical className="cursor-grab" size={20} />
                           <Input
                             id={`field-option-${idx}`}
                             type="text"
-                            value={o?.label}
+                            value={o?.label ?? `Option ${idx}`}
+                            placeholder="Enter option . . ."
                             onChange={(e) => {
                               dispatch(
                                 updatePageField({
@@ -225,16 +226,19 @@ export function FieldEditBar() {
                                       ...field?.config,
                                       //@ts-ignore
                                       options: field?.config?.options?.map(
-                                        (o: Option, optIdx: number) => {
+                                        (opt: Option, optIdx: number) => {
                                           if (optIdx == idx) {
                                             return {
-                                              label: e.target.value,
+                                              label:
+                                                e?.target?.value ??
+                                                `Option ${idx}`,
                                               value: normalizeString(
-                                                e.target.value
+                                                e?.target?.value,
+                                                idx
                                               ),
                                             }
                                           }
-                                          return o
+                                          return opt
                                         }
                                       ),
                                     },
@@ -251,10 +255,13 @@ export function FieldEditBar() {
                                     (opt: Option, optIdx: number) => {
                                       if (optIdx == idx) {
                                         return {
-                                          label: (e.target as HTMLInputElement)
-                                            .value,
+                                          label:
+                                            (e?.target as HTMLInputElement)
+                                              ?.value || `Option ${idx}`,
                                           value: normalizeString(
-                                            (e.target as HTMLInputElement).value
+                                            (e?.target as HTMLInputElement)
+                                              ?.value,
+                                            idx
                                           ),
                                         }
                                       }
@@ -290,21 +297,21 @@ export function FieldEditBar() {
                   )}
                 </FieldGroup>
               </FieldSet>
-              {/* <FieldSet>
+              <FieldSet>
                 <FieldGroup>
                   <span className="flex items-center gap-2 pt-2 text-sm font-medium text-muted-foreground">
                     <Cog size={18} /> Field validations
                   </span>
                   <FieldValidationsEditBar field={field} />
                 </FieldGroup>
-              </FieldSet> */}
+              </FieldSet>
             </div>
           </div>
         ) : null
       ) : (
         <span className="flex items-center gap-2 p-1 text-sm font-medium text-muted-foreground">
-          <BadgeInfo size={18} className="text-blue-500" /> select field to
-          edit.
+          <BadgeInfo size={18} className="shrink-0 text-blue-500" />{" "}
+          Double-click a field to select and edit its details.
         </span>
       )}
     </div>

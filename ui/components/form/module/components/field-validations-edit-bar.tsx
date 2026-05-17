@@ -20,6 +20,7 @@ export function FieldValidationsEditBar({ field }: { field: FormFieldType }) {
               placeholder="Min length"
               value={validation?.minLength ?? ""}
               onChange={() => {}}
+              onBlur={() => {}}
             />
           </Field>
           <Field>
@@ -30,6 +31,7 @@ export function FieldValidationsEditBar({ field }: { field: FormFieldType }) {
               placeholder="Max length"
               value={validation?.maxLength ?? ""}
               onChange={() => {}}
+              onBlur={() => {}}
             />
           </Field>
         </>
@@ -45,6 +47,7 @@ export function FieldValidationsEditBar({ field }: { field: FormFieldType }) {
               placeholder="Min length"
               value={validation?.minLength ?? ""}
               onChange={() => {}}
+              onBlur={() => {}}
             />
           </Field>
           <Field>
@@ -55,6 +58,7 @@ export function FieldValidationsEditBar({ field }: { field: FormFieldType }) {
               placeholder="Max length"
               value={validation?.maxLength ?? ""}
               onChange={() => {}}
+              onBlur={() => {}}
             />
           </Field>
         </>
@@ -70,6 +74,7 @@ export function FieldValidationsEditBar({ field }: { field: FormFieldType }) {
               placeholder="Min"
               value={validation?.min ?? ""}
               onChange={() => {}}
+              onBlur={() => {}}
             />
           </Field>
           <Field>
@@ -80,6 +85,7 @@ export function FieldValidationsEditBar({ field }: { field: FormFieldType }) {
               placeholder="Max"
               value={validation?.max ?? ""}
               onChange={() => {}}
+              onBlur={() => {}}
             />
           </Field>
           <Field>
@@ -90,6 +96,7 @@ export function FieldValidationsEditBar({ field }: { field: FormFieldType }) {
               placeholder="Step"
               value={validation?.step ?? ""}
               onChange={() => {}}
+              onBlur={() => {}}
             />
           </Field>
         </>
@@ -107,6 +114,7 @@ export function FieldValidationsEditBar({ field }: { field: FormFieldType }) {
               placeholder="us / in"
               value={validation?.defaultCountryCode ?? ""}
               onChange={() => {}}
+              onBlur={() => {}}
             />
           </Field>
           <Field>
@@ -114,6 +122,7 @@ export function FieldValidationsEditBar({ field }: { field: FormFieldType }) {
             <Switch
               className="ml-1"
               defaultChecked={!!validation?.allowCountryChange}
+              onChange={() => {}}
             />
           </Field>
         </>
@@ -135,6 +144,7 @@ export function FieldValidationsEditBar({ field }: { field: FormFieldType }) {
                   : ""
               }
               onChange={() => {}}
+              onBlur={() => {}}
             />
           </Field>
           <Field>
@@ -151,6 +161,7 @@ export function FieldValidationsEditBar({ field }: { field: FormFieldType }) {
                   : ""
               }
               onChange={() => {}}
+              onBlur={() => {}}
             />
           </Field>
         </>
@@ -166,6 +177,7 @@ export function FieldValidationsEditBar({ field }: { field: FormFieldType }) {
               placeholder="Min Date"
               value={validation?.minDate ?? ""}
               onChange={() => {}}
+              onBlur={() => {}}
             />
           </Field>
           <Field>
@@ -176,6 +188,7 @@ export function FieldValidationsEditBar({ field }: { field: FormFieldType }) {
               placeholder="Max Date"
               value={validation?.maxDate ?? ""}
               onChange={() => {}}
+              onBlur={() => {}}
             />
           </Field>
         </>
@@ -197,6 +210,7 @@ export function FieldValidationsEditBar({ field }: { field: FormFieldType }) {
               placeholder="Min Selected"
               value={validation?.minSelected ?? ""}
               onChange={() => {}}
+              onBlur={() => {}}
             />
           </Field>
           <Field>
@@ -209,11 +223,16 @@ export function FieldValidationsEditBar({ field }: { field: FormFieldType }) {
               placeholder="Max Selected"
               value={validation?.maxSelected ?? ""}
               onChange={() => {}}
+              onBlur={() => {}}
             />
           </Field>
           <Field>
             <FieldLabel>Searchable</FieldLabel>
-            <Switch className="ml-1" defaultChecked={validation?.searchable} />
+            <Switch
+              className="ml-1"
+              defaultChecked={validation?.searchable}
+              onChange={() => {}}
+            />
           </Field>
         </>
       )
@@ -230,6 +249,7 @@ export function FieldValidationsEditBar({ field }: { field: FormFieldType }) {
               placeholder="Min Selected"
               value={validation?.minSelected ?? ""}
               onChange={() => {}}
+              onBlur={() => {}}
             />
           </Field>
           <Field>
@@ -242,6 +262,7 @@ export function FieldValidationsEditBar({ field }: { field: FormFieldType }) {
               placeholder="Max Selected"
               value={validation?.maxSelected ?? ""}
               onChange={() => {}}
+              onBlur={() => {}}
             />
           </Field>
         </>

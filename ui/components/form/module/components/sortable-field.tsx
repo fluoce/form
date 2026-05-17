@@ -31,31 +31,32 @@ export function SortAbleField({
 
   const { mutateAsync, isPending } = useFieldDelete()
 
-  const { fieldId } = useAppSelector((state) => state.fieldId)
+  const { fieldId } = useAppSelector((state) => state?.fieldId)
 
   const { ref } = useSortable({
     id: field?.id,
     index: idx,
+    group: "fields",
   })
 
   return (
     <div
       ref={ref}
       key={field?.id}
-      onClick={() => {
+      onPointerDown={() => {
         dispatch(setFieldId(field?.id))
       }}
       className={cn(
         "smooth relative cursor-pointer rounded-lg border bg-primary/10 p-6",
-        fieldId == field?.id && "scale-103 border-stone-500"
+        fieldId == field?.id && "border-stone-500"
       )}
     >
       <FieldRenderer field={field} />
       {fieldId == field?.id ? (
-        <div className="absolute top-0 -right-8.5 flex flex-col gap-1">
+        <div className="absolute top-1 right-1 flex gap-1">
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button disabled={isPending} variant="destructive" size="icon-sm">
+              <Button disabled={isPending} variant="destructive" size="icon-xs">
                 {isPending ? <Spinner /> : <Trash2 />}
               </Button>
             </AlertDialogTrigger>
@@ -89,7 +90,7 @@ export function SortAbleField({
               e.stopPropagation()
               dispatch(setFieldId(null))
             }}
-            size="icon-sm"
+            size="icon-xs"
             variant="outline"
           >
             <X />

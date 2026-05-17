@@ -1,15 +1,16 @@
-import { FormFieldType, FormFieldUpdateType } from "@/types/form-types"
-import { ResType } from "@/types/res-types"
+import { FormFieldType } from "@/types/form-types"
 import type { DragEndEvent } from "@dnd-kit/react"
 
 export function funcHandleFieldSortEnd({
   e,
+  originalIndex,
   pageFields,
   updateField,
 }: {
   e: DragEndEvent
   pageFields: FormFieldType[]
-  updateField: ({}: {
+  originalIndex: number
+  updateField: (args: {
     body: {
       prevFieldId: string
       nextFieldId: string
@@ -20,13 +21,14 @@ export function funcHandleFieldSortEnd({
   const { source } = e.operation ?? {}
   if (!source || !source?.id || !pageFields?.length) return null
   const newIndex = pageFields?.findIndex((f) => f.id === source.id)
+  if (newIndex == originalIndex || newIndex == -1) return
   const prevField = pageFields[newIndex - 1] ?? null
   const nextField = pageFields[newIndex + 1] ?? null
-  // updateField({
-  //   body: {
-  //     prevFieldId: prevField?.id,
-  //     nextFieldId: nextField?.id,
-  //   },
-  //   fieldId: String(source?.id),
-  // })
+  updateField({
+    body: {
+      prevFieldId: prevField?.id,
+      nextFieldId: nextField?.id,
+    },
+    fieldId: String(source?.id),
+  })
 }

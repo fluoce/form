@@ -11,13 +11,15 @@ import { useAppDispatch, useAppSelector } from "@/provider/store"
 import { setFieldId } from "@/provider/store/slice/field-id-slice"
 import { useEffect, useRef } from "react"
 import { setPageFields } from "@/provider/store/slice/page-fields-slice"
-import Link from "next/link"
 import { SortAbleField } from "./sortable-field"
 import { DragDropProvider, type DragEndEvent } from "@dnd-kit/react"
 import { funcHandleFieldSortEnd } from "../func/func-handle-field-sort-end"
+import { arrayMove } from "@dnd-kit/helpers"
 
 export function PageContent({ isMobile }: { isMobile: boolean }) {
   const dispatch = useAppDispatch()
+
+  const originalIndexRef = useRef<number>(-1)
 
   const searchParams = useSearchParams()
 
@@ -65,7 +67,7 @@ export function PageContent({ isMobile }: { isMobile: boolean }) {
                   }}
                   className={cn(
                     "smooth flex cursor-pointer flex-col gap-1 rounded-b-lg border bg-primary p-6 text-primary-foreground",
-                    fieldId == "base" && "scale-103 border-stone-500"
+                    fieldId == "base" && "border-stone-500"
                   )}
                 >
                   <h1 className="text-base font-medium">
@@ -76,10 +78,32 @@ export function PageContent({ isMobile }: { isMobile: boolean }) {
                   </p>
                 </div>
                 <DragDropProvider
+                  onDragStart={(e) => {
+                    const sourceId = e.operation?.source?.id
+                    originalIndexRef.current = pageFields.findIndex(
+                      (f) => f.id === sourceId
+                    )
+                  }}
+                  onDragOver={(e) => {
+                    const { source, target } = e.operation ?? {}
+                    if (!source || !target || source.id === target.id) return
+                    const fromIndex = pageFields.findIndex(
+                      (f) => f.id === source.id
+                    )
+                    const toIndex = pageFields.findIndex(
+                      (f) => f.id === target.id
+                    )
+                    if (fromIndex === -1 || toIndex === -1) return
+                    dispatch(
+                      setPageFields(arrayMove(pageFields, fromIndex, toIndex))
+                    )
+                  }}
                   onDragEnd={(e: DragEndEvent) => {
+                    if (!e?.operation?.position?.previous) return
                     funcHandleFieldSortEnd({
                       e,
                       pageFields,
+                      originalIndex: originalIndexRef.current,
                       updateField: ({ body, fieldId }) =>
                         mutate({
                           body,
@@ -92,20 +116,11 @@ export function PageContent({ isMobile }: { isMobile: boolean }) {
                     <SortAbleField idx={idx} key={field?.id} field={field} />
                   ))}
                 </DragDropProvider>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-3 gap-4 pb-4">
                   <Button className="p-4" variant="outline">
                     Clear
                   </Button>
                   <Button className="col-span-2 p-4">Submit</Button>
-                </div>
-                <div className="flex w-full items-center justify-center gap-2 text-xs">
-                  Powered by
-                  <Link
-                    href="https://fluoce.com"
-                    className="font-medium text-primary underline"
-                  >
-                    Fluoce
-                  </Link>
                 </div>
               </div>
             </div>
