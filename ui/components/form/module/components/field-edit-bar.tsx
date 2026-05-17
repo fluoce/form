@@ -312,8 +312,8 @@ export function FieldEditBar() {
         ) : null
       ) : (
         <span className="flex items-center gap-2 p-1 text-sm font-medium text-muted-foreground">
-          <BadgeInfo size={18} className="shrink-0 text-blue-500" />{" "}
-          Double-click a field to select and edit its details.
+          <BadgeInfo size={18} className="shrink-0 text-blue-500" /> Select
+          field to edit.
         </span>
       )}
     </div>

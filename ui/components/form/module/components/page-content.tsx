@@ -61,22 +61,25 @@ export function PageContent({ isMobile }: { isMobile: boolean }) {
               )}
             >
               <div className="flex w-full max-w-140 flex-col gap-8">
-                <div
-                  onClick={() => {
-                    dispatch(setFieldId("base"))
-                  }}
-                  className={cn(
-                    "smooth flex cursor-pointer flex-col gap-1 rounded-b-lg border bg-primary p-6 text-primary-foreground",
-                    fieldId == "base" && "border-stone-500"
-                  )}
-                >
-                  <h1 className="text-base font-medium">
-                    {formData?.data?.form?.title}
-                  </h1>
-                  <p className="text-xs font-medium opacity-75">
-                    {formData?.data?.form?.description}
-                  </p>
-                </div>
+                {formData?.data?.form?.title ||
+                formData?.data?.form?.description ? (
+                  <div
+                    onClick={() => {
+                      dispatch(setFieldId("base"))
+                    }}
+                    className={cn(
+                      "smooth flex cursor-pointer flex-col gap-1 rounded-b-lg border bg-primary p-6 text-primary-foreground",
+                      fieldId == "base" && "border-stone-500"
+                    )}
+                  >
+                    <h1 className="text-base font-medium">
+                      {formData?.data?.form?.title}
+                    </h1>
+                    <p className="text-xs font-medium opacity-75">
+                      {formData?.data?.form?.description}
+                    </p>
+                  </div>
+                ) : null}
                 <DragDropProvider
                   onDragStart={(e) => {
                     const sourceId = e.operation?.source?.id
@@ -116,7 +119,7 @@ export function PageContent({ isMobile }: { isMobile: boolean }) {
                     <SortAbleField idx={idx} key={field?.id} field={field} />
                   ))}
                 </DragDropProvider>
-                <div className="grid grid-cols-3 gap-4 pb-4">
+                <div className="grid grid-cols-3 gap-4 pt-1 pb-4">
                   <Button className="p-4" variant="outline">
                     Clear
                   </Button>

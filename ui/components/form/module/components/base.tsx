@@ -3,6 +3,8 @@
 import { useForm, useFormUpdate } from "@/hooks/use-form"
 import { BASE_DATA } from "../data/base"
 import { useParams } from "next/navigation"
+import { useState } from "react"
+import { Spinner } from "@/components/ui/spinner"
 
 export function Base() {
   const { formId } = useParams<{
@@ -13,18 +15,22 @@ export function Base() {
 
   const { mutateAsync } = useFormUpdate()
 
+  const [isPending, setIsPending] = useState("")
+
   return BASE_DATA?.map((b) => (
     <div
       onClick={() => {
         if (!data?.data?.form?.title && b.type == "title") {
+          setIsPending(b?.name)
           mutateAsync({
             body: {
               title: b.type == "title" ? "Form Title ." : undefined,
             },
 
             id: formId,
-          })
+          }).finally(() => setIsPending(""))
         } else if (!data?.data?.form?.description && b.type == "description") {
+          setIsPending(b?.name)
           mutateAsync({
             body: {
               description:
@@ -34,7 +40,7 @@ export function Base() {
             },
 
             id: formId,
-          })
+          }).finally(() => setIsPending(""))
         }
       }}
       key={b?.name}
@@ -46,7 +52,7 @@ export function Base() {
           backgroundColor: `${b?.color}25`,
         }}
       >
-        {b?.icon}
+        {isPending == b?.name ? <Spinner /> : b?.icon}
       </span>
       <span className="text-sm">{b?.name}</span>
     </div>

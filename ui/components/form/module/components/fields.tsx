@@ -1,12 +1,17 @@
 import { useFieldCreate } from "@/hooks/use-field"
 import { FIELD_DATA } from "../data/field"
+import { useState } from "react"
+import { Spinner } from "@/components/ui/spinner"
 
 export function Fields() {
   const { mutateAsync } = useFieldCreate()
 
+  const [isPending, setIsPending] = useState("")
+
   return FIELD_DATA?.map((f) => (
     <div
-      onClick={() =>
+      onClick={() => {
+        setIsPending(f?.name)
         mutateAsync({
           body: {
             config: (() => {
@@ -87,8 +92,8 @@ export function Fields() {
               }
             })(),
           },
-        })
-      }
+        }).finally(() => setIsPending(""))
+      }}
       key={f?.name}
       className="flex cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-accent"
     >
@@ -98,7 +103,7 @@ export function Fields() {
           backgroundColor: `${f?.color}25`,
         }}
       >
-        {f?.icon}
+        {isPending == f?.name ? <Spinner /> : f?.icon}
       </span>
       <span className="text-sm">{f?.name}</span>
     </div>
