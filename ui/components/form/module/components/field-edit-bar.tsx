@@ -6,22 +6,19 @@ import { Field, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
-import { useForm, useFormUpdate } from "@/hooks/use-form"
+import { useForm } from "@/hooks/use-form"
 import { useAppDispatch, useAppSelector } from "@/provider/store"
 import { updatePageField } from "@/provider/store/slice/page-fields-slice"
-import { BadgeInfo, Cog, GripVertical, Pencil, Trash2 } from "lucide-react"
+import { BadgeInfo, Cog, Pencil, Trash2 } from "lucide-react"
 import { AddOption } from "./add-option"
 import { Option } from "@/types/formfield-config-types"
 import { normalizeString } from "@/utils/normalize-string"
 import { useUpdateField } from "@/hooks/use-update-field"
 import { UpdateFormTitleDescription } from "./update-form-title-description"
-import { toast } from "sonner"
 import { FieldValidationsEditBar } from "./field-validations-edit-bar"
 
 export function FieldEditBar() {
   const { updateField } = useUpdateField()
-
-  const { mutateAsync } = useFormUpdate()
 
   const dispatch = useAppDispatch()
 
@@ -157,38 +154,43 @@ export function FieldEditBar() {
                       }}
                     />
                   </Field>
-                  <Field>
-                    <FieldLabel htmlFor="field-placeholder">
-                      Placeholder
-                    </FieldLabel>
-                    <Input
-                      id="field-placeholder"
-                      type="text"
-                      placeholder="Placeholder . . ."
-                      value={field?.config?.placeholder ?? ""}
-                      onChange={(e) => {
-                        dispatch(
-                          updatePageField({
-                            fieldId: field?.id,
-                            data: {
-                              config: {
-                                ...field?.config,
-                                placeholder: e?.target?.value,
+                  {!(
+                    field?.config?.type == "radio" ||
+                    field?.config?.type == "checkbox"
+                  ) && (
+                    <Field>
+                      <FieldLabel htmlFor="field-placeholder">
+                        Placeholder
+                      </FieldLabel>
+                      <Input
+                        id="field-placeholder"
+                        type="text"
+                        placeholder="Placeholder . . ."
+                        value={field?.config?.placeholder ?? ""}
+                        onChange={(e) => {
+                          dispatch(
+                            updatePageField({
+                              fieldId: field?.id,
+                              data: {
+                                config: {
+                                  ...field?.config,
+                                  placeholder: e?.target?.value,
+                                },
                               },
+                            })
+                          )
+                        }}
+                        onBlur={(e) => {
+                          updateField(field?.id, {
+                            config: {
+                              ...field?.config,
+                              placeholder: (e.target as HTMLInputElement).value,
                             },
                           })
-                        )
-                      }}
-                      onBlur={(e) => {
-                        updateField(field?.id, {
-                          config: {
-                            ...field?.config,
-                            placeholder: (e.target as HTMLInputElement).value,
-                          },
-                        })
-                      }}
-                    />
-                  </Field>
+                        }}
+                      />
+                    </Field>
+                  )}
                   <Field>
                     <FieldLabel htmlFor="field-required">Required</FieldLabel>
                     <Switch

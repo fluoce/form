@@ -65,6 +65,7 @@ export interface NumberField extends FieldBaseConfig {
 // email
 export interface EmailField extends FieldBaseConfig {
   type: "email"
+  validation?: NumberValidation
 }
 
 // Phone
