@@ -526,6 +526,7 @@ export function FieldValidationsEditBar({ field }: { field: FormFieldType }) {
                 )
               }}
               onBlur={(e) => {
+                if (!e?.target?.value) return
                 updateField(field?.id, {
                   config: {
                     ...field.config,
@@ -561,6 +562,7 @@ export function FieldValidationsEditBar({ field }: { field: FormFieldType }) {
                 )
               }}
               onBlur={(e) => {
+                if (!e?.target?.value) return
                 updateField(field?.id, {
                   config: {
                     ...field.config,

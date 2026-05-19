@@ -23,6 +23,8 @@ import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { FormFieldType } from "@/types/form-types"
 import { Option } from "@/types/formfield-config-types"
+import { COUNTRY } from "../data/country"
+import { Kbd } from "@/components/ui/kbd"
 
 export function FieldRenderer({ field }: { field: FormFieldType }) {
   const config = field?.config || {}
@@ -99,19 +101,44 @@ export function FieldRenderer({ field }: { field: FormFieldType }) {
         </Field>
       )
     case "phone":
+      const [country, setCountry] = useState(
+        config?.validation?.defaultCountryCode || COUNTRY?.at(0)?.value
+      )
       return (
         <Field>
           <div>
             <Label label={config?.label} required={config?.required} />
             <Helptext helpText={config?.helpText} />
           </div>
-          <Input
-            id={config?.label}
-            className="bg-background dark:bg-background"
-            placeholder={config?.placeholder || undefined}
-            required={config?.required}
-            type="number"
-          />
+          <div className="flex items-center gap-2">
+            <Select
+              disabled={!config?.validation?.allowCountryChange}
+              value={country}
+              onValueChange={setCountry}
+            >
+              <SelectTrigger className="bg-background">
+                <SelectValue>{country}</SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                {COUNTRY?.map((c) => (
+                  <SelectItem
+                    className="cursor-pointer rounded-none border-b p-2"
+                    key={c?.value}
+                    value={c?.value}
+                  >
+                    {c?.label} <Kbd>{c?.value}</Kbd>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Input
+              id={config?.label}
+              className="bg-background dark:bg-background"
+              placeholder={config?.placeholder || undefined}
+              required={config?.required}
+              type="number"
+            />
+          </div>
         </Field>
       )
     case "url":
@@ -222,7 +249,7 @@ function DatePickerSimple({ field }: { field: FormFieldType }) {
               date.toISOString().slice(0, 10)
             ) : (
               <span className="text-muted-foreground">
-                {config?.placeholder ?? "Select Date"}
+                {config?.placeholder || "Select Date"}
               </span>
             )}
           </Button>

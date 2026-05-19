@@ -44,17 +44,20 @@ export function Base() {
         }
       }}
       key={b?.name}
-      className="flex cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-accent"
+      className="flex cursor-pointer items-center justify-between gap-2 rounded-lg p-2 hover:bg-accent"
     >
-      <span
-        className="rounded-md p-1.5"
-        style={{
-          backgroundColor: `${b?.color}25`,
-        }}
-      >
-        {isPending == b?.name ? <Spinner /> : b?.icon}
-      </span>
-      <span className="text-sm">{b?.name}</span>
+      <div className="flex items-center gap-2">
+        <span
+          className="rounded-md p-1.5"
+          style={{
+            backgroundColor: `${b?.color}25`,
+          }}
+        >
+          {b?.icon}
+        </span>
+        <span className="text-sm">{b?.name}</span>
+      </div>
+      {isPending == b?.name && <Spinner />}
     </div>
   ))
 }

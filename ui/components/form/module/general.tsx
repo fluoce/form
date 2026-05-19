@@ -53,7 +53,7 @@ export function FormGeneral() {
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-1">
             <Avatar className={cn("size-10", form?.theme)}>
-              <AvatarFallback className="bg-primary text-foreground">
+              <AvatarFallback className="bg-primary text-primary-foreground">
                 {form?.name[0].slice(0, 1).toUpperCase()}
               </AvatarFallback>
             </Avatar>

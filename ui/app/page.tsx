@@ -4,8 +4,6 @@ import { Square } from "lucide-react"
 import Link from "next/link"
 
 const page = () => {
-
-  
   return (
     <div className="flex h-screen w-full items-center justify-center">
       <Link href={routes.dashboard.base}>

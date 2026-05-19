@@ -95,17 +95,20 @@ export function Fields() {
         }).finally(() => setIsPending(""))
       }}
       key={f?.name}
-      className="flex cursor-pointer items-center gap-2 rounded-lg p-2 hover:bg-accent"
+      className="flex cursor-pointer items-center justify-between gap-2 rounded-lg p-2 hover:bg-accent"
     >
-      <span
-        className="rounded-md p-1.5"
-        style={{
-          backgroundColor: `${f?.color}25`,
-        }}
-      >
-        {isPending == f?.name ? <Spinner /> : f?.icon}
-      </span>
-      <span className="text-sm">{f?.name}</span>
+      <div className="flex items-center gap-2">
+        <span
+          className="rounded-md p-1.5"
+          style={{
+            backgroundColor: `${f?.color}25`,
+          }}
+        >
+          {f?.icon}
+        </span>
+        <span className="text-sm">{f?.name}</span>
+      </div>
+      {isPending == f?.name && <Spinner />}
     </div>
   ))
 }

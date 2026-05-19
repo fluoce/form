@@ -22,7 +22,7 @@ export function FormShare() {
     return <PageSpinner />
   }
 
-  const shareLink = `${envs.shareLink}/${data?.data?.form?.id}`
+  const shareLink = `${envs?.appUrl}/${data?.data?.form?.id}`
 
   async function funcHandleCopy() {
     try {

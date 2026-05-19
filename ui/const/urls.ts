@@ -19,6 +19,7 @@ export const urls = {
       `/form/trash/${workspaceId}`,
     all: ({ workspaceId }: { workspaceId: string }) =>
       `/form/all/${workspaceId}`,
+    public: ({ formId }: { formId: string }) => `/form/public/${formId}`,
   },
   formPage: {
     create: ({ formId }: { formId: string }) => `/form/${formId}/formpage`,

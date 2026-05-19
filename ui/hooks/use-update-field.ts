@@ -21,9 +21,9 @@ export function useUpdateField() {
   )
 
   const updateField = (fieldId: string, data: FormFieldUpdateType) => {
-    const field = pageField?.find((f) => f?.id === fieldId)
-    if (!field) return
-    if (isEqual(field?.config, data?.config)) return
+    // const field = pageField?.find((f) => f?.id === fieldId)
+    // if (!field) return
+    // if (isEqual(field?.config, data?.config)) return
     dispatch(updatePageField({ fieldId, data }))
     debouncedUpdate(fieldId, data)
   }
