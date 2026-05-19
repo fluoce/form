@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { formSubmissionKey } from "../const/localstorage-key"
 import { COUNTRY } from "@/components/form/module/data/country"
+import { format } from "date-fns"
 
 export function FormPages({
   formPages,
@@ -56,6 +57,10 @@ export function FormPages({
               `${countryData?.value} ${countryData?.numberPrefix} ${data[field?.id]}`,
             ]
           }
+        }
+        if (field?.config?.type == "date") {
+          const formatedDate = format(data[field?.id], "dd-MM-yyyy")
+          return [field.id, formatedDate]
         }
         return [field.id, data[field.id]]
       })

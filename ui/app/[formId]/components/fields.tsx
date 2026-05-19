@@ -28,11 +28,11 @@ import type {
   FieldValues,
   UseFormRegister,
   Control,
-  FieldErrors,
   UseFormSetValue,
 } from "react-hook-form"
 import { COUNTRY } from "@/components/form/module/data/country"
 import { Kbd } from "@/components/ui/kbd"
+import { format } from "date-fns"
 
 export function Fields({
   field,
@@ -308,12 +308,12 @@ export function Fields({
             validate: (value) => {
               const minDate = config?.validation?.minDate || undefined
               const maxDate = config?.validation?.maxDate || undefined
-              if (minDate && maxDate && value) {
-                const userDate = new Date(value)
-                const min = new Date(minDate)
-                const max = new Date(maxDate)
-                if (userDate < min || userDate > max) {
-                  return `Date must be between ${minDate} and ${maxDate}`
+              const userDate = format(value, "yyyy-MM-dd")
+              if (minDate && maxDate && userDate) {
+                const start = minDate < maxDate ? minDate : maxDate
+                const end = minDate > maxDate ? minDate : maxDate
+                if (userDate < start || userDate > end) {
+                  return `Date must be between ${format(start, "dd-MM-yyyy")} and ${format(end, "dd-MM-yyyy")}`
                 }
               }
               return true
@@ -492,11 +492,7 @@ function DatePickerSimple({
           >
             <CalendarDays />
             {parsedDate ? (
-              typeof parsedDate === "string" ? (
-                parsedDate
-              ) : (
-                parsedDate.toISOString().slice(0, 10)
-              )
+              format(parsedDate, "dd-MM-yyyy")
             ) : (
               <span className="text-muted-foreground">
                 {config?.placeholder || "Select Date"}

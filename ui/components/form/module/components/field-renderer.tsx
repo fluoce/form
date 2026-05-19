@@ -172,7 +172,11 @@ export function FieldRenderer({ field }: { field: FormFieldType }) {
             </SelectTrigger>
             <SelectContent>
               {config?.options?.map((o, idx) => (
-                <SelectItem key={idx} value={o?.value || ""}>
+                <SelectItem
+                  className="cursor-pointer rounded-none border-b p-2"
+                  key={idx}
+                  value={o?.value || ""}
+                >
                   {o?.label}
                 </SelectItem>
               ))}

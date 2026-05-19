@@ -581,8 +581,8 @@ export function FieldValidationsEditBar({ field }: { field: FormFieldType }) {
     case "dropdown":
       return (
         <>
-          {/* <Field>
-            <FieldLabel>Multiple</FieldLabel>
+          <Field>
+            <FieldLabel>Multiple Select</FieldLabel>
             <Switch
               className="ml-1"
               checked={!!validation?.multiple}
@@ -599,8 +599,8 @@ export function FieldValidationsEditBar({ field }: { field: FormFieldType }) {
                 })
               }}
             />
-          </Field> */}
-          <Field>
+          </Field>
+          {/* <Field>
             <FieldLabel htmlFor="validation-min-selected">
               Min Selected
             </FieldLabel>
@@ -691,7 +691,7 @@ export function FieldValidationsEditBar({ field }: { field: FormFieldType }) {
                 })
               }}
             />
-          </Field>
+          </Field> */}
           <Field>
             <FieldLabel>Searchable</FieldLabel>
             <Switch
