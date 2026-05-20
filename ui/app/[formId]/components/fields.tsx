@@ -149,6 +149,9 @@ export function Fields({
             className="bg-background dark:bg-background"
             placeholder={config?.placeholder || undefined}
             type="number"
+            onInput={(e) => {
+              e.currentTarget.value = e.currentTarget.value.replace(/\D/g, "")
+            }}
             {...register(id, {
               required: {
                 value: Boolean(config?.required),

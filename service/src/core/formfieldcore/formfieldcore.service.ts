@@ -49,6 +49,53 @@ export class FormfieldcoreService {
     });
   }
 
+  async createBulkField(
+    formId: string,
+    formPageId: string,
+    data: {
+      position: string;
+      config: {
+        type: string;
+        label: string;
+        placeholder: string;
+        required: boolean;
+      };
+    }[],
+  ): Promise<{
+    count: number;
+  } | null> {
+    const payload: {
+      id: string;
+      formId: string;
+      formPageId: string;
+      position: string;
+      config: {
+        type: string;
+        label: string;
+        placeholder: string;
+        required: boolean;
+      };
+    }[] = [];
+
+    for (const field of data) {
+      payload.push({
+        id: this.ulidService.generateFormFieldId('ff'),
+        formId,
+        formPageId,
+        position: field.position,
+        config: field.config,
+      });
+    }
+
+    if (!payload?.length) {
+      return null;
+    }
+
+    return await this.prisma.formField.createMany({
+      data: payload,
+    });
+  }
+
   async updateField(
     formFieldId: string,
     formPageId: string,

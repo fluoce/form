@@ -6,6 +6,7 @@ import { urls } from "@/const/urls"
 import { ResType } from "@/types/res-types"
 import {
   FormPageCreateType,
+  FormPagePresetType,
   FormPageType,
   FormPageUpdateType,
 } from "@/types/form-types"
@@ -65,6 +66,35 @@ export function useFormPageCreate() {
       queryClient.invalidateQueries({
         queryKey: queryKeys.formPage.all({ formId }),
       })
+    },
+  })
+}
+
+export function useFormPagePresetCreate() {
+  const { formId } = useParams<{
+    formId: string
+  }>()
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: ({
+      body,
+    }: {
+      body: {
+        preset: FormPagePresetType
+      }
+    }) =>
+      useFetch({
+        url: urls.formPage.preset({ formId }),
+        method: "POST",
+        body,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.formPage.all({ formId }),
+      })
+    },
+    onError: (error) => {
+      toast.error(error?.message)
     },
   })
 }

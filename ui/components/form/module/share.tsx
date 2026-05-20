@@ -45,7 +45,7 @@ export function FormShare() {
         />
         <div className="flex flex-col gap-1">
           <Avatar className={cn("size-10", data?.data?.form?.theme)}>
-            <AvatarFallback className="bg-primary">
+            <AvatarFallback className="bg-primary text-primary-foreground">
               {data?.data?.form?.name[0].slice(0, 1).toUpperCase()}
             </AvatarFallback>
           </Avatar>

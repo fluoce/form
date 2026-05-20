@@ -7,14 +7,20 @@ import {
 import { FormpagecoreService } from 'src/core/formpagecore/formpagecore.service';
 import {
   CreateFormPageDto,
-  FormPageType,
+  FormPagePresetDto,
+  type FormPageType,
   UpdateFormPageDto,
 } from 'src/types/formpage.types';
 import { ResponseDataType } from 'src/types/response.type';
+import P from 'src/config/preset.config.json';
+import { FormfieldcoreService } from 'src/core/formfieldcore/formfieldcore.service';
 
 @Injectable()
 export class FormpageService {
-  constructor(private readonly formpagecoreService: FormpagecoreService) {}
+  constructor(
+    private readonly formpagecoreService: FormpagecoreService,
+    private readonly formFieldCoreService: FormfieldcoreService,
+  ) {}
 
   async createFormPage(
     formId: string,
@@ -29,6 +35,55 @@ export class FormpageService {
     }
     return {
       message: 'form page created successfully',
+      formPage,
+    };
+  }
+
+  async createPresetFormPage(
+    formId: string,
+    data: FormPagePresetDto,
+  ): Promise<ResponseDataType> {
+    const preset:
+      | {
+          page: {
+            name: string;
+            fields: Array<{
+              position: string;
+              config: {
+                type: string;
+                label: string;
+                placeholder: string;
+                required: boolean;
+              };
+            }>;
+          };
+        }
+      | undefined = P[data?.preset];
+
+    if (!preset || !preset?.page) {
+      throw new BadRequestException('Invalid or unsupported preset provided.');
+    }
+
+    const formPage = await this.formpagecoreService.createFormPage(formId, {
+      name: preset?.page?.name,
+    });
+
+    if (!formPage) {
+      throw new ServiceUnavailableException('Unable to add preset');
+    }
+
+    const fields = await this.formFieldCoreService.createBulkField(
+      formId,
+      formPage?.id,
+      preset?.page?.fields,
+    );
+
+    if (!fields?.count || fields?.count == 0) {
+      throw new ServiceUnavailableException('Unable to add preset');
+    }
+
+    return {
+      message: 'preset added successfully',
       formPage,
     };
   }

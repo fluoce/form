@@ -55,7 +55,7 @@ export function AppSidebar() {
 
   const path = usePathname()
 
-  const { open, setOpen } = useSidebar()
+  const { open, setOpen, state } = useSidebar()
 
   const [isFormShow, setIsFormShow] = useState(true)
 
@@ -125,7 +125,7 @@ export function AppSidebar() {
               <CollapsibleContent className="flex flex-col gap-1">
                 {data?.data?.forms.length ? (
                   data?.data?.forms?.map((f) =>
-                    open ? (
+                    state == "expanded" ? (
                       <Link
                         key={f?.id}
                         href={routes.form.byId({
@@ -168,6 +168,7 @@ export function AppSidebar() {
                                     {f?.name.slice(0, 1).toUpperCase()}
                                   </AvatarFallback>
                                 </Avatar>
+                                {f?.name}
                               </SidebarMenuButton>
                             </SidebarMenuItem>
                           </Link>

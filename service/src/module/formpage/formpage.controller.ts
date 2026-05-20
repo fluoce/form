@@ -17,6 +17,7 @@ import { FormpageGuard } from './formpage.guard';
 import { FormPage } from 'src/decorator/formpage.decorator';
 import type { FormPageType } from 'src/types/formpage.types';
 import { FormPageIdPipe } from 'src/pipe/formpage.id.pipe';
+import { FormPagePresetDto } from 'src/types/formpage.types';
 
 @Controller('form/:formId/formpage')
 export class FormpageController {
@@ -29,6 +30,15 @@ export class FormpageController {
     @Body() data: CreateFormPageDto,
   ) {
     return await this.formpageService.createFormPage(form.id, data);
+  }
+
+  @UseGuards(FormGuard)
+  @Post('preset')
+  async createPresetFormPage(
+    @Form() form: FormType,
+    @Body() data: FormPagePresetDto,
+  ) {
+    return await this.formpageService.createPresetFormPage(form.id, data);
   }
 
   @UseGuards(FormpageGuard)

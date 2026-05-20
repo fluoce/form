@@ -1,7 +1,7 @@
 import { Injectable, Inject, Logger } from '@nestjs/common';
 import Redis from 'ioredis';
 import { REDIS_CLIENT } from './redis';
-import { asyncFunc } from 'src/func/asyncFunc';
+import { asyncFunc } from 'src/func/async-func';
 
 @Injectable()
 export class RedisService {
@@ -10,7 +10,7 @@ export class RedisService {
   constructor(
     @Inject(REDIS_CLIENT)
     private readonly redis: Redis,
-  ) { }
+  ) {}
 
   async set(key: string, value: any, ttl: number): Promise<boolean> {
     const data = await JSON.stringify(value);
@@ -80,9 +80,9 @@ export class RedisService {
       () => this.redis.incr(key),
       (error) => {
         this.logger.error('redis incr failed', error);
-      }
-    )
-    return result ? result : 1
+      },
+    );
+    return result ? result : 1;
   }
 
   async expire(key: string, ttl: number): Promise<void> {
@@ -90,7 +90,7 @@ export class RedisService {
       () => this.redis.expire(key, ttl),
       (error) => {
         this.logger.error('redis expire failed', error);
-      }
-    )
+      },
+    );
   }
 }

@@ -1,3 +1,4 @@
+import { FormPagePresetType } from "@/types/form-types"
 import {
   ChevronLast,
   GalleryHorizontalEnd,
@@ -6,28 +7,26 @@ import {
 } from "lucide-react"
 import { ReactElement } from "react"
 
-type PresetType = "welcom" | "end" | "contact" | "address"
-
 type PresetDataType = {
   name: string
-  type: PresetType
+  type: FormPagePresetType
   icon: ReactElement
   color: string
 }
 
 export const PRESET_DATA: PresetDataType[] = [
-  {
-    name: "Welcom Screen",
-    type: "welcom",
-    icon: <GalleryHorizontalEnd size={16} />,
-    color: "#8200DB",
-  },
-  {
-    name: "Thanks (end screen)",
-    type: "end",
-    icon: <ChevronLast size={16} />,
-    color: "#C10007",
-  },
+  // {
+  //   name: "Welcome Screen",
+  //   type: "welcome",
+  //   icon: <GalleryHorizontalEnd size={16} />,
+  //   color: "#8200DB",
+  // },
+  // {
+  //   name: "Thanks (end screen)",
+  //   type: "thanks",
+  //   icon: <ChevronLast size={16} />,
+  //   color: "#C10007",
+  // },
   {
     name: "Contact",
     type: "contact",

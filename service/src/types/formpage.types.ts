@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsOptional, IsString, MaxLength } from 'class-validator';
+import { IsIn, IsOptional, IsString, MaxLength } from 'class-validator';
 
 const formPageMessage = 'Form page name must be at most 30 characters';
 
@@ -38,4 +38,14 @@ export interface FormPageType {
   position: string;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export type PresetType = 'contact' | 'address' | 'thanks' | 'welcome';
+
+export const preset: PresetType[] = ['address', 'contact', 'thanks', 'welcome'];
+
+export class FormPagePresetDto {
+  @IsString()
+  @IsIn(preset)
+  preset: PresetType;
 }

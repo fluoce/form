@@ -85,6 +85,8 @@ export interface FormFieldType {
   updatedAt?: string | Date
 }
 
+export type FormPagePresetType = "contact" | "address" | "thanks" | "welcome"
+
 export type FormFieldCreateType = CreateFormFieldDto
 
 export type FormFieldUpdateType = UpdateFormFieldDto

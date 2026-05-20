@@ -285,7 +285,7 @@ export function FieldValidationsEditBar({ field }: { field: FormFieldType }) {
               }}
             />
           </Field>
-          <Field>
+          {/* <Field>
             <FieldLabel htmlFor="validation-step">Step</FieldLabel>
             <Input
               id="validation-step"
@@ -322,7 +322,7 @@ export function FieldValidationsEditBar({ field }: { field: FormFieldType }) {
                 })
               }}
             />
-          </Field>
+          </Field> */}
         </>
       )
     case "phone":
@@ -578,238 +578,238 @@ export function FieldValidationsEditBar({ field }: { field: FormFieldType }) {
           </Field>
         </>
       )
-    case "dropdown":
-      return (
-        <>
-          <Field>
-            <FieldLabel>Multiple Select</FieldLabel>
-            <Switch
-              className="ml-1"
-              checked={!!validation?.multiple}
-              onCheckedChange={(checked) => {
-                updateField(field?.id, {
-                  config: {
-                    ...field.config,
-                    //@ts-ignore
-                    validation: {
-                      ...validation,
-                      multiple: checked,
-                    },
-                  },
-                })
-              }}
-            />
-          </Field>
-          {/* <Field>
-            <FieldLabel htmlFor="validation-min-selected">
-              Min Selected
-            </FieldLabel>
-            <Input
-              id="validation-min-selected"
-              type="number"
-              placeholder="Min Selected"
-              value={validation?.minSelected ?? ""}
-              onChange={(e) => {
-                dispatch(
-                  updatePageField({
-                    fieldId: field?.id,
-                    data: {
-                      config: {
-                        ...field.config,
-                        //@ts-ignore
-                        validation: {
-                          ...validation,
-                          minSelected: Number(e?.target?.value),
-                        },
-                      },
-                    },
-                  })
-                )
-              }}
-              onBlur={(e) => {
-                updateField(field?.id, {
-                  config: {
-                    ...field.config,
-                    //@ts-ignore
-                    validation: {
-                      ...validation,
-                      minSelected: Number(e?.target?.value) || 1,
-                    },
-                  },
-                })
-              }}
-            />
-          </Field>
-          <Field>
-            <FieldLabel htmlFor="validation-max-selected">
-              Max Selected
-            </FieldLabel>
-            <Input
-              id="validation-max-selected"
-              type="number"
-              placeholder="Max Selected"
-              value={validation?.maxSelected ?? ""}
-              onChange={(e) => {
-                dispatch(
-                  updatePageField({
-                    fieldId: field?.id,
-                    data: {
-                      config: {
-                        ...field.config,
-                        //@ts-ignore
-                        validation: {
-                          ...validation,
-                          maxSelected: Number(e?.target?.value),
-                        },
-                      },
-                    },
-                  })
-                )
-              }}
-              onBlur={(e) => {
-                if (
-                  Number(e?.target?.value) <
-                  (field?.config as any)?.validation?.minSelected
-                ) {
-                  toast.info(
-                    "Max Selected must be greater or equal to Min Selected"
-                  )
-                }
-                updateField(field?.id, {
-                  config: {
-                    ...field.config,
-                    //@ts-ignore
-                    validation: {
-                      ...validation,
-                      maxSelected:
-                        Number(e?.target?.value) <
-                        (field?.config as any)?.validation?.minSelected
-                          ? (field?.config as any)?.validation?.minSelected
-                          : Number(e?.target?.value),
-                    },
-                  },
-                })
-              }}
-            />
-          </Field> */}
-          <Field>
-            <FieldLabel>Searchable</FieldLabel>
-            <Switch
-              className="ml-1"
-              checked={!!validation?.searchable}
-              onCheckedChange={(checked) => {
-                updateField(field?.id, {
-                  config: {
-                    ...field.config,
-                    //@ts-ignore
-                    validation: {
-                      ...validation,
-                      searchable: checked,
-                    },
-                  },
-                })
-              }}
-            />
-          </Field>
-        </>
-      )
-    case "checkbox":
-      return (
-        <>
-          <Field>
-            <FieldLabel htmlFor="validation-min-selected">
-              Min Selected
-            </FieldLabel>
-            <Input
-              id="validation-min-selected"
-              type="number"
-              placeholder="Min Selected"
-              value={validation?.minSelected ?? ""}
-              onChange={(e) => {
-                dispatch(
-                  updatePageField({
-                    fieldId: field?.id,
-                    data: {
-                      config: {
-                        ...field.config,
-                        //@ts-ignore
-                        validation: {
-                          ...validation,
-                          minSelected: Number(e?.target?.value),
-                        },
-                      },
-                    },
-                  })
-                )
-              }}
-              onBlur={(e) => {
-                updateField(field?.id, {
-                  config: {
-                    ...field.config,
-                    //@ts-ignore
-                    validation: {
-                      ...validation,
-                      minSelected: Number(e?.target?.value) || 1,
-                    },
-                  },
-                })
-              }}
-            />
-          </Field>
-          <Field>
-            <FieldLabel htmlFor="validation-max-selected">
-              Max Selected
-            </FieldLabel>
-            <Input
-              id="validation-max-selected"
-              type="number"
-              placeholder="Max Selected"
-              value={validation?.maxSelected ?? ""}
-              onChange={(e) => {
-                dispatch(
-                  updatePageField({
-                    fieldId: field?.id,
-                    data: {
-                      config: {
-                        ...field.config,
-                        //@ts-ignore
-                        validation: {
-                          ...validation,
-                          maxSelected: Number(e?.target?.value),
-                        },
-                      },
-                    },
-                  })
-                )
-              }}
-              onBlur={(e) => {
-                if (
-                  Number(e?.target?.value) <
-                  (field?.config as any)?.validation?.minSelected
-                ) {
-                  toast.info(
-                    "Max Selected must be greater or equal to Min Selected"
-                  )
-                }
-                updateField(field?.id, {
-                  config: {
-                    ...field.config,
-                    //@ts-ignore
-                    validation: {
-                      ...validation,
-                      maxSelected:
-                        Number(e?.target?.value) <
-                        (field?.config as any)?.validation?.minSelected
-                          ? (field?.config as any)?.validation?.minSelected
-                          : Number(e?.target?.value),
-                    },
-                  },
-                })
-              }}
-            />
-          </Field>
-        </>
-      )
+    // case "dropdown":
+    //   return (
+    //     <>
+    //       <Field>
+    //         <FieldLabel>Multiple Select</FieldLabel>
+    //         <Switch
+    //           className="ml-1"
+    //           checked={!!validation?.multiple}
+    //           onCheckedChange={(checked) => {
+    //             updateField(field?.id, {
+    //               config: {
+    //                 ...field.config,
+    //                 //@ts-ignore
+    //                 validation: {
+    //                   ...validation,
+    //                   multiple: checked,
+    //                 },
+    //               },
+    //             })
+    //           }}
+    //         />
+    //       </Field>
+    //       <Field>
+    //         <FieldLabel htmlFor="validation-min-selected">
+    //           Min Selected
+    //         </FieldLabel>
+    //         <Input
+    //           id="validation-min-selected"
+    //           type="number"
+    //           placeholder="Min Selected"
+    //           value={validation?.minSelected ?? ""}
+    //           onChange={(e) => {
+    //             dispatch(
+    //               updatePageField({
+    //                 fieldId: field?.id,
+    //                 data: {
+    //                   config: {
+    //                     ...field.config,
+    //                     //@ts-ignore
+    //                     validation: {
+    //                       ...validation,
+    //                       minSelected: Number(e?.target?.value),
+    //                     },
+    //                   },
+    //                 },
+    //               })
+    //             )
+    //           }}
+    //           onBlur={(e) => {
+    //             updateField(field?.id, {
+    //               config: {
+    //                 ...field.config,
+    //                 //@ts-ignore
+    //                 validation: {
+    //                   ...validation,
+    //                   minSelected: Number(e?.target?.value) || 1,
+    //                 },
+    //               },
+    //             })
+    //           }}
+    //         />
+    //       </Field>
+    //       <Field>
+    //         <FieldLabel htmlFor="validation-max-selected">
+    //           Max Selected
+    //         </FieldLabel>
+    //         <Input
+    //           id="validation-max-selected"
+    //           type="number"
+    //           placeholder="Max Selected"
+    //           value={validation?.maxSelected ?? ""}
+    //           onChange={(e) => {
+    //             dispatch(
+    //               updatePageField({
+    //                 fieldId: field?.id,
+    //                 data: {
+    //                   config: {
+    //                     ...field.config,
+    //                     //@ts-ignore
+    //                     validation: {
+    //                       ...validation,
+    //                       maxSelected: Number(e?.target?.value),
+    //                     },
+    //                   },
+    //                 },
+    //               })
+    //             )
+    //           }}
+    //           onBlur={(e) => {
+    //             if (
+    //               Number(e?.target?.value) <
+    //               (field?.config as any)?.validation?.minSelected
+    //             ) {
+    //               toast.info(
+    //                 "Max Selected must be greater or equal to Min Selected"
+    //               )
+    //             }
+    //             updateField(field?.id, {
+    //               config: {
+    //                 ...field.config,
+    //                 //@ts-ignore
+    //                 validation: {
+    //                   ...validation,
+    //                   maxSelected:
+    //                     Number(e?.target?.value) <
+    //                     (field?.config as any)?.validation?.minSelected
+    //                       ? (field?.config as any)?.validation?.minSelected
+    //                       : Number(e?.target?.value),
+    //                 },
+    //               },
+    //             })
+    //           }}
+    //         />
+    //       </Field>
+    //       <Field>
+    //         <FieldLabel>Searchable</FieldLabel>
+    //         <Switch
+    //           className="ml-1"
+    //           checked={!!validation?.searchable}
+    //           onCheckedChange={(checked) => {
+    //             updateField(field?.id, {
+    //               config: {
+    //                 ...field.config,
+    //                 //@ts-ignore
+    //                 validation: {
+    //                   ...validation,
+    //                   searchable: checked,
+    //                 },
+    //               },
+    //             })
+    //           }}
+    //         />
+    //       </Field>
+    //     </>
+    //   )
+    // case "checkbox":
+    //   return (
+    //     <>
+    //       <Field>
+    //         <FieldLabel htmlFor="validation-min-selected">
+    //           Min Selected
+    //         </FieldLabel>
+    //         <Input
+    //           id="validation-min-selected"
+    //           type="number"
+    //           placeholder="Min Selected"
+    //           value={validation?.minSelected ?? ""}
+    //           onChange={(e) => {
+    //             dispatch(
+    //               updatePageField({
+    //                 fieldId: field?.id,
+    //                 data: {
+    //                   config: {
+    //                     ...field.config,
+    //                     //@ts-ignore
+    //                     validation: {
+    //                       ...validation,
+    //                       minSelected: Number(e?.target?.value),
+    //                     },
+    //                   },
+    //                 },
+    //               })
+    //             )
+    //           }}
+    //           onBlur={(e) => {
+    //             updateField(field?.id, {
+    //               config: {
+    //                 ...field.config,
+    //                 //@ts-ignore
+    //                 validation: {
+    //                   ...validation,
+    //                   minSelected: Number(e?.target?.value) || 1,
+    //                 },
+    //               },
+    //             })
+    //           }}
+    //         />
+    //       </Field>
+    //       <Field>
+    //         <FieldLabel htmlFor="validation-max-selected">
+    //           Max Selected
+    //         </FieldLabel>
+    //         <Input
+    //           id="validation-max-selected"
+    //           type="number"
+    //           placeholder="Max Selected"
+    //           value={validation?.maxSelected ?? ""}
+    //           onChange={(e) => {
+    //             dispatch(
+    //               updatePageField({
+    //                 fieldId: field?.id,
+    //                 data: {
+    //                   config: {
+    //                     ...field.config,
+    //                     //@ts-ignore
+    //                     validation: {
+    //                       ...validation,
+    //                       maxSelected: Number(e?.target?.value),
+    //                     },
+    //                   },
+    //                 },
+    //               })
+    //             )
+    //           }}
+    //           onBlur={(e) => {
+    //             if (
+    //               Number(e?.target?.value) <
+    //               (field?.config as any)?.validation?.minSelected
+    //             ) {
+    //               toast.info(
+    //                 "Max Selected must be greater or equal to Min Selected"
+    //               )
+    //             }
+    //             updateField(field?.id, {
+    //               config: {
+    //                 ...field.config,
+    //                 //@ts-ignore
+    //                 validation: {
+    //                   ...validation,
+    //                   maxSelected:
+    //                     Number(e?.target?.value) <
+    //                     (field?.config as any)?.validation?.minSelected
+    //                       ? (field?.config as any)?.validation?.minSelected
+    //                       : Number(e?.target?.value),
+    //                 },
+    //               },
+    //             })
+    //           }}
+    //         />
+    //       </Field>
+    //     </>
+    //   )
     default:
       return (
         <span className="text-xs text-muted-foreground">

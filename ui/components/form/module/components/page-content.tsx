@@ -56,7 +56,7 @@ export function PageContent({ isMobile }: { isMobile: boolean }) {
           ) : (
             <div
               className={cn(
-                "custom-scroll flex h-full justify-center overflow-y-auto break-all",
+                "custom-scroll flex h-full justify-center overflow-y-auto",
                 formData?.data?.form?.theme
               )}
             >

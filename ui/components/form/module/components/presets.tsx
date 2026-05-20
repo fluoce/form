@@ -1,14 +1,22 @@
 import { useState } from "react"
 import { PRESET_DATA } from "../data/preset"
 import { Spinner } from "@/components/ui/spinner"
+import { useFormPagePresetCreate } from "@/hooks/use-form-page"
 
 export function Presets() {
   const [isPending, setIsPending] = useState("")
+
+  const { mutateAsync } = useFormPagePresetCreate()
 
   return PRESET_DATA?.map((p) => (
     <div
       onClick={() => {
         setIsPending(p?.name)
+        mutateAsync({
+          body: {
+            preset: p?.type,
+          },
+        }).finally(() => setIsPending(""))
       }}
       key={p?.name}
       className="flex cursor-pointer items-center justify-between gap-2 rounded-lg p-2 hover:bg-accent"

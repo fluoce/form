@@ -36,10 +36,14 @@ export function FieldBar() {
             </TabsList>
           </Tabs>
           <div className="custom-scroll h-full overflow-y-auto">
-            <div className="flex h-0 flex-col gap-1">
+            <div className="flex flex-col gap-1">
               {tab == "field" ? <Fields /> : null}
               {tab == "theme" ? <Themes /> : null}
               {tab == "base" ? <Base /> : null}
+            </div>
+            <div className="py-2 text-center text-xs text-muted-foreground">
+              more fields and themes soon{" "}
+              <span className="text-blue-600">!</span>
             </div>
           </div>
         </div>
@@ -51,8 +55,11 @@ export function FieldBar() {
             Presets
           </span>
           <div className="custom-scroll h-full overflow-y-auto">
-            <div className="flex h-0 flex-col gap-1">
+            <div className="flex flex-col gap-1">
               <Presets />
+              <div className="py-2 text-center text-xs text-muted-foreground">
+                more preset soon <span className="text-blue-600">!</span>
+              </div>
             </div>
           </div>
         </div>

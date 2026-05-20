@@ -26,6 +26,8 @@ export const urls = {
     byId: ({ formId, formPageId }: { formId: string; formPageId: string }) =>
       `/form/${formId}/formpage/${formPageId}`,
     all: ({ formId }: { formId: string }) => `/form/${formId}/formpage`,
+    preset: ({ formId }: { formId: string }) =>
+      `/form/${formId}/formpage/preset`,
   },
   field: {
     create: ({ formId, formPageId }: { formId: string; formPageId: string }) =>

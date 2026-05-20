@@ -1,0 +1,109 @@
+{
+  "contact": {
+    "page": {
+      "name": "contact page",
+      "fields": [
+        {
+          "position": "a0",
+          "config": {
+            "type": "text",
+            "label": "First Name",
+            "placeholder": "Name...",
+            "required": false
+          }
+        },
+        {
+          "position": "a1",
+          "config": {
+            "type": "text",
+            "label": "Last Name",
+            "placeholder": "Name...",
+            "required": false
+          }
+        },
+        {
+          "position": "a2",
+          "config": {
+            "type": "phone",
+            "label": "Phone Number",
+            "placeholder": "Phone...",
+            "required": false,
+            "validation": {
+              "allowCountryChange": true
+            }
+          }
+        },
+        {
+          "position": "a3",
+          "config": {
+            "type": "email",
+            "label": "Email",
+            "placeholder": "name@example.com",
+            "required": false
+          }
+        }
+      ]
+    }
+  },
+  "address": {
+    "page": {
+      "name": "address page",
+      "fields": [
+        {
+          "position": "a0",
+          "config": {
+            "type": "textarea",
+            "label": "Address line one",
+            "placeholder": " line one . . .",
+            "required": false
+          }
+        },
+        {
+          "position": "a1",
+          "config": {
+            "type": "textarea",
+            "label": "Address line two",
+            "placeholder": "line two...",
+            "required": false
+          }
+        },
+        {
+          "position": "a2",
+          "config": {
+            "type": "text",
+            "label": "City / Town",
+            "placeholder": "city or town . . .",
+            "required": false
+          }
+        },
+        {
+          "position": "a3",
+          "config": {
+            "type": "text",
+            "label": "State",
+            "placeholder": "state . . .",
+            "required": false
+          }
+        },
+        {
+          "position": "a4",
+          "config": {
+            "type": "number",
+            "label": "zip / post / pin code",
+            "placeholder": "code . . .",
+            "required": false
+          }
+        },
+        {
+          "position": "a5",
+          "config": {
+            "type": "text",
+            "label": "Country",
+            "placeholder": "country . . .",
+            "required": false
+          }
+        }
+      ]
+    }
+  }
+}
