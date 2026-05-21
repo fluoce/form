@@ -1,5 +1,3 @@
-import { FormTabType } from "@/types/form-types"
-
 export const routes = {
   base: "/",
   dashboard: {
@@ -17,5 +15,8 @@ export const routes = {
       `/dashboard/${workspaceId}/form`,
     byId: ({ formId, workspaceId }: { workspaceId: string; formId: string }) =>
       `/dashboard/${workspaceId}/form/${formId}`,
+    preview: ({ formId }: { formId: string }) => {
+      return `/preview/${formId}`
+    },
   },
 }

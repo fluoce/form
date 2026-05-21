@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   ServiceUnavailableException,
@@ -6,6 +7,7 @@ import {
 import { FormcoreService } from 'src/core/formcore/formcore.service';
 import { CreateFormDto, UpdateFormDto } from 'src/types/form.types';
 import { ResponseDataType } from 'src/types/response.type';
+import { WorkspaceType } from 'src/types/workspace.types';
 
 @Injectable()
 export class FormService {
@@ -95,10 +97,28 @@ export class FormService {
     };
   }
 
-  async getFullForm(formId: string) {
-    const form = await this.formcoreService.getFullForm(formId);
+  async publishForm(
+    userId: string,
+    workspace: WorkspaceType,
+    formId: string,
+  ): Promise<ResponseDataType> {
+    if (workspace?.status !== 'ACTIVE') {
+      throw new BadRequestException('Workspace is not active');
+    }
+    const form = await this.formcoreService.publishForm(userId, formId);
     if (!form) {
-      throw new NotFoundException('Forms not found');
+      throw new NotFoundException('Form not found');
+    }
+    return {
+      message: 'form published successfully',
+      form,
+    };
+  }
+
+  async getFullForm(shareId: string): Promise<ResponseDataType> {
+    const form = await this.formcoreService.getFullForm(shareId);
+    if (!form) {
+      throw new NotFoundException('Form not found');
     }
     return {
       message: 'form fetched successfully',

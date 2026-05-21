@@ -1,58 +1,45 @@
 "use client"
 
 import { PageSpinner } from "@/components/shared/loader-r"
-import { useGetForm } from "@/hooks/use-get-form"
 import { cn } from "@/lib/utils"
 import { useParams } from "next/navigation"
-import { FormPages } from "./components/form-pages"
 import Link from "next/link"
-import { useEffect, useState } from "react"
-import { formSubmissionKey } from "./const/localstorage-key"
-import { ulid } from "ulid"
+import { ArrowLeft, BadgeInfo } from "lucide-react"
+import { FormPages } from "./components/form-pages"
+import { useFormPreview } from "@/hooks/use-form"
+import { Button } from "@/components/ui/button"
 
-export default function FormSubmit() {
+export default function FormPreview() {
   const { formId } = useParams<{
     formId: string
   }>()
 
-  const { data: formData, isLoading } = useGetForm({ formId })
-
-  const [submissionId, setSubmissionId] = useState("")
-
-  useEffect(() => {
-    if (!formData?.data?.form) return
-    const savedItem = localStorage.getItem(
-      formSubmissionKey(formData?.data?.form?.id)
-    )
-    const savedData: {
-      formId: string
-      submissionId: string
-    } | null = savedItem ? JSON.parse(savedItem) : null
-    if (savedData) {
-      setSubmissionId(savedData?.submissionId)
-      return
-    }
-    const newSubmissionId = `sub_${ulid()}`
-    localStorage.setItem(
-      formSubmissionKey(formData?.data?.form?.id),
-      JSON.stringify({
-        formId: formData?.data?.form?.id,
-        submissionId: newSubmissionId,
-      })
-    )
-    setSubmissionId(newSubmissionId)
-  }, [formData?.data?.form])
+  const { data: formData, isLoading } = useFormPreview({ formId })
 
   if (isLoading) {
     return <PageSpinner />
   }
 
   if (!formData?.data?.form) {
-    return null
+    return (
+      <div className="flex min-h-screen w-full items-center justify-center">
+        <span className="flex items-center gap-2">
+          <BadgeInfo size={20} className="text-blue-600" /> Something went wrong
+          !
+        </span>
+      </div>
+    )
   }
 
   return (
     <div className="flex w-full justify-center">
+      <Button
+        onClick={() => window.history.back()}
+        className="absolute top-2 left-2"
+        variant="outline"
+      >
+        <ArrowLeft /> Back
+      </Button>
       <div
         className={cn(
           "flex w-full max-w-140 flex-col gap-8 px-4 pb-8",
@@ -73,7 +60,6 @@ export default function FormSubmit() {
         ) : null}
         <FormPages
           formId={formData?.data?.form?.id!}
-          submissionId={submissionId}
           formPages={formData?.data?.form?.formPage ?? []}
         />
         <div className="flex w-full items-center justify-end">

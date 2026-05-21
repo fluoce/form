@@ -14,6 +14,8 @@ export interface FormType {
   userId: string
   name: string
   slug: string
+  shareId: string
+  version: number
   formPage: FormPageType[]
   description?: string
   title?: string

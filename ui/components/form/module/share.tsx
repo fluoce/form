@@ -12,6 +12,7 @@ import Link from "next/link"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
 import { Kbd } from "@/components/ui/kbd"
+import { handleCopy } from "@/utils/handle-copy"
 
 export function FormShare() {
   const { data, isLoading } = useForm()
@@ -22,19 +23,7 @@ export function FormShare() {
     return <PageSpinner />
   }
 
-  const shareLink = `${envs?.appUrl}/${data?.data?.form?.id}`
-
-  async function funcHandleCopy() {
-    try {
-      await navigator.clipboard.writeText(shareLink)
-      setCopied(true)
-      setTimeout(() => {
-        setCopied(false)
-      }, 1200)
-    } catch (err) {
-      setCopied(false)
-    }
-  }
+  const shareLink = `${envs?.appUrl}/${data?.data?.form?.shareId}`
 
   return (
     <Wrapper>
@@ -67,7 +56,12 @@ export function FormShare() {
             </Link>
             <span
               className="flex cursor-pointer items-center gap-1 rounded border p-1.5 text-muted-foreground"
-              onClick={funcHandleCopy}
+              onClick={() =>
+                handleCopy({
+                  setCopied,
+                  text: shareLink,
+                })
+              }
               title={copied ? "Copied!" : "Copy to clipboard"}
               tabIndex={0}
               role="button"

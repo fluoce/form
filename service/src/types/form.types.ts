@@ -71,6 +71,8 @@ export interface FormType {
   name: string;
   slug: string;
   status: FormStatus;
+  shareId: string;
+  version: number;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -48,6 +48,8 @@ export class FormcoreService {
         userId,
         name: data.name,
         slug,
+        shareId: this.ulidService.generateFormShareId(),
+        version: 1,
       },
     });
   }
@@ -117,10 +119,25 @@ export class FormcoreService {
     });
   }
 
-  async getFullForm(formId: string): Promise<FormType | null> {
-    return await this.prisma.form.findUnique({
+  async publishForm(userId: string, formId: string): Promise<FormType | null> {
+    return await this.prisma.form.update({
       where: {
         id: formId,
+        userId,
+      },
+      data: {
+        version: {
+          increment: 1,
+        },
+        status: 'PUBLISHED',
+      },
+    });
+  }
+
+  async getFullForm(shareId: string): Promise<FormType | null> {
+    return await this.prisma.form.findUnique({
+      where: {
+        shareId,
         status: 'PUBLISHED',
       },
       include: {

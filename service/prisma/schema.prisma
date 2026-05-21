@@ -96,6 +96,8 @@ model Form {
   title           String?
   description     String?
   theme           FormTheme                @default(DEFAULT)
+  shareId         String                   @default("")              @unique                  
+  version         Int                      @default(1)
   //TODO: other configs later
 
   createdAt       DateTime                 @default(now())

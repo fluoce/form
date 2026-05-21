@@ -19,7 +19,15 @@ export const urls = {
       `/form/trash/${workspaceId}`,
     all: ({ workspaceId }: { workspaceId: string }) =>
       `/form/all/${workspaceId}`,
-    public: ({ formId }: { formId: string }) => `/form/public/${formId}`,
+    preview: ({ formId }: { formId: string }) => `/form/preview/${formId}`,
+    publish: ({
+      workspaceId,
+      formId,
+    }: {
+      workspaceId: string
+      formId: string
+    }) => `/form/${workspaceId}/publish/${formId}`,
+    public: ({ shareId }: { shareId: string }) => `/form/public/${shareId}`,
   },
   formPage: {
     create: ({ formId }: { formId: string }) => `/form/${formId}/formpage`,

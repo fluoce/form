@@ -74,9 +74,26 @@ export class FormController {
     return await this.formService.getForms(user.sub, workspace.id);
   }
 
+  @UseGuards(FormGuard)
+  @Get('preview/:formId')
+  async previewForm(@Form() form: FormType) {
+    return await this.formService.getFullForm(form.shareId);
+  }
+
+  @UseGuards(WorkspaceGuard)
+  @UseGuards(FormGuard)
+  @Post(':workspaceId/publish/:formId')
+  async publishForm(
+    @Workspace() workspace: WorkspaceType,
+    @User() user: UserPayload,
+    @Param('formId') formId: string,
+  ) {
+    return await this.formService.publishForm(user.sub, workspace, formId);
+  }
+
   @Public()
-  @Get('public/:formId')
-  async getFullForm(@Param('formId') formId: string) {
-    return await this.formService.getFullForm(formId);
+  @Get('public/:shareId')
+  async getFullForm(@Param('shareId') shareId: string) {
+    return await this.formService.getFullForm(shareId);
   }
 }

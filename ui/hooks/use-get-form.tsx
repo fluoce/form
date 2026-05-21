@@ -4,12 +4,12 @@ import { FormType } from "@/types/form-types"
 import { ResType } from "@/types/res-types"
 import { useQuery } from "@tanstack/react-query"
 
-export function useGetForm({ formId }: { formId: string }) {
+export function useGetForm({ shareId }: { shareId: string }) {
   return useQuery({
-    queryKey: ["form", formId],
+    queryKey: ["form", shareId],
     queryFn: async () => {
       const res = await fetch(
-        `${envs?.backendUrl}${urls?.form.public({ formId })}`
+        `${envs?.backendUrl}${urls?.form.public({ shareId })}`
       )
       const data = (await res?.json()) as Promise<ResType<{ form: FormType }>>
 
@@ -19,6 +19,6 @@ export function useGetForm({ formId }: { formId: string }) {
     retry: 1,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
-    enabled: Boolean(formId),
+    enabled: Boolean(shareId),
   })
 }

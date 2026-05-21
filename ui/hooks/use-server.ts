@@ -16,6 +16,21 @@ interface ServerProps {
   auth?: boolean
 }
 
+let isRefreshing = false
+
+let failedQueue: Array<{
+  resolve: () => void
+  reject: (err: unknown) => void
+}> = []
+
+function processQueue(error?: unknown) {
+  failedQueue.forEach(({ resolve, reject }) => {
+    if (error) reject(error)
+    else resolve()
+  })
+  failedQueue = []
+}
+
 export default async function UseServer({
   url,
   method,
@@ -49,29 +64,45 @@ export default async function UseServer({
     rt = tokenRespaonse.refreshToken
   }
 
-  let res = await dataFetch({
-    endpoint,
-    at,
-    method,
-    body,
-  })
-
-  let data: ResType | null = null
-  let contentType = res.headers.get("content-type")
-
-  if (res.status == 401) {
-    const tokenRespaonse = await refresh(rt)
-    if (!tokenRespaonse) {
-      redirect(authRedirect)
-    }
-    at = tokenRespaonse.accessToken
-    rt = tokenRespaonse.refreshToken
-    res = await dataFetch({
+  const makeRequest = () =>
+    dataFetch({
       endpoint,
-      at: tokenRespaonse.accessToken,
+      at,
       method,
       body,
     })
+
+  let res = await makeRequest()
+
+  let data: ResType | null = null
+
+  let contentType = res.headers.get("content-type")
+
+  if (res.status === 401) {
+    if (!isRefreshing) {
+      try {
+        isRefreshing = true
+        const tokenResponse = await refresh(rt)
+        if (tokenResponse) {
+          at = tokenResponse.accessToken
+          rt = tokenResponse.refreshToken
+        } else {
+          processQueue(new Error("Refresh token invalid"))
+          redirect(authRedirect)
+        }
+        processQueue()
+      } catch (err) {
+        processQueue(err)
+        throw err
+      } finally {
+        isRefreshing = false
+      }
+    } else {
+      await new Promise<void>((resolve, reject) => {
+        failedQueue.push({ resolve, reject })
+      })
+    }
+    res = await makeRequest()
     contentType = res.headers.get("content-type")
   }
 

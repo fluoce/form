@@ -26,9 +26,10 @@ import {
 import { useForm, useFormUpdate } from "@/hooks/use-form"
 import { FormStatus } from "@/types/form-types"
 import { Button } from "@/components/ui/button"
-import { Trash2 } from "lucide-react"
+import { Pencil, Trash2 } from "lucide-react"
 import { Spinner } from "@/components/ui/spinner"
 import { cn } from "@/lib/utils"
+import { CreateUpdateForm } from "../create-update-form"
 
 const FORM_STATUS: FormStatus[] = ["ARCHIVED", "DRAFT", "PUBLISHED"]
 
@@ -57,11 +58,24 @@ export function FormGeneral() {
                 {form?.name[0].slice(0, 1).toUpperCase()}
               </AvatarFallback>
             </Avatar>
-            <h3 className="flex flex-wrap items-center gap-2">
-              {form?.name} <Kbd>{form?.slug}</Kbd>
-            </h3>
+            <div className="flex items-center gap-2">
+              <h3 className="flex flex-wrap items-center gap-2">
+                {form?.name} <Kbd>{form?.slug}</Kbd>
+              </h3>
+              {form && (
+                <CreateUpdateForm form={form}>
+                  <Button
+                    size="icon-xs"
+                    variant="outline"
+                    className="text-blue-600"
+                  >
+                    <Pencil />
+                  </Button>
+                </CreateUpdateForm>
+              )}
+            </div>
           </div>
-          <div>
+          {/* <div>
             <Span text="Status" />
             <Select
               disabled={isPending}
@@ -86,7 +100,7 @@ export function FormGeneral() {
                 ))}
               </SelectContent>
             </Select>
-          </div>
+          </div> */}
         </div>
         <div>
           <h3 className="mb-1 text-lg font-semibold text-destructive">

@@ -28,6 +28,7 @@ export function useForm() {
         url: urls.form.byId({ formId }),
         method: "GET",
       }) as Promise<ResType<{ form: FormType }>>,
+    enabled: Boolean(formId),
   })
 }
 
@@ -113,5 +114,33 @@ export function useFormDelete() {
         queryKey: queryKeys.form.trash({ workspaceId }),
       })
     },
+  })
+}
+
+export function useFormPublish() {
+  const { formId, workspaceId } = useParams<{
+    workspaceId: string
+    formId: string
+  }>()
+  return useMutation({
+    mutationFn: () =>
+      useFetch({
+        url: urls.form.publish({ formId, workspaceId }),
+        method: "POST",
+      }) as Promise<ResType<{ form: FormType }>>,
+  })
+}
+
+export function useFormPreview({ formId }: { formId: string }) {
+  return useQuery<ResType<{ form: FormType }>>({
+    queryKey: queryKeys.form.preview({ formId }),
+    queryFn: () =>
+      useFetch({
+        url: urls.form.preview({ formId }),
+        method: "GET",
+      }) as Promise<ResType<{ form: FormType }>>,
+    enabled: Boolean(formId),
+    staleTime: 10,
+    refetchOnMount: true,
   })
 }
