@@ -12,7 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Field, FieldLabel } from "@/components/ui/field"
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Spinner } from "@/components/ui/spinner"
 import { Textarea } from "@/components/ui/textarea"
@@ -70,30 +70,35 @@ export function UpdateFormTitleDescription({
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(submit)}>
-          <Field>
-            <FieldLabel htmlFor="form-title">Form Title</FieldLabel>
-            <Input
-              id="form-title"
-              type="text"
-              placeholder="Title . . ."
-              {...register("title", {
-                required: "Title is required.",
-              })}
-            />
-          </Field>
-          {errors?.title && <ErrorAlert error={errors?.title?.message!} />}
-          <Field>
-            <FieldLabel htmlFor="form-description">Form Description</FieldLabel>
-            <Textarea
-              id="form-description"
-              placeholder="Description . . ."
-              className="scrollbar-hide max-h-24"
-              {...register("description")}
-            />
-          </Field>
-          {errors?.description && (
-            <ErrorAlert error={errors?.description?.message!} />
-          )}
+          <FieldGroup>
+            {" "}
+            <Field>
+              <FieldLabel htmlFor="form-title">Form Title</FieldLabel>
+              <Input
+                id="form-title"
+                type="text"
+                placeholder="Title . . ."
+                {...register("title", {
+                  required: "Title is required.",
+                })}
+              />
+            </Field>
+            {errors?.title && <ErrorAlert error={errors?.title?.message!} />}
+            <Field>
+              <FieldLabel htmlFor="form-description">
+                Form Description
+              </FieldLabel>
+              <Textarea
+                id="form-description"
+                placeholder="Description . . ."
+                className="scrollbar-hide max-h-24"
+                {...register("description")}
+              />
+            </Field>
+            {errors?.description && (
+              <ErrorAlert error={errors?.description?.message!} />
+            )}
+          </FieldGroup>
           <DialogFooter className="mt-4">
             <DialogClose asChild>
               <Button type="button" variant="outline">

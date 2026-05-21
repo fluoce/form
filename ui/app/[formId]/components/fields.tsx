@@ -65,7 +65,7 @@ export function Fields({
           </div>
           <Input
             id={config?.label}
-            className="bg-background dark:bg-background"
+            className="bg-background placeholder:text-xs dark:bg-background"
             type="text"
             placeholder={config?.placeholder || undefined}
             {...register(id, {
@@ -94,7 +94,7 @@ export function Fields({
           </div>
           <Textarea
             id={config?.label}
-            className="max-h-60 bg-background dark:bg-background"
+            className="max-h-60 bg-background placeholder:text-xs dark:bg-background"
             placeholder={config?.placeholder || undefined}
             {...register(id, {
               required: {
@@ -122,7 +122,7 @@ export function Fields({
           </div>
           <Input
             id={config?.label}
-            className="bg-background dark:bg-background"
+            className="bg-background placeholder:text-xs dark:bg-background"
             placeholder={config?.placeholder || undefined}
             {...register(id, {
               required: {
@@ -146,7 +146,7 @@ export function Fields({
           </div>
           <Input
             id={config?.label}
-            className="bg-background dark:bg-background"
+            className="bg-background placeholder:text-xs dark:bg-background"
             placeholder={config?.placeholder || undefined}
             type="number"
             onInput={(e) => {
@@ -211,7 +211,7 @@ export function Fields({
             </Select>
             <Input
               id={config?.label}
-              className="bg-background dark:bg-background"
+              className="bg-background placeholder:text-xs dark:bg-background"
               placeholder={config?.placeholder || undefined}
               onInput={(e) => {
                 e.currentTarget.value = e.currentTarget.value.replace(/\D/g, "")
@@ -250,7 +250,7 @@ export function Fields({
           </div>
           <Input
             id={config?.label}
-            className="bg-background dark:bg-background"
+            className="bg-background placeholder:text-xs dark:bg-background"
             placeholder={config?.placeholder || undefined}
             {...register(id, {
               required: {
@@ -353,7 +353,10 @@ export function Fields({
                 onValueChange={controllerField.onChange}
               >
                 <SelectTrigger className="cursor-pointer bg-background dark:bg-background">
-                  <SelectValue placeholder={config?.placeholder || "Select"} />
+                  <SelectValue
+                    className="placeholder:text-xs"
+                    placeholder={config?.placeholder || "Select"}
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   {config?.options?.map((o, idx) => (
@@ -394,12 +397,18 @@ export function Fields({
                 onValueChange={(value) => controllerField.onChange(value)}
               >
                 {config?.options?.map((o: Option, idx) => (
-                  <div key={idx} className="flex items-center gap-3">
+                  <div key={idx} className="flex w-fit items-center gap-3">
                     <RadioGroupItem
+                      id={o?.label}
                       className="cursor-pointer bg-background dark:bg-background"
                       value={o?.value || ""}
                     />
-                    <FieldLabel htmlFor={o?.label}>{o?.label}</FieldLabel>
+                    <FieldLabel
+                      className="cursor-pointer text-[13px]"
+                      htmlFor={o?.label}
+                    >
+                      {o?.label}
+                    </FieldLabel>
                   </div>
                 ))}
               </RadioGroup>
@@ -431,9 +440,13 @@ export function Fields({
                     ? controllerField.value.includes(o?.value)
                     : false
                   return (
-                    <Field orientation="horizontal" key={o?.value || o?.label}>
+                    <Field
+                      orientation="horizontal"
+                      key={o?.value || o?.label}
+                      className="w-fit"
+                    >
                       <Checkbox
-                        id={config?.label}
+                        id={o?.label}
                         className="cursor-pointer bg-background dark:bg-background"
                         value={o?.value}
                         checked={checked}
@@ -452,7 +465,12 @@ export function Fields({
                           }
                         }}
                       />
-                      <FieldLabel htmlFor={o?.label}>{o?.label}</FieldLabel>
+                      <FieldLabel
+                        className="cursor-pointer text-[13px]"
+                        htmlFor={o?.label}
+                      >
+                        {o?.label}
+                      </FieldLabel>
                     </Field>
                   )
                 })}
@@ -497,7 +515,7 @@ function DatePickerSimple({
             {parsedDate ? (
               format(parsedDate, "dd-MM-yyyy")
             ) : (
-              <span className="text-muted-foreground">
+              <span className="text-xs text-muted-foreground">
                 {config?.placeholder || "Select Date"}
               </span>
             )}

@@ -39,7 +39,7 @@ export function FieldRenderer({ field }: { field: FormFieldType }) {
           </div>
           <Input
             id={config?.label}
-            className="bg-background dark:bg-background"
+            className="bg-background placeholder:text-xs dark:bg-background"
             type="text"
             placeholder={config?.placeholder || undefined}
             minLength={config?.validation?.minLength || 0}
@@ -57,7 +57,7 @@ export function FieldRenderer({ field }: { field: FormFieldType }) {
           </div>
           <Textarea
             id={config?.label}
-            className="max-h-60 bg-background dark:bg-background"
+            className="max-h-60 bg-background placeholder:text-xs dark:bg-background"
             placeholder={config?.placeholder || undefined}
             required={config?.required}
             minLength={config?.validation?.minLength || 0}
@@ -74,7 +74,7 @@ export function FieldRenderer({ field }: { field: FormFieldType }) {
           </div>
           <Input
             id={config?.label}
-            className="bg-background dark:bg-background"
+            className="bg-background placeholder:text-xs dark:bg-background"
             placeholder={config?.placeholder || undefined}
             type="email"
             required={config?.required}
@@ -90,7 +90,7 @@ export function FieldRenderer({ field }: { field: FormFieldType }) {
           </div>
           <Input
             id={config?.label}
-            className="bg-background dark:bg-background"
+            className="bg-background placeholder:text-xs dark:bg-background"
             placeholder={config?.placeholder || undefined}
             required={config?.required}
             type="number"
@@ -133,7 +133,7 @@ export function FieldRenderer({ field }: { field: FormFieldType }) {
             </Select>
             <Input
               id={config?.label}
-              className="bg-background dark:bg-background"
+              className="bg-background placeholder:text-xs dark:bg-background"
               placeholder={config?.placeholder || undefined}
               required={config?.required}
               type="number"
@@ -150,7 +150,7 @@ export function FieldRenderer({ field }: { field: FormFieldType }) {
           </div>
           <Input
             id={config?.label}
-            className="bg-background dark:bg-background"
+            className="bg-background placeholder:text-xs dark:bg-background"
             placeholder={config?.placeholder || undefined}
             type="url"
           />
@@ -193,12 +193,18 @@ export function FieldRenderer({ field }: { field: FormFieldType }) {
           </div>
           <RadioGroup className="mt-2">
             {config?.options?.map((o: Option, idx) => (
-              <div key={idx} className="flex items-center gap-3">
+              <div key={idx} className="flex w-fit items-center gap-3">
                 <RadioGroupItem
+                  id={o?.label}
                   className="cursor-pointer bg-background dark:bg-background"
                   value={o?.value || ""}
                 />
-                <FieldLabel htmlFor={o?.label}>{o?.label}</FieldLabel>
+                <FieldLabel
+                  htmlFor={o?.label}
+                  className="cursor-pointer text-[13px]"
+                >
+                  {o?.label}
+                </FieldLabel>
               </div>
             ))}
           </RadioGroup>
@@ -213,13 +219,22 @@ export function FieldRenderer({ field }: { field: FormFieldType }) {
           </div>
           <div className="mt-2 flex flex-col gap-2">
             {config?.options?.map((o: any) => (
-              <Field orientation="horizontal" key={o?.value || o?.label}>
+              <Field
+                orientation="horizontal"
+                key={o?.value || o?.label}
+                className="w-fit"
+              >
                 <Checkbox
-                  id={config?.label}
+                  id={o?.label}
                   className="cursor-pointer bg-background dark:bg-background"
                   value={o?.value}
                 />
-                <FieldLabel htmlFor={o?.label}>{o?.label}</FieldLabel>
+                <FieldLabel
+                  className="cursor-pointer text-[13px]"
+                  htmlFor={o?.label}
+                >
+                  {o?.label}
+                </FieldLabel>
               </Field>
             ))}
           </div>
@@ -252,7 +267,7 @@ function DatePickerSimple({ field }: { field: FormFieldType }) {
             {date ? (
               date.toISOString().slice(0, 10)
             ) : (
-              <span className="text-muted-foreground">
+              <span className="text-xs text-muted-foreground">
                 {config?.placeholder || "Select Date"}
               </span>
             )}

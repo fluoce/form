@@ -65,12 +65,10 @@ export default function FormSubmit() {
               "flex flex-col gap-1 rounded-b-lg border bg-primary p-6 text-primary-foreground"
             }
           >
-            <h1 className="text-base font-medium">
+            <h1 className="text-lg font-medium">
               {formData?.data?.form?.title}
             </h1>
-            <p className="text-xs font-medium opacity-75">
-              {formData?.data?.form?.description}
-            </p>
+            <p className="text-sm">{formData?.data?.form?.description}</p>
           </div>
         ) : null}
         <FormPages

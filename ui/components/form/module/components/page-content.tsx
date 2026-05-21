@@ -60,7 +60,7 @@ export function PageContent({ isMobile }: { isMobile: boolean }) {
                 formData?.data?.form?.theme
               )}
             >
-              <div className="flex w-full max-w-140 flex-col gap-8">
+              <div className="flex w-full max-w-130 flex-col gap-8">
                 {formData?.data?.form?.title ||
                 formData?.data?.form?.description ? (
                   <div
@@ -72,10 +72,10 @@ export function PageContent({ isMobile }: { isMobile: boolean }) {
                       fieldId == "base" && "border-stone-500"
                     )}
                   >
-                    <h1 className="text-base font-medium">
+                    <h1 className="text-lg font-medium">
                       {formData?.data?.form?.title}
                     </h1>
-                    <p className="text-xs font-medium opacity-75">
+                    <p className="text-sm">
                       {formData?.data?.form?.description}
                     </p>
                   </div>
