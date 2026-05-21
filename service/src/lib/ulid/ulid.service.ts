@@ -7,12 +7,6 @@ import {
   WorkspaceMemberIdPrefix,
 } from 'src/types/id.types';
 import { ulid, decodeTime } from 'ulid';
-import { customAlphabet } from 'nanoid';
-
-const SHARE_ID_ALPHABET =
-  '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-const generateShareId = customAlphabet(SHARE_ID_ALPHABET, 12);
 
 @Injectable()
 export class UlidService {
@@ -46,6 +40,6 @@ export class UlidService {
   }
 
   generateFormShareId(): string {
-    return generateShareId();
+    return ulid();
   }
 }
