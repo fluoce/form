@@ -115,6 +115,17 @@ export class FormService {
     };
   }
 
+  async getPreviewForm(shareId: string): Promise<ResponseDataType> {
+    const form = await this.formcoreService.getPreviewForm(shareId);
+    if (!form) {
+      throw new NotFoundException('Form not found');
+    }
+    return {
+      message: 'form fetched successfully',
+      form,
+    };
+  }
+
   async getFullForm(shareId: string): Promise<ResponseDataType> {
     const form = await this.formcoreService.getFullForm(shareId);
     if (!form) {

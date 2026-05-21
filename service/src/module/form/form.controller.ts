@@ -77,7 +77,7 @@ export class FormController {
   @UseGuards(FormGuard)
   @Get('preview/:formId')
   async previewForm(@Form() form: FormType) {
-    return await this.formService.getFullForm(form.shareId);
+    return await this.formService.getPreviewForm(form.shareId);
   }
 
   @UseGuards(WorkspaceGuard)

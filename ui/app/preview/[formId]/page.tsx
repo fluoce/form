@@ -22,11 +22,14 @@ export default function FormPreview() {
 
   if (!formData?.data?.form) {
     return (
-      <div className="flex min-h-screen w-full items-center justify-center">
+      <div className="flex min-h-screen w-full flex-col items-center justify-center gap-2">
         <span className="flex items-center gap-2">
           <BadgeInfo size={20} className="text-blue-600" /> Something went wrong
           !
         </span>
+        <Button onClick={() => window.history.back()} variant="outline">
+          <ArrowLeft /> Back
+        </Button>
       </div>
     )
   }

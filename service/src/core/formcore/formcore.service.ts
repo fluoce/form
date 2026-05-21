@@ -134,6 +134,28 @@ export class FormcoreService {
     });
   }
 
+  async getPreviewForm(shareId: string): Promise<FormType | null> {
+    return await this.prisma.form.findUnique({
+      where: {
+        shareId,
+      },
+      include: {
+        formPage: {
+          include: {
+            formField: {
+              orderBy: {
+                position: 'asc',
+              },
+            },
+          },
+          orderBy: {
+            position: 'asc',
+          },
+        },
+      },
+    });
+  }
+
   async getFullForm(shareId: string): Promise<FormType | null> {
     return await this.prisma.form.findUnique({
       where: {
