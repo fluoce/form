@@ -15,6 +15,9 @@ import { SortAbleField } from "./sortable-field"
 import { DragDropProvider, type DragEndEvent } from "@dnd-kit/react"
 import { funcHandleFieldSortEnd } from "../func/func-handle-field-sort-end"
 import { arrayMove } from "@dnd-kit/helpers"
+import { ClearBtn } from "../../clear-btn"
+import { PrevBtn } from "../../pre-btn"
+import { SubmitBtn } from "../../submit-btn"
 
 export function PageContent({ isMobile }: { isMobile: boolean }) {
   const dispatch = useAppDispatch()
@@ -119,6 +122,11 @@ export function PageContent({ isMobile }: { isMobile: boolean }) {
                     <SortAbleField idx={idx} key={field?.id} field={field} />
                   ))}
                 </DragDropProvider>
+                <div className="grid grid-cols-4 gap-4 pt-1 pb-4">
+                  <ClearBtn />
+                  <PrevBtn />
+                  <SubmitBtn>Submit</SubmitBtn>
+                </div>
               </div>
             </div>
           )

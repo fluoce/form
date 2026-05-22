@@ -18,6 +18,9 @@ import {
 import { formSubmissionKey } from "../const/localstorage-key"
 import { COUNTRY } from "@/components/form/module/data/country"
 import { format } from "date-fns"
+import { ClearBtn } from "@/components/form/clear-btn"
+import { PrevBtn } from "@/components/form/pre-btn"
+import { SubmitBtn } from "@/components/form/submit-btn"
 
 export function FormPages({
   formPages,
@@ -104,9 +107,7 @@ export function FormPages({
       <div className="grid grid-cols-4 gap-4 pt-1 pb-4">
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button type="button" className="p-4" variant="destructive">
-              Clear
-            </Button>
+            <ClearBtn />
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
@@ -130,22 +131,17 @@ export function FormPages({
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-        <Button
-          type="button"
-          className="p-4"
-          variant="outline"
+        <PrevBtn
           onClick={() => {
             if (page > 0) {
               setPage((prev) => prev - 1)
             }
           }}
           disabled={page === 0}
-        >
-          Previous
-        </Button>
-        <Button type="submit" className="col-span-2 p-4">
+        />
+        <SubmitBtn>
           {page >= formPages?.length - 1 ? "Submit" : "Next"}
-        </Button>
+        </SubmitBtn>
       </div>
     </form>
   )
