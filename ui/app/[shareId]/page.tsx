@@ -75,7 +75,7 @@ export default function FormSubmit() {
     )
   }
 
-  if (!done) {
+  if (done) {
     return (
       <div className="flex h-screen w-full items-center justify-center">
         <div>Form submited successfully !</div>
