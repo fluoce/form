@@ -309,6 +309,7 @@ export function Fields({
               message: requiredMessage(name),
             },
             validate: (value) => {
+              if (!value) return
               const minDate = config?.validation?.minDate || undefined
               const maxDate = config?.validation?.maxDate || undefined
               const userDate = format(value, "yyyy-MM-dd")

@@ -52,4 +52,7 @@ export const urls = {
     all: ({ formId, formPageId }: { formId: string; formPageId: string }) =>
       `/form/${formId}/formpage/${formPageId}/field`,
   },
+  submit: {
+    addSubmit: ({ formId }: { formId: string }) => `/submit/${formId}`,
+  },
 }

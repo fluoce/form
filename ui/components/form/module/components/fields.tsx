@@ -40,6 +40,9 @@ export function Fields() {
                   return {
                     type: "phone",
                     label: f?.name,
+                    validation: {
+                      allowCountryChange: true,
+                    },
                   }
                 case "url":
                   return {

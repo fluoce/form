@@ -14,6 +14,8 @@ import { FormpagecoreModule } from './core/formpagecore/formpagecore.module';
 import { FormpageModule } from './module/formpage/formpage.module';
 import { FormfieldcoreModule } from './core/formfieldcore/formfieldcore.module';
 import { FormfieldModule } from './module/formfield/formfield.module';
+import { SubmitcoreModule } from './core/submitcore/submitcore.module';
+import { SubmitModule } from './module/submit/submit.module';
 
 @Module({
   imports: [
@@ -27,6 +29,8 @@ import { FormfieldModule } from './module/formfield/formfield.module';
     FormpageModule,
     FormfieldcoreModule,
     FormfieldModule,
+    SubmitModule,
+    SubmitcoreModule,
   ],
   controllers: [AppController],
   providers: [

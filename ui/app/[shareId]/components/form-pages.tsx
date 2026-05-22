@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { FormPageType } from "@/types/form-types"
-import { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Fields } from "./fields"
 import { ErrorAlert } from "@/components/shared/error-alert"
@@ -21,15 +21,18 @@ import { format } from "date-fns"
 import { ClearBtn } from "@/components/form/clear-btn"
 import { PrevBtn } from "@/components/form/pre-btn"
 import { SubmitBtn } from "@/components/form/submit-btn"
+import { useSubmitAdd } from "@/hooks/use-submit"
 
 export function FormPages({
   formPages,
   submissionId,
   formId,
+  setDone,
 }: {
   formPages: FormPageType[]
   submissionId: string
   formId: string
+  setDone: Dispatch<SetStateAction<boolean>>
 }) {
   const [page, setPage] = useState(0)
 
@@ -46,13 +49,14 @@ export function FormPages({
 
   const currentPage = formPages?.[page]
 
+  const { mutateAsync } = useSubmitAdd()
+
   const submit = (data: any) => {
     const currentFields = formPages?.[page]?.formField || []
     const answers = Object.fromEntries(
       currentFields.map((field) => {
         if (field?.config?.type == "phone") {
           const countryCode = data[`${field?.id}_country`]
-          console.log(countryCode)
           const countryData = COUNTRY.find((c) => c.value == countryCode)
           if (countryCode && countryData) {
             return [
@@ -62,6 +66,7 @@ export function FormPages({
           }
         }
         if (field?.config?.type == "date") {
+          if (!data[field?.id]) return [field.id, ""]
           const formatedDate = format(data[field?.id], "dd-MM-yyyy")
           return [field.id, formatedDate]
         }
@@ -74,13 +79,14 @@ export function FormPages({
       pageId: formPages?.[page]?.id,
       answers,
     }
-    console.log(payload)
-    // TODO: api call
+    mutateAsync({
+      body: payload,
+    }).then((data) => console.log(data?.data))
     if (page < formPages?.length - 1) {
       setPage((prev) => prev + 1)
       return
     }
-    // TODO : make better
+    setDone(true)
     localStorage.removeItem(formSubmissionKey(formId))
   }
 

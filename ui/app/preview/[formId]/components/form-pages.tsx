@@ -17,13 +17,7 @@ import { ClearBtn } from "@/components/form/clear-btn"
 import { PrevBtn } from "@/components/form/pre-btn"
 import { SubmitBtn } from "@/components/form/submit-btn"
 
-export function FormPages({
-  formPages,
-  formId,
-}: {
-  formPages: FormPageType[]
-  formId: string
-}) {
+export function FormPages({ formPages }: { formPages: FormPageType[] }) {
   const [page, setPage] = useState(0)
 
   const currentPage = formPages?.[page]
@@ -76,8 +70,14 @@ export function FormPages({
           }}
           disabled={page === 0}
         />
-        <SubmitBtn>
-          {page >= formPages?.length - 1 ? "Submit" : "Next"}
+        <SubmitBtn
+          onClick={() => {
+            if (page < (formPages?.length ?? 0) - 1) {
+              setPage((prev) => prev + 1)
+            }
+          }}
+        >
+          {page < (formPages?.length ?? 0) - 1 ? "Next" : "Submit"}
         </SubmitBtn>
       </div>
     </div>

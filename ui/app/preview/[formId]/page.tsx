@@ -61,10 +61,7 @@ export default function FormPreview() {
             <p className="text-sm">{formData?.data?.form?.description}</p>
           </div>
         ) : null}
-        <FormPages
-          formId={formData?.data?.form?.id!}
-          formPages={formData?.data?.form?.formPage ?? []}
-        />
+        <FormPages formPages={formData?.data?.form?.formPage ?? []} />
         <div className="flex w-full items-center justify-end">
           <span className="flex items-center gap-2 text-xs font-medium">
             Powered by

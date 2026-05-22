@@ -1,6 +1,5 @@
 "use client"
 
-import { PageSpinner } from "@/components/shared/loader-r"
 import { useGetForm } from "@/hooks/use-get-form"
 import { cn } from "@/lib/utils"
 import { useParams } from "next/navigation"
@@ -17,6 +16,8 @@ export default function FormSubmit() {
   }>()
 
   const { data: formData, isLoading } = useGetForm({ shareId })
+
+  const [done, setDone] = useState(false)
 
   const [submissionId, setSubmissionId] = useState("")
 
@@ -45,7 +46,23 @@ export default function FormSubmit() {
   }, [formData?.data?.form])
 
   if (isLoading) {
-    return <PageSpinner />
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center gap-2">
+        <div className="flex w-fit flex-col justify-end">
+          <span className="text-end text-xs font-medium">Powered by</span>
+          <div className="flex items-center gap-2">
+            <img
+              src="/Form-Fluoce.svg"
+              alt=""
+              className="h-8 w-8 animate-bounce"
+            />
+            <h1 className="text-xl font-semibold tracking-tight text-[#1447E6]">
+              Form Fluoce
+            </h1>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   if (!formData?.data?.form) {
@@ -54,6 +71,14 @@ export default function FormSubmit() {
         <span className="flex items-center gap-2">
           <BadgeInfo size={20} className="text-blue-600" /> Form Not found !
         </span>
+      </div>
+    )
+  }
+
+  if (done) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <div>Form submited successfully</div>
       </div>
     )
   }
@@ -79,6 +104,7 @@ export default function FormSubmit() {
           </div>
         ) : null}
         <FormPages
+          setDone={setDone}
           formId={formData?.data?.form?.id!}
           submissionId={submissionId}
           formPages={formData?.data?.form?.formPage ?? []}
