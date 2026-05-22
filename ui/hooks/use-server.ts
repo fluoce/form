@@ -16,21 +16,6 @@ interface ServerProps {
   auth?: boolean
 }
 
-let isRefreshing = false
-
-let failedQueue: Array<{
-  resolve: () => void
-  reject: (err: unknown) => void
-}> = []
-
-function processQueue(error?: unknown) {
-  failedQueue.forEach(({ resolve, reject }) => {
-    if (error) reject(error)
-    else resolve()
-  })
-  failedQueue = []
-}
-
 export default async function UseServer({
   url,
   method,
@@ -64,46 +49,34 @@ export default async function UseServer({
     rt = tokenRespaonse.refreshToken
   }
 
-  const makeRequest = () =>
+  const makeRequest = (token: string) =>
     dataFetch({
       endpoint,
-      at,
+      at: token,
       method,
       body,
     })
 
-  let res = await makeRequest()
+  let res = await makeRequest(at)
 
   let data: ResType | null = null
 
   let contentType = res.headers.get("content-type")
 
   if (res.status === 401) {
-    if (!isRefreshing) {
-      try {
-        isRefreshing = true
-        const tokenResponse = await refresh(rt)
-        if (tokenResponse) {
-          at = tokenResponse.accessToken
-          rt = tokenResponse.refreshToken
-        } else {
-          processQueue(new Error("Refresh token invalid"))
-          redirect(authRedirect)
-        }
-        processQueue()
-      } catch (err) {
-        processQueue(err)
-        throw err
-      } finally {
-        isRefreshing = false
+    try {
+      const tokenResponse = await refresh(rt)
+      if (tokenResponse) {
+        at = tokenResponse.accessToken
+        rt = tokenResponse.refreshToken
+        res = await makeRequest(at)
+        contentType = res.headers.get("content-type")
+      } else {
+        redirect(authRedirect)
       }
-    } else {
-      await new Promise<void>((resolve, reject) => {
-        failedQueue.push({ resolve, reject })
-      })
+    } catch (err) {
+      throw err
     }
-    res = await makeRequest()
-    contentType = res.headers.get("content-type")
   }
 
   if (contentType?.includes("application/json")) {
@@ -132,8 +105,6 @@ export default async function UseServer({
 const refresh = async (
   rt: string
 ): Promise<{ accessToken: string; refreshToken: string } | false> => {
-  await new Promise((resolve) => setTimeout(resolve, 1000))
-
   try {
     const res = await fetch(`${envs.authBackendUrl}${urls.auth.refresh}`, {
       method: "POST",

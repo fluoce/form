@@ -119,12 +119,6 @@ export function PageContent({ isMobile }: { isMobile: boolean }) {
                     <SortAbleField idx={idx} key={field?.id} field={field} />
                   ))}
                 </DragDropProvider>
-                <div className="grid grid-cols-3 gap-4 pt-1 pb-4">
-                  <Button className="p-4" variant="outline">
-                    Clear
-                  </Button>
-                  <Button className="col-span-2 p-4">Submit</Button>
-                </div>
               </div>
             </div>
           )
