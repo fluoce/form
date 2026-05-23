@@ -1,4 +1,4 @@
-export const routes = {
+export const routes = Object.freeze({
   base: "/",
   dashboard: {
     base: "/dashboard",
@@ -19,4 +19,4 @@ export const routes = {
       return `/preview/${formId}`
     },
   },
-}
+})

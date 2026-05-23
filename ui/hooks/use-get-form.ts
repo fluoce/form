@@ -12,7 +12,6 @@ export function useGetForm({ shareId }: { shareId: string }) {
         `${envs?.backendUrl}${urls?.form.public({ shareId })}`
       )
       const data = (await res?.json()) as Promise<ResType<{ form: FormType }>>
-
       return data
     },
     staleTime: 5 * 60 * 1000,

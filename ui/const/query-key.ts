@@ -1,4 +1,4 @@
-export const queryKeys = {
+export const queryKeys = Object.freeze({
   workspace: {
     all: ["workspaces"],
     byId: ({ workspaceId }: { workspaceId: string }) => [
@@ -41,4 +41,4 @@ export const queryKeys = {
       fieldId: string
     }) => ["field", formId, formPageId, fieldId],
   },
-}
+})

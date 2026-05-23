@@ -1,5 +1,4 @@
 import { useMutation } from "@tanstack/react-query"
-import UseServer from "./use-server"
 import { urls } from "@/const/urls"
 import { SubmitAnswerType } from "@/types/submit-types"
 import { toast } from "sonner"
@@ -20,9 +19,6 @@ export function useSubmitAdd() {
         }
       )
       return (await res.json()) as ResType<any>
-    },
-    onError: (error) => {
-      toast.error(error?.message)
     },
   })
 }

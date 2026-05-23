@@ -1,4 +1,4 @@
-export const urls = {
+export const urls = Object.freeze({
   auth: {
     me: "/me",
     refresh: "/refresh",
@@ -55,4 +55,9 @@ export const urls = {
   submit: {
     addSubmit: ({ formId }: { formId: string }) => `/submit/${formId}`,
   },
-}
+})
+
+export const externalUrl = Object.freeze({
+  fluoce: "https://fluoce.com",
+  fluoceFristForm: "https://form.fluoce.com/01KS71NWJFJN36PVGFZYNYMHJ5",
+})

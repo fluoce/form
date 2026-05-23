@@ -53,10 +53,11 @@ export default function FormSubmit() {
           <div className="flex items-center gap-2">
             <img
               src="/Form-Fluoce.svg"
-              alt=""
+              alt="form-fluoce"
               className="h-8 w-8 animate-bounce"
             />
-            <h1 className="text-xl font-semibold tracking-tight text-[#1447E6]">
+
+            <h1 className="text-xl font-semibold tracking-tight text-(--form)">
               Form Fluoce
             </h1>
           </div>
