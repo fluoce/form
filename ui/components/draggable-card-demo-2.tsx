@@ -31,14 +31,14 @@ export default function DraggableCardDemo() {
         href={routes.dashboard.base}
         className="absolute top-1/2 mx-auto max-w-sm -translate-y-3/4 cursor-pointer text-center text-2xl font-semibold text-neutral-400 md:text-4xl dark:text-neutral-800"
       >
-        Launch your first form, free to start.
+        Launch your first form.
       </Link>
       {items.map((item) => (
         <DraggableCardBody key={item.title} className={item.className}>
           <img
             src={item.image}
             alt={item.title}
-            className="pointer-events-none relative z-10 h-90 w-80 object-cover"
+            className="pointer-events-none relative h-90 w-80 object-cover"
           />
           <h3 className="mt-2 text-center text-lg font-bold text-neutral-700 dark:text-neutral-300">
             {item.title}

@@ -75,7 +75,7 @@ export function AppTopbar() {
               <PopoverTrigger asChild>
                 <Button
                   onClick={() => mutateAsync()}
-                  className="bg-blue-600 text-white"
+                  className="bg-(--form) text-white"
                 >
                   <Upload /> Publish
                 </Button>

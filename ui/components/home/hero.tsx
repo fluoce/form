@@ -30,8 +30,8 @@ export function Hero() {
         </div>
         <div className="flex items-center justify-center lg:justify-start">
           <div className="flex items-center gap-2">
-            <Link href={routes.dashboard.base}>
-              <PrimaryBtn tabIndex={-1} className="p-4.5 sm:p-5 md:p-6">
+            <Link tabIndex={-1} href={routes.dashboard.base}>
+              <PrimaryBtn className="p-4.5 sm:p-5 md:p-6">
                 Start Building
               </PrimaryBtn>
             </Link>
@@ -41,7 +41,9 @@ export function Hero() {
           </div>
         </div>
       </div>
-      <DraggableCardDemo />
+      <div className="hidden lg:block">
+        <DraggableCardDemo />
+      </div>
     </div>
   )
 }

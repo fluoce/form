@@ -180,3 +180,33 @@ model FormField {
   @@unique([formPageId, position])
   @@index([formId])
 }
+
+
+
+
+// form submit
+
+model Submit {
+  id                 String                      @id
+  formId             String
+  status             FormSubmitStatus             @default(PARTIAL)
+  submissionAnswer   SubmissionAnswer[]
+  
+  ipAddress          String?
+  userAgent          String?
+  
+  createdAt          DateTime                    @default(now())
+  updatedAt          DateTime                    @updatedAt
+}
+
+enum FormSubmitStatus {
+  PARTIAL
+  COMPLETED
+}
+
+model SubmissionAnswer {
+  id                String                       @id
+  submitId          String
+  submit            Submit                       @relation(fields: [submitId], references: [id], onDelete: Cascade)
+  fieldId           String
+}

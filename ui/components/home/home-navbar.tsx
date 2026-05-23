@@ -26,10 +26,10 @@ export function HomeNavbar() {
         </span>
       </div>
       <div className="flex items-center gap-1">
-        <Link href={routes.dashboard.base}>
+        <Link tabIndex={-1} href={routes.dashboard.base}>
           <SecondaryBtn className="p-4.5">Login</SecondaryBtn>
         </Link>
-        <Link href={routes.dashboard.base}>
+        <Link tabIndex={-1} href={routes.dashboard.base}>
           <PrimaryBtn className="p-4.5">Sing Up</PrimaryBtn>
         </Link>
       </div>
