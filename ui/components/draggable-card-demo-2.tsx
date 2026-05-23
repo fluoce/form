@@ -10,7 +10,7 @@ import Link from "next/link"
 export default function DraggableCardDemo() {
   const items = [
     {
-      title: "New Zealand",
+      title: "Knowledge Test",
       image: "fdy.png",
       className: "absolute top-10 left-[45%] rotate-[10deg]",
     },
@@ -20,7 +20,7 @@ export default function DraggableCardDemo() {
       className: "absolute top-4 left-[24%] rotate-[-5deg]",
     },
     {
-      title: "Norway",
+      title: "Preferences Survey",
       image: "fwr.png",
       className: "absolute top-20 left-[6%] rotate-[2deg]",
     },
