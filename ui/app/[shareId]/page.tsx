@@ -8,7 +8,9 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import { formSubmissionKey } from "./const/localstorage-key"
 import { ulid } from "ulid"
-import { BadgeInfo } from "lucide-react"
+import { BadgeInfo, CircleCheckBig } from "lucide-react"
+import { routes } from "@/const/routes"
+import { PrimaryBtn, SecondaryBtn } from "@/components/home/btns"
 
 export default function FormSubmit() {
   const { shareId } = useParams<{
@@ -47,7 +49,7 @@ export default function FormSubmit() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-2">
+      <div className="flex min-h-screen flex-col items-center justify-center gap-2 px-4">
         <div className="flex w-fit flex-col justify-end">
           <span className="text-end text-xs font-medium">Powered by</span>
           <div className="flex items-center gap-2">
@@ -68,7 +70,7 @@ export default function FormSubmit() {
 
   if (!formData?.data?.form) {
     return (
-      <div className="flex min-h-screen w-full items-center justify-center">
+      <div className="flex min-h-screen w-full items-center justify-center px-4">
         <span className="flex items-center gap-2">
           <BadgeInfo size={20} className="text-blue-600" /> Form Not found !
         </span>
@@ -78,8 +80,19 @@ export default function FormSubmit() {
 
   if (done) {
     return (
-      <div className="flex h-screen w-full items-center justify-center">
-        <div>Form submited successfully !</div>
+      <div className="flex h-screen w-full flex-col items-center justify-center gap-4 px-4">
+        <span className="flex items-center gap-3">
+          <CircleCheckBig className="shrink-0 text-emerald-600" />{" "}
+          <div>Form submited successfully !</div>
+        </span>
+        <div className="flex items-center gap-2">
+          <SecondaryBtn onClick={() => window.close()} className="p-4">
+            Close
+          </SecondaryBtn>
+          <Link href={routes.base} target="_blank" tabIndex={-1}>
+            <PrimaryBtn className="p-4"> Build Your Own Form</PrimaryBtn>
+          </Link>
+        </div>
       </div>
     )
   }

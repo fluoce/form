@@ -1,4 +1,4 @@
-import { IsObject, IsString } from 'class-validator';
+import { IsBoolean, IsObject, IsOptional, IsString } from 'class-validator';
 
 export class SubmitDto {
   @IsString()
@@ -12,4 +12,8 @@ export class SubmitDto {
 
   @IsObject()
   answers: Record<string, any>;
+
+  @IsOptional()
+  @IsBoolean()
+  done?: boolean;
 }

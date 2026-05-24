@@ -3,4 +3,5 @@ export type SubmitAnswerType = {
   pageId: string
   submissionId: string
   answers: Record<string, any>
+  done?: boolean
 }

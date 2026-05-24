@@ -106,6 +106,7 @@ model Form {
   workspace       Workspace                @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   formPage        FormPage[]
   formField       FormField[]
+  submit          Submit[]
 
   @@unique([workspaceId, slug])
   @@index([workspaceId, status])
@@ -141,7 +142,6 @@ enum FormTheme {
 
 
 
-
 // form page
    
 model FormPage {
@@ -165,22 +165,22 @@ model FormPage {
 // form field
 
 model FormField {
-  id              String                   @id
-  formId          String
-  formPageId      String                   
-  config          Json
-  position        String                   
-
-  createdAt       DateTime                 @default(now())
-  updatedAt       DateTime                 @updatedAt
-
-  formPage        FormPage                 @relation(fields: [formPageId], references: [id], onDelete: Cascade)
-  form            Form                     @relation(fields: [formId], references: [id], onDelete: Cascade)
+  id                String                   @id
+  formId            String
+  formPageId        String                   
+  config            Json
+  position          String                   
   
+  createdAt         DateTime                 @default(now())
+  updatedAt         DateTime                 @updatedAt
+  
+  formPage          FormPage                 @relation(fields: [formPageId], references: [id], onDelete: Cascade)
+  form              Form                     @relation(fields: [formId], references: [id], onDelete: Cascade)
+  submissionAnswer  SubmissionAnswer[]
+
   @@unique([formPageId, position])
   @@index([formId])
 }
-
 
 
 
@@ -190,13 +190,18 @@ model Submit {
   id                 String                      @id
   formId             String
   status             FormSubmitStatus             @default(PARTIAL)
-  submissionAnswer   SubmissionAnswer[]
   
   ipAddress          String?
   userAgent          String?
   
+  completedAt        DateTime?
   createdAt          DateTime                    @default(now())
   updatedAt          DateTime                    @updatedAt
+
+  form               Form                        @relation(fields: [formId], references: [id], onDelete: Cascade)
+  submissionAnswer   SubmissionAnswer[]
+
+  @@index([formId])
 }
 
 enum FormSubmitStatus {
@@ -204,9 +209,26 @@ enum FormSubmitStatus {
   COMPLETED
 }
 
+
+
+// submission anns
+
 model SubmissionAnswer {
-  id                String                       @id
-  submitId          String
-  submit            Submit                       @relation(fields: [submitId], references: [id], onDelete: Cascade)
-  fieldId           String
+  id                         String                       @id
+  submitId                   String
+  fieldId                    String
+  valueText                  String?
+  valueNumber                Float?
+  valueBoolean               Boolean?
+  valueJson                  Json? 
+
+  createdAt                  DateTime                    @default(now())
+  updatedAt                  DateTime                    @updatedAt
+
+  submit                     Submit                      @relation(fields: [submitId], references: [id], onDelete: Cascade)
+  formField                  FormField                   @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+
+  @@unique([submitId, fieldId])
+  @@index([submitId])
+  @@index([fieldId])
 }

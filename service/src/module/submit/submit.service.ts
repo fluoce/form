@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { FormcoreService } from 'src/core/formcore/formcore.service';
 import { FormpagecoreService } from 'src/core/formpagecore/formpagecore.service';
 import { SubmitcoreService } from 'src/core/submitcore/submitcore.service';
@@ -9,7 +13,6 @@ import { SubmitDto } from 'src/types/submit.types';
 export class SubmitService {
   constructor(
     private readonly submitCoreService: SubmitcoreService,
-    private readonly formCoreSerivce: FormcoreService,
     private readonly formPageCoreService: FormpagecoreService,
   ) {}
 
@@ -23,24 +26,15 @@ export class SubmitService {
       throw new NotFoundException('form or formpage not found');
     }
 
-    let submitData: {
-      fieldId: string;
-      answer: any;
-    }[] = [];
+    const isSubmissionDone =
+      await this.submitCoreService.addSubmissionAnswer(data);
 
-    for (const [fieldId, answer] of Object.entries(data.answers)) {
-      submitData.push({
-        fieldId,
-        answer,
-      });
+    if (!isSubmissionDone) {
+      throw new InternalServerErrorException('Failed to save submission');
     }
 
     return {
       message: 'submittion added successfullly',
-      submitData,
-      submissionId: data.submissionId,
-      pageId: data.pageId,
-      formId: data.formId,
     };
   }
 }

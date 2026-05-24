@@ -3,6 +3,7 @@ import {
   FormFieldIdPrefix,
   FormIdPrefix,
   FormPageIdPrefix,
+  SubmissionAnswerId,
   WorkspaceIdPrefix,
   WorkspaceMemberIdPrefix,
 } from 'src/types/id.types';
@@ -36,6 +37,10 @@ export class UlidService {
   }
 
   generateFormFieldId(prefix: FormFieldIdPrefix): string {
+    return `${prefix}_${ulid()}`;
+  }
+
+  generateSubmissionAnswerId(prefix: SubmissionAnswerId): string {
     return `${prefix}_${ulid()}`;
   }
 

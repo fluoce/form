@@ -80,10 +80,14 @@ export function FormPages({
       pageId: formPages?.[page]?.id,
       answers,
     }
+    const isLastPage = page === formPages?.length - 1
     mutateAsync({
-      body: payload,
+      body: {
+        ...payload,
+        ...(isLastPage ? { done: true } : {}),
+      },
     }).then((data) => console.log(data?.data))
-    if (page < formPages?.length - 1) {
+    if (!isLastPage) {
       setPage((prev) => prev + 1)
       return
     }
