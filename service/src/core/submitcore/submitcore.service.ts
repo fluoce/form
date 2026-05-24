@@ -19,6 +19,7 @@ export class SubmitcoreService {
         create: {
           id: data.submissionId,
           formId: data.formId,
+          status: data?.done ? 'COMPLETED' : undefined,
         },
         update: {
           updatedAt: new Date(),
