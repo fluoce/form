@@ -41,4 +41,7 @@ export const queryKeys = Object.freeze({
       fieldId: string
     }) => ["field", formId, formPageId, fieldId],
   },
+  submit: {
+    all: ({ formId }: { formId: string }) => ["submit", formId],
+  },
 })

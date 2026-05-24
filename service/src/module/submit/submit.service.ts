@@ -37,4 +37,17 @@ export class SubmitService {
       message: 'submittion added successfullly',
     };
   }
+
+  async getSubmit(formId: string): Promise<ResponseDataType> {
+    const submissions = await this.submitCoreService.getSubmission(formId);
+
+    if (!submissions) {
+      throw new NotFoundException('Submissions not found');
+    }
+
+    return {
+      message: 'submissions fetched successfully',
+      submissions,
+    };
+  }
 }

@@ -1,9 +1,11 @@
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { urls } from "@/const/urls"
-import { SubmitAnswerType } from "@/types/submit-types"
+import { SubmitAnswerType, SubmitType } from "@/types/submit-types"
 import { toast } from "sonner"
 import { ResType } from "@/types/res-types"
 import { envs } from "@/const/envs"
+import { queryKeys } from "@/const/query-key"
+import UseServer from "./use-server"
 
 export function useSubmitAdd() {
   return useMutation({
@@ -20,5 +22,21 @@ export function useSubmitAdd() {
       )
       return (await res.json()) as ResType<any>
     },
+  })
+}
+
+export function useSubmits({ formId }: { formId: string }) {
+  return useQuery({
+    queryKey: queryKeys.submit.all({ formId }),
+    queryFn: () =>
+      UseServer({
+        url: urls.submit.all({ formId }),
+        method: "GET",
+      }) as Promise<
+        ResType<{
+          submissions: SubmitType[]
+        }>
+      >,
+    enabled: Boolean(formId),
   })
 }

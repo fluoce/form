@@ -4,9 +4,18 @@ import { PageSpinner } from "@/components/shared/loader-r"
 import { PageHeader } from "@/components/shared/page-header"
 import { Wrapper } from "@/components/shared/wrapper-r"
 import { Button } from "@/components/ui/button"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { useWorkspaces } from "@/hooks/use-workspace"
-import { EllipsisVertical, Palette, Pencil, Plus, Trash2 } from "lucide-react"
+import {
+  EllipsisVertical,
+  Palette,
+  Pencil,
+  Plus,
+  TableCellsSplit,
+  Trash2,
+  Copy,
+  FilePen,
+} from "lucide-react"
 import Link from "next/link"
 import { routes } from "@/const/routes"
 import { cn } from "@/lib/utils"
@@ -38,8 +47,13 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Spinner } from "@/components/ui/spinner"
 import { useSidebar } from "@/components/ui/sidebar"
+import { handleCopy } from "@/utils/handle-copy"
+import { envs } from "@/const/envs"
+import { toast } from "sonner"
 
 const AllForms = () => {
+  const router = useRouter()
+
   const { workspaceId } = useParams<{ workspaceId: string }>()
 
   const { setOpen } = useSidebar()
@@ -118,6 +132,21 @@ const AllForms = () => {
                               {f?.name}
                             </DropdownMenuLabel>
                             <DropdownMenuSeparator />
+
+                            <DropdownMenuItem
+                              onSelect={() => {
+                                handleCopy({
+                                  text: `${envs.appUrl}/${f?.shareId}`,
+                                }).then(() =>
+                                  toast.success(
+                                    "Share link copied successfully !"
+                                  )
+                                )
+                              }}
+                            >
+                              <Copy /> Share Link
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
                             <CreateUpdateForm form={f}>
                               <DropdownMenuItem
                                 onSelect={(e) => {
@@ -127,6 +156,30 @@ const AllForms = () => {
                                 <Pencil /> Rename
                               </DropdownMenuItem>
                             </CreateUpdateForm>
+                            <DropdownMenuItem
+                              onSelect={(e) => {
+                                router.push(
+                                  routes.form.byId({
+                                    workspaceId,
+                                    formId: f?.id,
+                                  })
+                                )
+                              }}
+                            >
+                              <FilePen /> Edit Content
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onSelect={(e) => {
+                                router.push(
+                                  routes.form.byId({
+                                    workspaceId,
+                                    formId: f?.id,
+                                  }) + "?tab=result"
+                                )
+                              }}
+                            >
+                              <TableCellsSplit /> Results
+                            </DropdownMenuItem>
                             <DropdownMenuSub>
                               <DropdownMenuSubTrigger>
                                 <Palette />

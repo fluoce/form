@@ -71,4 +71,27 @@ export class SubmitcoreService {
       return true;
     });
   }
+
+  async getSubmission(formId: string) {
+    return await this.prisma.submit.findMany({
+      where: {
+        formId,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      include: {
+        submissionAnswer: {
+          include: {
+            formField: {
+              select: {
+                id: true,
+                config: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
 }

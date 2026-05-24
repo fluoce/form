@@ -5,15 +5,15 @@ export async function handleCopy({
   text,
 }: {
   text: string
-  setCopied: Dispatch<SetStateAction<boolean>>
+  setCopied?: Dispatch<SetStateAction<boolean>>
 }) {
   try {
     await navigator.clipboard.writeText(text)
-    setCopied(true)
+    setCopied?.(true)
     setTimeout(() => {
-      setCopied(false)
+      setCopied?.(false)
     }, 1200)
   } catch (err) {
-    setCopied(false)
+    setCopied?.(false)
   }
 }
