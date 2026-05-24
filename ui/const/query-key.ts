@@ -42,6 +42,7 @@ export const queryKeys = Object.freeze({
     }) => ["field", formId, formPageId, fieldId],
   },
   submit: {
+    count: ({ formId }: { formId: string }) => ["count", "submit", formId],
     all: ({ formId }: { formId: string }) => ["submit", formId],
   },
 })

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/lib/prisma/prisma.service';
 import { UlidService } from 'src/lib/ulid/ulid.service';
 import { SubmitDto } from 'src/types/submit.types';
+import { UserAgentType } from 'src/types/types';
 
 @Injectable()
 export class SubmitcoreService {
@@ -10,7 +11,13 @@ export class SubmitcoreService {
     private readonly ulidService: UlidService,
   ) {}
 
-  async addSubmissionAnswer(data: SubmitDto): Promise<Boolean> {
+  async addSubmissionAnswer(
+    data: SubmitDto,
+    meta: {
+      ipAddress: string;
+      userAgent: UserAgentType;
+    },
+  ): Promise<Boolean> {
     return await this.prisma.$transaction(async (prisma) => {
       const submit = await prisma.submit.upsert({
         where: {
@@ -20,6 +27,10 @@ export class SubmitcoreService {
           id: data.submissionId,
           formId: data.formId,
           status: data?.done ? 'COMPLETED' : undefined,
+          ipAddress: meta.ipAddress,
+          device: meta.userAgent.device,
+          os: meta.userAgent.os,
+          browser: meta.userAgent.browser,
         },
         update: {
           updatedAt: new Date(),
@@ -70,6 +81,53 @@ export class SubmitcoreService {
       );
       return true;
     });
+  }
+
+  async getSubmitOverview(formId: string) {
+    const [total, completed, desktop, mobile, tablet] = await Promise.all([
+      this.prisma.submit.count({
+        where: {
+          formId,
+        },
+      }),
+      this.prisma.submit.count({
+        where: {
+          formId,
+          status: 'COMPLETED',
+        },
+      }),
+      this.prisma.submit.count({
+        where: {
+          formId,
+          device: 'desktop',
+        },
+      }),
+      this.prisma.submit.count({
+        where: {
+          formId,
+          device: 'mobile',
+        },
+      }),
+      this.prisma.submit.count({
+        where: {
+          formId,
+          device: 'tablet',
+        },
+      }),
+    ]);
+    return {
+      submissionCounts: {
+        total,
+        completed,
+        partial: total - completed,
+      },
+      deviceCounts: {
+        desktop,
+        mobile,
+        tablet,
+        other: total - desktop - mobile - tablet,
+      },
+    };
   }
 
   async getSubmission(formId: string) {

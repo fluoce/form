@@ -1,6 +1,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { urls } from "@/const/urls"
-import { SubmitAnswerType, SubmitType } from "@/types/submit-types"
+import {
+  SubmitAnswerType,
+  SubmitOverviewType,
+  SubmitType,
+} from "@/types/submit-types"
 import { toast } from "sonner"
 import { ResType } from "@/types/res-types"
 import { envs } from "@/const/envs"
@@ -22,6 +26,22 @@ export function useSubmitAdd() {
       )
       return (await res.json()) as ResType<any>
     },
+  })
+}
+
+export function useSubmitCount({ formId }: { formId: string }) {
+  return useQuery({
+    queryKey: queryKeys.submit.count({ formId }),
+    queryFn: () =>
+      UseServer({
+        url: urls.submit.overview({ formId }),
+        method: "GET",
+      }) as Promise<
+        ResType<{
+          overview: SubmitOverviewType
+        }>
+      >,
+    enabled: Boolean(formId),
   })
 }
 

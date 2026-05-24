@@ -192,7 +192,9 @@ model Submit {
   status             FormSubmitStatus             @default(PARTIAL)
   
   ipAddress          String?
-  userAgent          String?
+  device             String?
+  os                 String?
+  browser            String?
   
   completedAt        DateTime?
   createdAt          DateTime                    @default(now())

@@ -54,6 +54,7 @@ export const urls = Object.freeze({
   },
   submit: {
     addSubmit: ({ formId }: { formId: string }) => `/submit/${formId}`,
+    overview: ({ formId }: { formId: string }) => `/submit/overview/${formId}`,
     all: ({ formId }: { formId: string }) => `/submit/${formId}`,
   },
 })

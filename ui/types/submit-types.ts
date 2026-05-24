@@ -24,6 +24,15 @@ export type SubmissionAnswerType = {
   updatedAt: string
 }
 
+export type DeviceType =
+  | "desktop"
+  | "embedded"
+  | "mobile"
+  | "smarttv"
+  | "tablet"
+  | "wearable"
+  | "xr"
+
 export type SubmitType = {
   id: string
   formId: string
@@ -32,6 +41,24 @@ export type SubmitType = {
   updatedAt: string
   completedAt: string | null
   ipAddress: string | null
-  userAgent: string | null
+  userAgent: {
+    device: DeviceType
+    os: string
+    browser: string
+  }
   submissionAnswer: SubmissionAnswerType[]
+}
+
+export type SubmitOverviewType = {
+  submissionCounts: {
+    total: number
+    completed: number
+    partial: number
+  }
+  deviceCounts: {
+    desktop: number
+    mobile: number
+    tablet: number
+    other: number
+  }
 }
