@@ -24,16 +24,14 @@ export class SubmitController {
   @Public()
   @Post(':formId')
   async addSubmit(@Req() req: Request, @Body() data: SubmitDto) {
-    const ipAddress =
-      (req.headers['x-forwarded-for'] as string)?.split(',')[0] ||
-      req.socket.remoteAddress ||
-      req.ip;
-    console.log('req-headers', req.headers);
-    const userAgent = req.headers['user-agent'] || '';
-    const parser = this.uaParser.parseUserAgent(userAgent);
+    const parser = this.uaParser.parseUserAgent(req);
     return await this.submitService.addSubmit(data, {
-      ipAddress: ipAddress || '',
-      userAgent: parser,
+      ipAddress: parser.ipAddress || '',
+      userAgent: {
+        browser: parser.browser || '',
+        device: parser.device || '',
+        os: parser.os || '',
+      },
     });
   }
 
