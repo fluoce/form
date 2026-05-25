@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 export function View() {
   return (
     <div className="flex w-full flex-col gap-2">
-      <p className={cn("px-0.5 text-center lg:text-end", p)}>
+      <p className={cn("px-0.5 text-center text-sm lg:text-end", p)}>
         Manage everything from one clean dashboard
       </p>
       <img

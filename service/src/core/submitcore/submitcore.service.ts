@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { JsonValue } from '@prisma/client/runtime/client';
 import { PrismaService } from 'src/lib/prisma/prisma.service';
 import { UlidService } from 'src/lib/ulid/ulid.service';
-import { SubmitDto } from 'src/types/submit.types';
+import { SubmissionsType, SubmitDto, SubmitType } from 'src/types/submit.types';
 import { UserAgentType } from 'src/types/types';
 
 @Injectable()
@@ -35,6 +36,7 @@ export class SubmitcoreService {
         update: {
           updatedAt: new Date(),
           status: data?.done ? 'COMPLETED' : undefined,
+          completedAt: data?.done ? new Date() : undefined,
         },
       });
       if (!submit) {
@@ -130,26 +132,32 @@ export class SubmitcoreService {
     };
   }
 
-  async getSubmission(formId: string) {
-    return await this.prisma.submit.findMany({
-      where: {
-        formId,
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-      include: {
-        submissionAnswer: {
-          include: {
-            formField: {
-              select: {
-                id: true,
-                config: true,
-              },
-            },
-          },
+  async getSubmissions(formId: string): Promise<SubmissionsType> {
+    const [formFields, submissions] = await Promise.all([
+      this.prisma.formField.findMany({
+        where: {
+          formId,
         },
-      },
-    });
+        orderBy: {
+          createdAt: 'asc',
+        },
+        select: {
+          id: true,
+          config: true,
+        },
+      }),
+      this.prisma.submit.findMany({
+        where: {
+          formId,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+        include: {
+          submissionAnswer: true,
+        },
+      }),
+    ]);
+    return { formFields, submissions };
   }
 }

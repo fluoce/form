@@ -1,11 +1,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { urls } from "@/const/urls"
 import {
+  SubmissionsType,
   SubmitAnswerType,
   SubmitOverviewType,
-  SubmitType,
 } from "@/types/submit-types"
-import { toast } from "sonner"
 import { ResType } from "@/types/res-types"
 import { envs } from "@/const/envs"
 import { queryKeys } from "@/const/query-key"
@@ -54,7 +53,7 @@ export function useSubmits({ formId }: { formId: string }) {
         method: "GET",
       }) as Promise<
         ResType<{
-          submissions: SubmitType[]
+          submissions: SubmissionsType
         }>
       >,
     enabled: Boolean(formId),

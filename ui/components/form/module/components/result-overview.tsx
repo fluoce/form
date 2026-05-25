@@ -1,7 +1,9 @@
 "use client"
 
 import { PageSpinner } from "@/components/shared/loader-r"
+import { Button } from "@/components/ui/button"
 import { useSubmitCount } from "@/hooks/use-submit"
+import { cn } from "@/lib/utils"
 import { formatNumber } from "@/utils/formate-number"
 import { RotateCw, TabletSmartphone, ThumbsUp } from "lucide-react"
 import { useParams } from "next/navigation"
@@ -9,7 +11,7 @@ import { useParams } from "next/navigation"
 export function ResultOverview() {
   const { formId } = useParams<{ formId: string }>()
 
-  const { data, isLoading } = useSubmitCount({ formId })
+  const { data, isLoading, refetch, isFetching } = useSubmitCount({ formId })
 
   const submissionCounts = data?.data?.overview?.submissionCounts
 
@@ -20,10 +22,18 @@ export function ResultOverview() {
   }
 
   return (
-    <div className={"flex flex-col gap-8"}>
+    <div className={cn("flex flex-col gap-8 p-2", isFetching && "opacity-50")}>
       <div className="flex flex-col gap-4">
         <span className="flex items-center gap-2 text-sm">
-          <ThumbsUp size={18} /> Submission Overview
+          <ThumbsUp size={18} /> Submission Overview{" "}
+          <Button
+            onClick={() => refetch()}
+            disabled={isFetching}
+            variant="outline"
+            size="icon-xs"
+          >
+            <RotateCw className={cn(isFetching && "animate-spin")} />
+          </Button>
         </span>
         <div className="flex flex-wrap items-center gap-2">
           <StatusCard

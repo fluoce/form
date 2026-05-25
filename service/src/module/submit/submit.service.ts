@@ -61,8 +61,8 @@ export class SubmitService {
     };
   }
 
-  async getSubmit(formId: string): Promise<ResponseDataType> {
-    const submissions = await this.submitCoreService.getSubmission(formId);
+  async getSubmits(formId: string): Promise<ResponseDataType> {
+    const submissions = await this.submitCoreService.getSubmissions(formId);
 
     if (!submissions) {
       throw new NotFoundException('Submissions not found');

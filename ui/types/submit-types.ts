@@ -6,22 +6,19 @@ export type SubmitAnswerType = {
   submissionId: string
   answers: Record<string, any>
   done?: boolean
+  start?: boolean
 }
 
 export type SubmissionAnswerType = {
   id: string
   submitId: string
   fieldId: string
-  formField: {
-    id: string
-    config: FieldBaseConfig
-  }
   valueText: string | null
   valueNumber: number | null
   valueBoolean: boolean | null
   valueJson: any | null
-  createdAt: string
-  updatedAt: string
+  createdAt: Date | string
+  updatedAt: Date | string
 }
 
 export type DeviceType =
@@ -37,15 +34,13 @@ export type SubmitType = {
   id: string
   formId: string
   status: "COMPLETED" | "PARTIAL"
-  createdAt: string
-  updatedAt: string
-  completedAt: string | null
+  createdAt: Date | string
+  updatedAt: Date | string
+  completedAt: Date | string | null
   ipAddress: string | null
-  userAgent: {
-    device: DeviceType
-    os: string
-    browser: string
-  }
+  device: string | DeviceType | null
+  os: string | null
+  browser: string | null
   submissionAnswer: SubmissionAnswerType[]
 }
 
@@ -61,4 +56,12 @@ export type SubmitOverviewType = {
     tablet: number
     other: number
   }
+}
+
+export type SubmissionsType = {
+  formFields: {
+    id: string
+    config: FieldBaseConfig
+  }[]
+  submissions: SubmitType[]
 }

@@ -43,7 +43,7 @@ export class SubmitController {
 
   @UseGuards(FormGuard)
   @Get(':formId')
-  async getSubmit(@Param('formId') formId: string) {
-    return await this.submitService.getSubmit(formId);
+  async getSubmits(@Param('formId') formId: string) {
+    return await this.submitService.getSubmits(formId);
   }
 }

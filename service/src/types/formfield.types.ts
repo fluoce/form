@@ -15,8 +15,21 @@ import {
   ArrayMinSize,
 } from 'class-validator';
 import { Type } from 'class-transformer';
+import { JsonValue } from '@prisma/client/runtime/client';
 
-export const FIELD_TYPES = [
+export type FieldType =
+  | 'text'
+  | 'textarea'
+  | 'number'
+  | 'email'
+  | 'phone'
+  | 'url'
+  | 'date'
+  | 'dropdown'
+  | 'radio'
+  | 'checkbox';
+
+export const FIELD_TYPES: FieldType[] = [
   'text',
   'textarea',
   'number',
@@ -515,8 +528,16 @@ export interface FormFieldType {
   id: string;
   formId: string;
   formPageId: string;
-  config: any;
+  config: JsonValue;
   position: string;
   createdAt: Date;
   updatedAt: Date;
 }
+
+export type FieldBaseConfigType = {
+  type: string;
+  label: string;
+  helpText?: string;
+  required: boolean;
+  placeholder?: string;
+};
