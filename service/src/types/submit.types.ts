@@ -1,4 +1,11 @@
-import { IsBoolean, IsObject, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsBoolean,
+  IsNotEmpty,
+  IsObject,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import { JsonValue } from '@prisma/client/runtime/client';
 
 export class SubmitDto {
@@ -21,6 +28,12 @@ export class SubmitDto {
   @IsOptional()
   @IsBoolean()
   start?: boolean;
+}
+
+export class SubmitDeleteDto {
+  @IsNotEmpty()
+  @IsArray()
+  submitIds: string[];
 }
 
 export type SubmissionAnswerType = {

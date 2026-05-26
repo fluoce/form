@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -8,11 +9,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { SubmitService } from './submit.service';
-import { SubmitDto } from 'src/types/submit.types';
+import { SubmitDeleteDto, SubmitDto } from 'src/types/submit.types';
 import { Public } from 'src/decorator/public.decorator';
 import { FormGuard } from '../form/form.guard';
 import type { Request } from 'express';
 import { UAParserService } from 'src/lib/uaparser/uaparser.service';
+import { Form } from 'src/decorator/form.decorator';
+import type { FormType } from 'src/types/form.types';
 
 @Controller('submit')
 export class SubmitController {
@@ -37,13 +40,19 @@ export class SubmitController {
 
   @UseGuards(FormGuard)
   @Get('overview/:formId')
-  async getSubmitOverview(@Param('formId') formId: string) {
-    return await this.submitService.getSubmitOverview(formId);
+  async getSubmitOverview(@Form() form: FormType) {
+    return await this.submitService.getSubmitOverview(form.id);
   }
 
   @UseGuards(FormGuard)
   @Get(':formId')
-  async getSubmits(@Param('formId') formId: string) {
-    return await this.submitService.getSubmits(formId);
+  async getSubmits(@Form() form: FormType) {
+    return await this.submitService.getSubmits(form.id);
+  }
+
+  @UseGuards(FormGuard)
+  @Delete(':formId')
+  async deleteSubmits(@Form() form: FormType, @Body() data: SubmitDeleteDto) {
+    return await this.submitService.deleteSubmits(form.id, data);
   }
 }

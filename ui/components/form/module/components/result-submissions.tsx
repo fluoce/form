@@ -2,7 +2,14 @@
 
 import { useState } from "react"
 import { useParams } from "next/navigation"
-import { Grid2x2, RotateCw, Search, TableCellsMerge } from "lucide-react"
+import {
+  Download,
+  File,
+  Grid2x2,
+  RotateCw,
+  Search,
+  TableCellsMerge,
+} from "lucide-react"
 import { PageSpinner } from "@/components/shared/loader-r"
 import { useSubmits } from "@/hooks/use-submit"
 import { Button } from "@/components/ui/button"
@@ -15,13 +22,14 @@ import {
 import { ButtonGroup } from "@/components/ui/button-group"
 import { SubmissionTable } from "./submission-table"
 import { SubmissionsCards } from "./submission-cards"
+import { ExportDialog } from "./export-dialog"
 
 export function ResultSubmissions() {
   const { formId } = useParams<{ formId: string }>()
 
   const { data, isLoading, refetch, isFetching } = useSubmits({ formId })
 
-  const [view, setView] = useState<"table" | "card">("table")
+  const [view, setView] = useState<"table" | "card" | "file">("table")
 
   const [globalFilter, setGlobalFilter] = useState("")
 
@@ -58,6 +66,11 @@ export function ResultSubmissions() {
           </InputGroup>
         </div>
         <div className="flex items-center gap-2 text-sm">
+          <ExportDialog data={data?.data!}>
+            <Button variant="outline" size="sm">
+              <Download /> Export
+            </Button>
+          </ExportDialog>
           <ButtonGroup>
             <Button
               size="sm"
@@ -75,6 +88,14 @@ export function ResultSubmissions() {
             >
               <Grid2x2 />
             </Button>
+            {/* <Button
+              onClick={() => setView("file")}
+              size="sm"
+              variant="outline"
+              className={cn(view == "file" && "bg-accent")}
+            >
+              <File />
+            </Button> */}
           </ButtonGroup>
         </div>
       </div>
@@ -82,6 +103,8 @@ export function ResultSubmissions() {
         <SubmissionTable data={data?.data!} globalFilter={globalFilter} />
       ) : view == "card" ? (
         <SubmissionsCards data={data?.data!} globalFilter={globalFilter} />
+      ) : view == "file" ? (
+        <></>
       ) : (
         <></>
       )}

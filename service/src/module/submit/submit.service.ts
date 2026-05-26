@@ -6,7 +6,7 @@ import {
 import { FormpagecoreService } from 'src/core/formpagecore/formpagecore.service';
 import { SubmitcoreService } from 'src/core/submitcore/submitcore.service';
 import { ResponseDataType } from 'src/types/response.type';
-import { SubmitDto } from 'src/types/submit.types';
+import { SubmitDeleteDto, SubmitDto } from 'src/types/submit.types';
 import { UserAgentType } from 'src/types/types';
 
 @Injectable()
@@ -71,6 +71,21 @@ export class SubmitService {
     return {
       message: 'submissions fetched successfully',
       submissions,
+    };
+  }
+
+  async deleteSubmits(
+    formId: string,
+    data: SubmitDeleteDto,
+  ): Promise<ResponseDataType> {
+    const deleted = await this.submitCoreService.deleteSubmits(formId, data);
+
+    if (!deleted) {
+      throw new InternalServerErrorException('Failed to delete submissions');
+    }
+
+    return {
+      message: 'submissions  deleted successfully',
     };
   }
 }

@@ -2,15 +2,44 @@ import { SubmissionsType } from "@/types/submit-types"
 import { useMemo } from "react"
 import { funcNormalizeSubmissionsForCard } from "../func/func-normalize-submissions"
 import { cn } from "@/lib/utils"
-import { Download, EllipsisVertical, Maximize2, Trash2 } from "lucide-react"
+import {
+  Download,
+  EllipsisVertical,
+  FileText,
+  Maximize2,
+  Sheet,
+  Table,
+  Trash2,
+} from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useSubmitsDelete } from "@/hooks/use-submit"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Spinner } from "@/components/ui/spinner"
+import {
+  funcExportToCsv,
+  funcExportToExcel,
+  funcExportToPdf,
+} from "../func/func-export-submissions"
 
 export function SubmissionsCards({
   data,
@@ -21,11 +50,13 @@ export function SubmissionsCards({
   }
   globalFilter: string
 }) {
+  const { mutateAsync, isPending } = useSubmitsDelete()
+
   const cardData = useMemo(() => {
-    const cards = funcNormalizeSubmissionsForCard(data.submissions) || []
+    const cards = funcNormalizeSubmissionsForCard(data?.submissions) || []
     if (!globalFilter) return cards
-    const filter = globalFilter.toLowerCase()
-    return cards.filter((card) =>
+    const filter = globalFilter?.toLowerCase()
+    return cards?.filter((card) =>
       card?.questions?.some(
         (q: any) =>
           String(q?.question ?? "")
@@ -38,12 +69,20 @@ export function SubmissionsCards({
     )
   }, [data, globalFilter])
 
+  if (!cardData || cardData?.length == 0) {
+    return (
+      <div className="flex h-44 w-full items-center justify-center border-t text-sm">
+        No results.
+      </div>
+    )
+  }
+
   return (
     <div
       className="custom-scroll flex-1 overflow-x-auto overflow-y-auto"
       style={{ maxHeight: "calc(100vh - 200px)" }}
     >
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {cardData?.map((data) => (
           <div
             key={data?.id}
@@ -70,18 +109,77 @@ export function SubmissionsCards({
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuGroup>
-                        <DropdownMenuItem>
+                        {/* <DropdownMenuItem>
                           <Maximize2 />
                           Full View
                         </DropdownMenuItem>
+                        <DropdownMenuSeparator /> */}
+                        <DropdownMenuSub>
+                          <DropdownMenuSubTrigger>
+                            <Download /> Download
+                          </DropdownMenuSubTrigger>
+                          <DropdownMenuSubContent>
+                            <DropdownMenuItem
+                              onSelect={(e) => {
+                                e.preventDefault()
+                                funcExportToPdf([data])
+                              }}
+                            >
+                              <FileText /> PDF
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onSelect={(e) => {
+                                e.preventDefault()
+                                funcExportToExcel([data])
+                              }}
+                            >
+                              <Sheet /> Excel (XLSX)
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onSelect={(e) => {
+                                e.preventDefault()
+                                funcExportToCsv([data])
+                              }}
+                            >
+                              <Table /> CSV
+                            </DropdownMenuItem>
+                          </DropdownMenuSubContent>
+                        </DropdownMenuSub>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
-                          <Download /> Download
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem variant="destructive">
-                          <Trash2 /> Delete
-                        </DropdownMenuItem>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <DropdownMenuItem
+                              onSelect={(e) => e?.preventDefault()}
+                              variant="destructive"
+                            >
+                              {isPending ? <Spinner /> : <Trash2 />} Delete
+                            </DropdownMenuItem>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>
+                                Delete Submissions
+                              </AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Are you sure you want to delete the selected
+                                submissions? This action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel disabled={isPending}>
+                                Cancel
+                              </AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => {
+                                  mutateAsync({ submitIds: [data?.id] })
+                                }}
+                                disabled={isPending}
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </DropdownMenuGroup>
                     </DropdownMenuContent>
                   </DropdownMenu>

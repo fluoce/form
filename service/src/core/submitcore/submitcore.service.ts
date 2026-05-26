@@ -2,7 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { JsonValue } from '@prisma/client/runtime/client';
 import { PrismaService } from 'src/lib/prisma/prisma.service';
 import { UlidService } from 'src/lib/ulid/ulid.service';
-import { SubmissionsType, SubmitDto, SubmitType } from 'src/types/submit.types';
+import {
+  SubmissionsType,
+  SubmitDeleteDto,
+  SubmitDto,
+  SubmitType,
+} from 'src/types/submit.types';
 import { UserAgentType } from 'src/types/types';
 
 @Injectable()
@@ -159,5 +164,18 @@ export class SubmitcoreService {
       }),
     ]);
     return { formFields, submissions };
+  }
+
+  async deleteSubmits(formId: string, data: SubmitDeleteDto): Promise<boolean> {
+    const { count } = await this.prisma.submit.deleteMany({
+      where: {
+        formId,
+        id: {
+          in: data.submitIds,
+        },
+      },
+    });
+
+    return count > 0;
   }
 }
