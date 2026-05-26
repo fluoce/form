@@ -14,12 +14,14 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip"
 
 interface DataTableProps<TData> extends React.ComponentProps<"div"> {
   table: TanstackTable<TData>
+  onRow?: (args: { row: TData }) => void
 }
 
 export function DataTable<TData>({
   table,
   className,
   children,
+  onRow,
   ...props
 }: DataTableProps<TData>) {
   return (
@@ -97,6 +99,7 @@ export function DataTable<TData>({
                   key={row?.id}
                   data-state={row?.getIsSelected() && "selected"}
                   className="cursor-pointer"
+                  onClick={() => onRow?.({ row: row?.original })}
                 >
                   {row?.getVisibleCells()?.map((cell) => (
                     <TableCell key={cell?.id} className="max-w-40 truncate">

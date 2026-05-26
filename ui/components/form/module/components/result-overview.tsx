@@ -25,15 +25,15 @@ export function ResultOverview() {
     <div className={cn("flex flex-col gap-8 p-2", isFetching && "opacity-50")}>
       <div className="flex flex-col gap-4">
         <span className="flex items-center gap-2 text-sm">
-          <ThumbsUp size={18} /> Submission Overview{" "}
           <Button
             onClick={() => refetch()}
             disabled={isFetching}
             variant="outline"
-            size="icon-xs"
+            size="icon-sm"
           >
             <RotateCw className={cn(isFetching && "animate-spin")} />
-          </Button>
+          </Button>{" "}
+          Submission Overview{" "}
         </span>
         <div className="flex flex-wrap items-center gap-2">
           <StatusCard
@@ -52,7 +52,7 @@ export function ResultOverview() {
       </div>
       <div className="flex flex-col gap-4">
         <span className="flex items-center gap-2 text-sm">
-          <TabletSmartphone size={18} /> Device Distribution
+          <TabletSmartphone size={18} className="ml-1" /> Device Distribution
         </span>
         <div className="flex flex-wrap items-center gap-2">
           <StatusCard count={deviceCounts?.desktop!} lable="Desktop" />

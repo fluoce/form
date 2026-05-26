@@ -4,8 +4,8 @@ import { SubmissionsType } from "@/types/submit-types"
 import { Badge } from "@/components/ui/badge"
 import { format } from "date-fns"
 import { NormalizedSubmissionRow } from "../func/func-normalize-submissions"
-import { Checkbox } from "@/components/ui/checkbox"
 import { cn } from "@/lib/utils"
+import { Checkbox } from "@/components/animate-ui/components/base/checkbox"
 
 const staticColumns: ColumnDef<NormalizedSubmissionRow>[] = [
   {
@@ -98,7 +98,8 @@ export function buildColumns(
       id: "select",
       header: ({ table }) => (
         <Checkbox
-          className="mr-0.5 border-none bg-background"
+          nativeButton
+          className="mr-0.5 border-muted-foreground/25 bg-background"
           checked={table.getIsAllPageRowsSelected()}
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Select all"
@@ -106,7 +107,8 @@ export function buildColumns(
       ),
       cell: ({ row }) => (
         <Checkbox
-          className="mr-0.5"
+          className="-ml-0.5 border-muted-foreground/25"
+          nativeButton
           onClick={(e) => e.stopPropagation()}
           checked={row.getIsSelected()}
           disabled={!row.getCanSelect()}

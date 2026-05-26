@@ -55,7 +55,7 @@ export function AppSidebar() {
 
   const path = usePathname()
 
-  const { open, setOpen, state } = useSidebar()
+  const { open, setOpen, state, openMobile } = useSidebar()
 
   const [isFormShow, setIsFormShow] = useState(true)
 
@@ -89,7 +89,7 @@ export function AppSidebar() {
           <Link href={routes.dashboard.base}>
             <img src="/Form-Fluoce.svg" alt="Logo" className="h-8 w-8" />
           </Link>
-          {open && <SelectWorkspace />}
+          {(open || openMobile) && <SelectWorkspace />}
         </SidebarMenuItem>
       </SidebarHeader>
       <SidebarContent>
@@ -208,7 +208,7 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter>
-        {open ? <InfoCard /> : <></>}
+        {(open || openMobile) && <InfoCard />}
         <NavUser />
       </SidebarFooter>
     </Sidebar>
