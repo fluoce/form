@@ -37,6 +37,7 @@ export class SubmitcoreService {
           device: meta.userAgent.device,
           os: meta.userAgent.os,
           browser: meta.userAgent.browser,
+          completedAt: data?.done ? new Date() : undefined,
         },
         update: {
           updatedAt: new Date(),
