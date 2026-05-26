@@ -1,12 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { JsonValue } from '@prisma/client/runtime/client';
 import { PrismaService } from 'src/lib/prisma/prisma.service';
 import { UlidService } from 'src/lib/ulid/ulid.service';
 import {
   SubmissionsType,
   SubmitDeleteDto,
   SubmitDto,
-  SubmitType,
 } from 'src/types/submit.types';
 import { UserAgentType } from 'src/types/types';
 
