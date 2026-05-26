@@ -101,7 +101,7 @@ export function CreateUpdateFormPage({
           </Field>
           {isCreateError && <ErrorAlert error={createError?.message} />}
           {errors?.name && <ErrorAlert error={errors?.name?.message!} />}
-          <DialogFooter>
+          <DialogFooter className="mt-4">
             <div className="flex w-full items-center justify-between gap-2">
               {formPage ? (
                 <Button
@@ -119,7 +119,7 @@ export function CreateUpdateFormPage({
               ) : null}
               <div className="flex flex-1 items-center justify-end gap-2">
                 <DialogClose asChild>
-                  <Button>Close</Button>
+                  <Button variant="outline">Close</Button>
                 </DialogClose>
                 <Button disabled={updating || creating || deleting}>
                   {updating || (creating && <Spinner />)}
