@@ -49,17 +49,10 @@ export function funcNormalizeSubmissionsForCard(data: SubmissionsType) {
   return data?.submissions?.map((sub) => {
     const questions = sub?.submissionAnswer?.map((answer) => {
       const field = data?.formFields.find((f) => f?.id === answer?.fieldId)
-      const value =
-        (((((((answer?.valueText || "-") ?? answer?.valueNumber) || "-") ??
-          answer?.valueBoolean) ||
-          "-") ??
-          answer?.valueJson) ||
-          "-") ??
-        "-"
       return {
         id: answer.id,
         question: field?.config?.label ?? "Unknown Question",
-        answer: String(value),
+        answer: resolveAnswerValue(answer),
         type: field?.config?.type ?? "text",
       }
     })

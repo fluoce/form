@@ -201,7 +201,7 @@ export function SubmissionsCards({
                     {qna?.question}
                   </p>
                   <p className="text-[13px] tracking-tight text-neutral-800 dark:text-neutral-300">
-                    {qna?.answer}
+                    {String(qna?.answer)}
                   </p>
                 </div>
               ))}
