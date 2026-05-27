@@ -59,7 +59,7 @@ export function funcNormalizeSubmissionsForCard(data: SubmissionsType) {
       return {
         id: answer.id,
         question: field?.config?.label ?? "Unknown Question",
-        answer: value,
+        answer: String(value),
         type: field?.config?.type ?? "text",
       }
     })
