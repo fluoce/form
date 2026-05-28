@@ -33,15 +33,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../ui/alert-dialog"
-import { useRouter } from "next/navigation"
+import { redirect, useRouter } from "next/navigation"
 import { useAuthLogout } from "@/action/auth/logout"
 import { useTheme } from "next-themes"
 import useLocalStorage from "@/hooks/use-local-storage"
 import { localStorageKey } from "@/const/local-storage-key"
+import { envs } from "@/const/envs"
 
 export function NavUser() {
-  const router = useRouter()
-
   const { setTheme } = useTheme()
 
   const { data } = useUser()
@@ -54,7 +53,9 @@ export function NavUser() {
 
   const logout = () => {
     removeValue()
-    useAuthLogout().finally(() => router.refresh())
+    useAuthLogout().finally(() =>
+      redirect(`${envs.authUrl}?ref=${encodeURIComponent(envs.appUrl)}`)
+    )
   }
 
   return user ? (
