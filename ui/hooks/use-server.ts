@@ -11,7 +11,7 @@ import { redirect } from "next/navigation"
 interface ServerProps {
   url: string
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE"
-  body?: Record<string, unknown>
+  body?: {}
   path?: string
   auth?: boolean
 }
