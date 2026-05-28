@@ -53,9 +53,8 @@ export function NavUser() {
 
   const logout = () => {
     removeValue()
-    useAuthLogout().finally(() =>
-      redirect(`${envs.authUrl}?ref=${encodeURIComponent(envs.appUrl)}`)
-    )
+    useAuthLogout()
+    redirect(`${envs.authUrl}?ref=${encodeURIComponent(envs.appUrl)}`)
   }
 
   return user ? (

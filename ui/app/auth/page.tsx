@@ -13,14 +13,22 @@ function Auth() {
 
   const code = searchParams.get("code")
 
-  const path = searchParams.get("path")
+  let path = searchParams.get("path")
+  if (!path || path === "null" || path === "undefined") {
+    path = null
+  }
 
   const exchange = async (c: string) => {
     const result = await useAuthExchange({
       code: c,
     })
     if (result?.success) {
-      if (typeof path == "string") {
+      if (
+        typeof path === "string" &&
+        path.trim() &&
+        path !== "null" &&
+        path !== "undefined"
+      ) {
         router.replace(path)
       } else {
         router.replace(routes.dashboard.base)
