@@ -59,24 +59,7 @@ export default async function UseServer({
     }
   }
 
-  if (!at) {
-    redirect(authRedirect)
-  }
-
-  const makeRequest = (token?: string) => {
-    if (!token) {
-      redirect(authRedirect)
-    }
-
-    return dataFetch({
-      endpoint,
-      at: token,
-      method,
-      body,
-    })
-  }
-
-  let res = await makeRequest(at)
+  let res = await dataFetch({ endpoint, at: at!, method, body })
 
   let data: ResType | null = null
 
@@ -98,7 +81,7 @@ export default async function UseServer({
         redirect(authRedirect)
       }
 
-      res = await makeRequest(at)
+      res = await dataFetch({ endpoint, at, method, body })
 
       contentType = res.headers.get("content-type")
 
