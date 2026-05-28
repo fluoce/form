@@ -20,7 +20,7 @@ function Auth() {
       code: c,
     })
     if (result?.success) {
-      if (path) {
+      if (typeof path == "string") {
         router.replace(path)
       } else {
         router.replace(routes.dashboard.base)
