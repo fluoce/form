@@ -11,7 +11,7 @@ import { redirect } from "next/navigation"
 interface ServerProps {
   url: string
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE"
-  body?: {}
+  body?: Record<string, unknown>
   path?: string
   auth?: boolean
 }
@@ -33,29 +33,48 @@ export default async function UseServer({
 
   const cookieStore = await cookies()
 
-  let at = cookieStore.get("accessToken")?.value!
-  let rt = cookieStore.get("refreshToken")?.value!
+  const accessToken = cookieStore.get("accessToken")
+
+  const refreshToken = cookieStore.get("refreshToken")
+
+  let at = accessToken?.value
+
+  let rt = refreshToken?.value
 
   if (!rt) {
     redirect(authRedirect)
   }
 
   if (!at && rt) {
-    const tokenRespaonse = await refresh(rt)
-    if (!tokenRespaonse) {
+    const tokenResponse = await refresh(rt)
+
+    if ("status" in tokenResponse && tokenResponse?.status == 401) {
       redirect(authRedirect)
     }
-    at = tokenRespaonse.accessToken
-    rt = tokenRespaonse.refreshToken
+
+    if ("accessToken" in tokenResponse && "refreshToken" in tokenResponse) {
+      at = tokenResponse.accessToken
+
+      rt = tokenResponse.refreshToken
+    }
   }
 
-  const makeRequest = (token: string) =>
-    dataFetch({
+  if (!at) {
+    redirect(authRedirect)
+  }
+
+  const makeRequest = (token?: string) => {
+    if (!token) {
+      redirect(authRedirect)
+    }
+
+    return dataFetch({
       endpoint,
       at: token,
       method,
       body,
     })
+  }
 
   let res = await makeRequest(at)
 
@@ -64,18 +83,28 @@ export default async function UseServer({
   let contentType = res.headers.get("content-type")
 
   if (res.status === 401) {
-    try {
-      const tokenResponse = await refresh(rt)
-      if (tokenResponse) {
-        at = tokenResponse.accessToken
-        rt = tokenResponse.refreshToken
-        res = await makeRequest(at)
-        contentType = res.headers.get("content-type")
-      } else {
+    const tokenResponse = await refresh(rt)
+
+    if ("status" in tokenResponse && tokenResponse?.status == 401) {
+      redirect(authRedirect)
+    }
+
+    if ("accessToken" in tokenResponse && "refreshToken" in tokenResponse) {
+      at = tokenResponse.accessToken
+
+      rt = tokenResponse.refreshToken
+
+      if (!at) {
         redirect(authRedirect)
       }
-    } catch (err) {
-      throw err
+
+      res = await makeRequest(at)
+
+      contentType = res.headers.get("content-type")
+
+      if (res.status === 401) {
+        redirect(authRedirect)
+      }
     }
   }
 
@@ -104,53 +133,58 @@ export default async function UseServer({
 
 const refresh = async (
   rt: string
-): Promise<{ accessToken: string; refreshToken: string } | false> => {
+): Promise<
+  | { accessToken: string; refreshToken: string }
+  | {
+      status: number
+    }
+> => {
+  const res = await fetch(`${envs.authBackendUrl}${urls.auth.refresh}`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${rt}`,
+    },
+    cache: "no-store",
+  })
+
+  if (!res.ok) {
+    return {
+      status: res.status,
+    }
+  }
+
+  let data: RefreshResType
+
   try {
-    const res = await fetch(`${envs.authBackendUrl}${urls.auth.refresh}`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${rt}`,
-      },
+    data = await res.json()
+  } catch (error) {
+    return {
+      status: res.status,
+    }
+  }
+
+  if (data?.success && data?.data) {
+    const cookieStore = await cookies()
+    const { accessToken, refreshToken } = data.data
+    cookieStore.set({
+      name: "accessToken",
+      value: `${accessToken}`,
+      ...cookieOption(14 * 60),
+    })
+    cookieStore.set({
+      name: "refreshToken",
+      value: `${refreshToken}`,
+      ...cookieOption(59 * 24 * 60 * 60),
     })
 
-    if (!res.ok) {
-      return false
+    return {
+      accessToken,
+      refreshToken,
     }
-
-    let data: RefreshResType
-
-    try {
-      data = await res.json()
-    } catch (error) {
-      return false
+  } else {
+    return {
+      status: res.status,
     }
-
-    if (data.success && data.data) {
-      const cookieStore = await cookies()
-
-      const { accessToken, refreshToken } = data.data
-
-      cookieStore.set({
-        name: "accessToken",
-        value: `${accessToken}`,
-        ...cookieOption(14 * 60),
-      })
-
-      cookieStore.set({
-        name: "refreshToken",
-        value: `${refreshToken}`,
-        ...cookieOption(59 * 24 * 60 * 60),
-      })
-
-      return {
-        accessToken,
-        refreshToken,
-      }
-    } else {
-      return false
-    }
-  } catch (error) {
-    return false
   }
 }
 
@@ -171,6 +205,7 @@ const dataFetch = async ({
       "Content-Type": "application/json",
       Authorization: `Bearer ${at}`,
     },
+    cache: "no-store",
     ...(body && { body: JSON.stringify(body) }),
   })
 }

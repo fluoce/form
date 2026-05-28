@@ -41,6 +41,7 @@ import {
 } from "@/components/ui/collapsible"
 import { cn } from "@/lib/utils"
 import { CreateUpdateForm } from "../form/create-update-form"
+import { Skeleton } from "../ui/skeleton"
 
 type MenuType = {
   name: string
@@ -123,7 +124,15 @@ export function AppSidebar() {
                 </SidebarGroupLabel>
               </CollapsibleTrigger>
               <CollapsibleContent className="flex flex-col gap-1">
-                {data?.data?.forms.length ? (
+                {isLoading ? (
+                  Array.from({ length: 3 }).map((_, idx) => (
+                    <SidebarMenuItem key={idx}>
+                      <SidebarMenuButton className="p-0">
+                        <Skeleton className="h-full w-full" />
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))
+                ) : data?.data?.forms.length ? (
                   data?.data?.forms?.map((f) =>
                     state == "expanded" ? (
                       <Link
