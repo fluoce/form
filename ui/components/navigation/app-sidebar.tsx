@@ -107,100 +107,98 @@ export function AppSidebar() {
             </Link>
           ))}
         </SidebarGroup>
-        {!isLoading && (
-          <SidebarGroup className="flex flex-col gap-1">
-            <Collapsible defaultOpen onOpenChange={setIsFormShow}>
-              <CollapsibleTrigger asChild>
-                <SidebarGroupLabel
-                  className={cn(
-                    "mb-1 flex w-fit cursor-pointer items-center gap-2",
-                    isFormShow ? "hover:bg-sidebar-accent" : "bg-sidebar-accent"
-                  )}
-                >
-                  Forms
-                  <ChevronRight
-                    className={cn(isFormShow && "rotate-90", "smooth")}
-                  />
-                </SidebarGroupLabel>
-              </CollapsibleTrigger>
-              <CollapsibleContent className="flex flex-col gap-1">
-                {isLoading ? (
-                  Array.from({ length: 3 }).map((_, idx) => (
-                    <SidebarMenuItem key={idx}>
-                      <SidebarMenuButton className="p-0">
-                        <Skeleton className="h-full w-full" />
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))
-                ) : data?.data?.forms.length ? (
-                  data?.data?.forms?.map((f) =>
-                    state == "expanded" ? (
-                      <Link
-                        key={f?.id}
-                        href={routes.form.byId({
-                          workspaceId,
-                          formId: f?.id,
-                        })}
-                        onClick={() => setOpen(false)}
-                      >
-                        <SidebarMenuItem>
-                          <SidebarMenuButton
-                            isActive={path.includes(f?.id)}
-                            className="truncate"
-                          >
-                            <Avatar className={`${f?.theme} size-4`}>
-                              <AvatarFallback className="bg-primary text-xs text-primary-foreground">
-                                {f?.name.slice(0, 1).toUpperCase()}
-                              </AvatarFallback>
-                            </Avatar>
-                            {f?.name}
-                          </SidebarMenuButton>
-                        </SidebarMenuItem>
-                      </Link>
-                    ) : (
-                      <Tooltip key={f?.id}>
-                        <TooltipTrigger asChild>
-                          <Link
-                            href={routes.form.byId({
-                              workspaceId,
-                              formId: f?.id,
-                            })}
-                            onClick={() => setOpen(false)}
-                          >
-                            <SidebarMenuItem>
-                              <SidebarMenuButton
-                                isActive={path.includes(f?.id)}
-                                className="truncate"
-                              >
-                                <Avatar className={`${f?.theme} size-4`}>
-                                  <AvatarFallback className="bg-primary text-xs text-primary-foreground">
-                                    {f?.name.slice(0, 1).toUpperCase()}
-                                  </AvatarFallback>
-                                </Avatar>
-                                {f?.name}
-                              </SidebarMenuButton>
-                            </SidebarMenuItem>
-                          </Link>
-                        </TooltipTrigger>
-                        <TooltipContent side="right" align="center">
-                          {f?.name}
-                        </TooltipContent>
-                      </Tooltip>
-                    )
-                  )
-                ) : (
-                  <SidebarMenuItem>
-                    <CreateUpdateForm>
-                      <SidebarMenuButton>
-                        <Plus /> Form
-                      </SidebarMenuButton>
-                    </CreateUpdateForm>
-                  </SidebarMenuItem>
+        <SidebarGroup className="flex flex-col gap-1">
+          <Collapsible defaultOpen onOpenChange={setIsFormShow}>
+            <CollapsibleTrigger asChild>
+              <SidebarGroupLabel
+                className={cn(
+                  "mb-1 flex w-fit cursor-pointer items-center gap-2",
+                  isFormShow ? "hover:bg-sidebar-accent" : "bg-sidebar-accent"
                 )}
-              </CollapsibleContent>
-            </Collapsible>
-          </SidebarGroup>
-        )}
+              >
+                Forms
+                <ChevronRight
+                  className={cn(isFormShow && "rotate-90", "smooth")}
+                />
+              </SidebarGroupLabel>
+            </CollapsibleTrigger>
+            <CollapsibleContent className="flex flex-col gap-1">
+              {isLoading ? (
+                Array.from({ length: 3 }).map((_, idx) => (
+                  <SidebarMenuItem key={idx}>
+                    <SidebarMenuButton className="p-0">
+                      <Skeleton className="h-full w-full" />
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))
+              ) : data?.data?.forms.length ? (
+                data?.data?.forms?.map((f) =>
+                  state == "expanded" ? (
+                    <Link
+                      key={f?.id}
+                      href={routes.form.byId({
+                        workspaceId,
+                        formId: f?.id,
+                      })}
+                      onClick={() => setOpen(false)}
+                    >
+                      <SidebarMenuItem>
+                        <SidebarMenuButton
+                          isActive={path.includes(f?.id)}
+                          className="truncate"
+                        >
+                          <Avatar className={`${f?.theme} size-4`}>
+                            <AvatarFallback className="bg-primary text-xs text-primary-foreground">
+                              {f?.name.slice(0, 1).toUpperCase()}
+                            </AvatarFallback>
+                          </Avatar>
+                          {f?.name}
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    </Link>
+                  ) : (
+                    <Tooltip key={f?.id}>
+                      <TooltipTrigger asChild>
+                        <Link
+                          href={routes.form.byId({
+                            workspaceId,
+                            formId: f?.id,
+                          })}
+                          onClick={() => setOpen(false)}
+                        >
+                          <SidebarMenuItem>
+                            <SidebarMenuButton
+                              isActive={path.includes(f?.id)}
+                              className="truncate"
+                            >
+                              <Avatar className={`${f?.theme} size-4`}>
+                                <AvatarFallback className="bg-primary text-xs text-primary-foreground">
+                                  {f?.name.slice(0, 1).toUpperCase()}
+                                </AvatarFallback>
+                              </Avatar>
+                              {f?.name}
+                            </SidebarMenuButton>
+                          </SidebarMenuItem>
+                        </Link>
+                      </TooltipTrigger>
+                      <TooltipContent side="right" align="center">
+                        {f?.name}
+                      </TooltipContent>
+                    </Tooltip>
+                  )
+                )
+              ) : (
+                <SidebarMenuItem>
+                  <CreateUpdateForm>
+                    <SidebarMenuButton>
+                      <Plus /> Form
+                    </SidebarMenuButton>
+                  </CreateUpdateForm>
+                </SidebarMenuItem>
+              )}
+            </CollapsibleContent>
+          </Collapsible>
+        </SidebarGroup>
         <SidebarGroup>
           <SidebarGroupLabel>Others</SidebarGroupLabel>
           {OTHERS_MENU?.map((m) => (
