@@ -36,6 +36,8 @@ import {
 import { useRouter } from "next/navigation"
 import { useAuthLogout } from "@/action/auth/logout"
 import { useTheme } from "next-themes"
+import useLocalStorage from "@/hooks/use-local-storage"
+import { localStorageKey } from "@/const/local-storage-key"
 
 export function NavUser() {
   const router = useRouter()
@@ -44,7 +46,16 @@ export function NavUser() {
 
   const { data } = useUser()
 
+  const { removeValue } = useLocalStorage({
+    key: localStorageKey.selectedWorkspace,
+  })
+
   const user = data?.data
+
+  const logout = () => {
+    removeValue()
+    useAuthLogout().finally(() => router.refresh())
+  }
 
   return user ? (
     <SidebarMenu>
@@ -120,13 +131,7 @@ export function NavUser() {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction
-                    onClick={() => {
-                      useAuthLogout().finally(() => router.refresh())
-                    }}
-                  >
-                    Logout
-                  </AlertDialogAction>
+                  <AlertDialogAction onClick={logout}>Logout</AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
