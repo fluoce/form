@@ -18,7 +18,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from "@/components/ui/sidebar"
 import { useUser } from "@/hooks/use-user"
 import { Kbd } from "../ui/kbd"
@@ -33,14 +32,17 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../ui/alert-dialog"
-import { redirect, useRouter } from "next/navigation"
 import { useAuthLogout } from "@/action/auth/logout"
 import { useTheme } from "next-themes"
 import useLocalStorage from "@/hooks/use-local-storage"
 import { localStorageKey } from "@/const/local-storage-key"
 import { envs } from "@/const/envs"
+import { useState } from "react"
+import { Spinner } from "../ui/spinner"
 
 export function NavUser() {
+  const [loading, setLoading] = useState(false)
+
   const { setTheme } = useTheme()
 
   const { data } = useUser()
@@ -51,10 +53,12 @@ export function NavUser() {
 
   const user = data?.data
 
-  const logout = () => {
+  const logout = async () => {
     removeValue()
-    useAuthLogout()
-    redirect(`${envs.authUrl}?ref=${encodeURIComponent(envs.appUrl)}`)
+    setLoading(true)
+    await useAuthLogout()
+    setLoading(false)
+    window.location.href = `${envs.authUrl}?ref=${encodeURIComponent(envs.appUrl)}`
   }
 
   return user ? (
@@ -117,7 +121,7 @@ export function NavUser() {
                   onSelect={(e) => e.preventDefault()}
                   variant="destructive"
                 >
-                  <LogOut />
+                  {loading ? <Spinner /> : <LogOut />}
                   Log out
                 </DropdownMenuItem>
               </AlertDialogTrigger>

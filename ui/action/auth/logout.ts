@@ -15,7 +15,7 @@ export async function useAuthLogout() {
 
   if (refreshToken) {
     try {
-      fetch(`${envs.authBackendUrl}${urls.auth.logout}`, {
+      await fetch(`${envs.authBackendUrl}${urls.auth.logout}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${refreshToken}`,
