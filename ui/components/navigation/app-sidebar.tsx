@@ -68,11 +68,6 @@ export function AppSidebar() {
       paht: routes.dashboard.workspace({ workspaceId }),
       icon: <House />,
     },
-    {
-      name: "All Forms",
-      paht: routes.form.forms({ workspaceId }),
-      icon: <Form />,
-    },
   ]
 
   const OTHERS_MENU: MenuType[] = [
