@@ -1,7 +1,15 @@
-import { Controller } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Get, Req } from '@nestjs/common';
 
-@Controller()
+@Controller('app')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor() {}
+
+  @Get('health')
+  async health() {
+    return {
+      service:"Form",
+      message: 'All is well',
+      timestamp: new Date().toISOString(),
+    };
+  }
 }
